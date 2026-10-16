@@ -1,0 +1,133 @@
+"""Fusion functions: how four per-modality scores become one (manual §3.9).
+
+All share one interface, `score(e) -> float in [0, 1]`, where `e` is the four *effective*
+scores in the fixed order MODALITIES. That is what makes the comparison in Phase 5 fair:
+every candidate sees exactly the same inputs.
+"""
+
+import math
+from abc import ABC, abstractmethod
+from collections.abc import Sequence
+
+import numpy as np
+
+from contracts.scenarios import Modality
+
+MODALITIES: tuple[Modality, ...] = (Modality.SPATIAL, Modality.NETWORK, Modality.DEVICE, Modality.PROXIMITY)
+
+
+class Fusion(ABC):
+    name: str
+
+    @abstractmethod
+    def score(self, e: Sequence[float]) -> float: ...
+
+    def contributions(self, e: Sequence[float]) -> dict[Modality, float]:
+        """Leave-one-out: how much does the score fall if this modality is silenced?
+
+        Works for ANY fusion, which keeps the explanation layer independent of the maths. It is
+        not a Shapley value: when modalities interact, the contributions need not sum to the
+        score. For the additive weighted sum it is exact (w_i * e_i).
+        """
+        s = self.score(e)
+        out = {}
+        for i, m in enumerate(MODALITIES):
+            without = list(e)
+            without[i] = 0.0
+            out[m] = max(0.0, s - self.score(without))
+        return out
+
+
+class MaxFusion(Fusion):
+    """Any detector alone is enough. This is what independent detection does operationally."""
+
+    name = "max"
+
+    def score(self, e):
+        return max(e)
+
+
+class SingleSignal(Fusion):
+    """One detector only: the spatial-only / network-only / device-only baselines."""
+
+    def __init__(self, modality: Modality):
+        self.idx = MODALITIES.index(modality)
+        self.name = f"{modality.value}_only"
+
+    def score(self, e):
+        return e[self.idx]
+
+
+class WeightedSum(Fusion):
+    """The spec's formula. Weights are normalised to sum to 1, so S is an average.
+
+    Default weights are EQUAL, which is a documented placeholder, not a calibrated choice. A
+    single detector at 1.0 gives only its weight, so this variant needs several detectors to
+    agree before it can reach a high score.
+    """
+
+    name = "weighted_sum"
+
+    def __init__(self, weights: dict[Modality, float] | None = None):
+        w = [(weights or {}).get(m, 1.0) for m in MODALITIES]
+        total = sum(w)
+        self.w = [x / total for x in w]
+
+    def score(self, e):
+        return min(1.0, max(0.0, sum(w * x for w, x in zip(self.w, e))))
+
+
+class NoisyOr(Fusion):
+    """S = 1 - prod(1 - e_i). An OR that also accumulates several weak signals.
+
+    Assumes the signals are independent. If one benign cause moves several of them at once
+    (a firmware update) it counts that cause several times: double counting (§3.9).
+    """
+
+    name = "noisy_or"
+
+    def score(self, e):
+        p = 1.0
+        for x in e:
+            p *= 1.0 - min(max(x, 0.0), 1.0)
+        return 1.0 - p
+
+
+def pair_features(e: Sequence[float]) -> list[float]:
+    """The four scores plus all six pairwise products (so interactions can be learned)."""
+    f = list(e)
+    for i in range(len(e)):
+        for j in range(i + 1, len(e)):
+            f.append(e[i] * e[j])
+    return f
+
+
+class LearnedFusion(Fusion):
+    """Logistic regression on the effective scores and their pairwise products.
+
+    Fitted on LABELLED simulations from the training/validation seeds only. Because it sees
+    labelled hard negatives it can learn that, say, network + device together WITHOUT
+    spatial or proximity is benign, which a hand-set formula cannot. The output is a
+    ranking-quality score, not a calibrated probability (§3.10).
+    """
+
+    name = "learned"
+
+    def __init__(self) -> None:
+        self.coef: np.ndarray | None = None
+        self.intercept = 0.0
+
+    def fit(self, E: np.ndarray, y: np.ndarray, C: float = 1.0) -> "LearnedFusion":
+        from sklearn.linear_model import LogisticRegression
+
+        X = np.array([pair_features(row) for row in E])
+        # Attacks are rare, so weight classes; otherwise it learns to say "benign" always.
+        lr = LogisticRegression(C=C, class_weight="balanced", max_iter=1000).fit(X, y)
+        self.coef, self.intercept = lr.coef_[0].copy(), float(lr.intercept_[0])
+        return self
+
+    def score(self, e):
+        if self.coef is None:
+            raise RuntimeError("LearnedFusion must be fit() before use")
+        z = float(np.dot(self.coef, pair_features(e)) + self.intercept)
+        return 1.0 / (1.0 + math.exp(-max(min(z, 50.0), -50.0)))
