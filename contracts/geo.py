@@ -1,10 +1,26 @@
 """Geometry helpers (manual §3.4)."""
 
-from math import asin, cos, radians, sin, sqrt
+from math import asin, cos, pi, radians, sin, sqrt
 
 EARTH_RADIUS_M = 6_371_000.0
 
 LatLon = tuple[float, float]
+
+# Metres per degree of latitude on a sphere of EARTH_RADIUS_M (consistent with haversine).
+M_PER_DEG_LAT = 2 * pi * EARTH_RADIUS_M / 360
+
+
+def to_local_m(p: LatLon, origin: LatLon) -> tuple[float, float]:
+    """(lat, lon) -> (x east, y north) metres from origin. Flat approximation, site scale only."""
+    x = (p[1] - origin[1]) * M_PER_DEG_LAT * cos(radians(origin[0]))
+    y = (p[0] - origin[0]) * M_PER_DEG_LAT
+    return x, y
+
+
+def from_local_m(xy: tuple[float, float], origin: LatLon) -> LatLon:
+    lat = origin[0] + xy[1] / M_PER_DEG_LAT
+    lon = origin[1] + xy[0] / (M_PER_DEG_LAT * cos(radians(origin[0])))
+    return lat, lon
 
 
 def haversine_m(a: LatLon, b: LatLon) -> float:

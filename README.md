@@ -4,7 +4,7 @@ Real-time cross-modal behavioral anomaly detection for connected devices: it lea
 normal looks like per device, scores deviations in spatial, network, device and proximity
 signals, and tests whether *correlating* those weak deviations beats judging each alone.
 
-Status: **Phase 0** (contracts and scenario definitions). See
+Status: **Phase 1** (contracts, scenarios, labelled simulator). See
 [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) for the reasoning
 behind every decision.
 
@@ -34,3 +34,11 @@ Redis (needed from Phase 2) runs through Docker Desktop: `docker compose up -d r
 Runs on simulated telemetry only. It is an early-warning/anomaly system, not proof of attack,
 and scores are rankings, not calibrated probabilities. Results are reported only after being
 measured (manual §5).
+
+## Generate a dataset
+
+```powershell
+.\.venv\Scripts\python -m simulator.cli --devices 50 --hours 48 --seed 1 --out data/run1
+``` 
+
+Writes `telemetry.jsonl` (what detectors see), `episodes.jsonl` (ground truth, kept separate) and `config.json`. About 100 s and 600 MB for 50 devices x 48 h; `data/` is git-ignored.

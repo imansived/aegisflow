@@ -5,11 +5,15 @@ degree of latitude is about 111 m, so every zone here is a few tens of metres ac
 """
 
 from dataclasses import dataclass
+from datetime import timedelta, timezone
 from enum import Enum
 
 from .geo import LatLon, point_in_polygon
 
 SITE_ORIGIN: LatLon = (18.5204, 73.8567)
+# Local time at the site (IST). Working hours and time-of-day baselines use this, while
+# timestamps on the wire are UTC.
+SITE_TZ = timezone(timedelta(hours=5, minutes=30))
 
 
 class ZoneKind(str, Enum):

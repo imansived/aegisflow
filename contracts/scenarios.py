@@ -133,6 +133,8 @@ class Episode(BaseModel):
     magnitude: float = Field(ge=0, le=1)
     is_malicious: bool
     seed: int  # the run seed, so the episode can be reproduced
+    # Sub-type within a scenario, e.g. HARD_NEGATIVE: "firmware_update" | "authorized_visit".
+    variant: str = ""
 
     @model_validator(mode="after")
     def _valid_span(self) -> "Episode":
