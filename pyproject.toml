@@ -10,13 +10,14 @@ requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.6",
     "numpy>=1.26",
+    "redis>=5",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 
-[tool.setuptools]
-packages = ["contracts", "backend", "simulator", "ml"]
+[tool.setuptools.packages.find]
+include = ["contracts*", "backend*", "simulator*", "ml*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
