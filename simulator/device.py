@@ -67,6 +67,9 @@ class DeviceSim:
         self.uptime_s = int(rng.integers(3_600, 7 * 86_400))
         self._spatial_override = False
         self._rogue_ids: dict[str, list[str]] = {}
+        self._was_working: bool | None = None
+        self._visitor_until = datetime.min.replace(tzinfo=t0.tzinfo)
+        self._visitor_id = ""
 
     # ---- geometry ----------------------------------------------------------------------
 
@@ -129,6 +132,12 @@ class DeviceSim:
         m_network = eff(Modality.NETWORK)
         m_device = eff(Modality.DEVICE)
 
+        # People do not all leave at 18:00:00 or arrive at 09:00:00. When the working-hours
+        # boundary passes, re-plan within the next 20 minutes (unless an episode controls us).
+        if self._was_working is not None and working != self._was_working and not self._spatial_override:
+            self.dwell_until = min(self.dwell_until, t + timedelta(seconds=float(rng.uniform(0, 1200))))
+        self._was_working = working
+
         # --- where am I going? ---
         spatial_active = any(Modality.SPATIAL in e.modalities for e in effects)
         if spatial_active and not self._spatial_override:
@@ -182,8 +191,11 @@ class DeviceSim:
         endpoints = list(rng.choice(p.known_endpoints, size=min(len(p.known_endpoints), 1 + int(rng.integers(0, 3))), replace=False))
         if rng.random() < cfg.p_novel_endpoint_per_tick:
             endpoints.append(self._unfamiliar_endpoints(1)[0])  # benign novelty
-        if m_network > 0:
-            endpoints += self._unfamiliar_endpoints(1 + int(round(3 * m_network)))
+        # Effect must scale with magnitude: at m -> 0 almost no unfamiliar contacts, at m = 1
+        # one or more every tick. (An earlier version added them EVERY tick for any m > 0,
+        # which made weak anomalies loud; found in Phase 3, manual §4.3.)
+        if m_network > 0 and rng.random() < m_network:
+            endpoints += self._unfamiliar_endpoints(1 + int(round(2 * m_network)))
 
         # --- proximity: rogue (non-fleet) devices that are physically present ---
         rogues: list[str] = []
@@ -195,6 +207,15 @@ class DeviceSim:
                     ids = rng.choice(np.arange(lo, hi + 1), size=n, replace=False)
                     self._rogue_ids[e.episode_id] = [f"D-{int(i):03d}" for i in ids]
                 rogues += self._rogue_ids[e.episode_id]
+
+        # Benign visitors (natural noise): brief, single, unenrolled.
+        if t < self._visitor_until:
+            rogues.append(self._visitor_id)
+        elif rng.random() < cfg.p_visitor_per_tick:
+            lo, hi = cfg.rogue_id_range
+            self._visitor_id = f"D-{int(rng.integers(lo, hi + 1)):03d}"
+            self._visitor_until = t + timedelta(seconds=float(rng.uniform(15, 60)))
+            rogues.append(self._visitor_id)
 
         return Reading(
             true_xy=self.pos,

@@ -4,7 +4,7 @@ Real-time cross-modal behavioral anomaly detection for connected devices: it lea
 normal looks like per device, scores deviations in spatial, network, device and proximity
 signals, and tests whether *correlating* those weak deviations beats judging each alone.
 
-Status: **Phase 2** (contracts, labelled simulator, Redis Streams pipeline). See
+Status: **Phase 3** (contracts, labelled simulator, Redis Streams pipeline, per-modality detectors). See
 [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) for the reasoning
 behind every decision.
 
@@ -50,4 +50,10 @@ docker compose up -d redis
 .\.venv\Scripts\python -m backend.streaming.cli process --db data/events.db   # terminal 1
 .\.venv\Scripts\python -m backend.streaming.cli publish --data data/run1 --speed 60  # terminal 2
 .\.venv\Scripts\python -m backend.streaming.cli bench   # throughput and latency
+```
+
+## Development sanity check (seeds 1-9 only)
+
+```powershell
+.\.venv\Scripts\python -m ml.sanity --seed 1 --devices 20   # ~3 min
 ```

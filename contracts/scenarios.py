@@ -102,7 +102,10 @@ SCENARIOS: dict[ScenarioType, ScenarioSpec] = {
             description="Several modalities deviate mildly; each alone is below its threshold.",
             modalities=frozenset({Modality.SPATIAL, Modality.NETWORK, Modality.DEVICE}),
             is_malicious=True,
-            magnitude_range=(0.1, 0.4),
+            # Effect sizes are linear in magnitude, so 0.1-0.4 turned out to be loud on the dev
+            # seeds (manual §4.3). Evaluation reports detection as a curve over magnitude, so
+            # this range does not by itself decide any conclusion.
+            magnitude_range=(0.05, 0.25),
             hypothesis="Single detectors miss it; fusion may catch it. This is the key test.",
         ),
         ScenarioSpec(

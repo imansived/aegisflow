@@ -16,6 +16,18 @@ SITE_ORIGIN: LatLon = (18.5204, 73.8567)
 SITE_TZ = timezone(timedelta(hours=5, minutes=30))
 
 
+# Site policy, not something a detector learns: when the site is staffed. Time-of-day
+# baselines split on this boundary (manual §3.3).
+WORK_START_HOUR = 9
+WORK_END_HOUR = 18
+
+
+def is_working(ts) -> bool:
+    """True on weekdays between WORK_START_HOUR and WORK_END_HOUR, site local time."""
+    local = ts.astimezone(SITE_TZ)
+    return local.weekday() < 5 and WORK_START_HOUR <= local.hour < WORK_END_HOUR
+
+
 class ZoneKind(str, Enum):
     ALLOWED = "allowed"
     RESTRICTED = "restricted"

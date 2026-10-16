@@ -65,5 +65,10 @@ class EventStore:
         ).fetchall()
         return [Telemetry.model_validate_json(r[0]) for r in rows]
 
+    def iter_events(self):
+        """Every stored event in event-time order. Used to rebuild detector state after a restart."""
+        for (payload,) in self.db.execute("SELECT payload FROM events ORDER BY ts, device_id"):
+            yield Telemetry.model_validate_json(payload)
+
     def close(self) -> None:
         self.db.close()

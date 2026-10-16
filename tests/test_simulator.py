@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, timezone
 
 import pytest
 
@@ -132,6 +132,36 @@ def test_nearby_is_symmetric_among_fleet_devices():
         for a, near in by_id.items():
             for b in near:
                 assert a in by_id[b]
+
+
+def test_network_effect_scales_with_magnitude():
+    """Weak anomalies must be weak: the share of ticks with an unfamiliar contact rises with m."""
+
+    def frac(mag):
+        ep = _ep(CFG, "D-003", ScenarioType.NETWORK, {Modality.NETWORK}, mag, minutes=60)
+        fleet = Fleet(CFG, [ep])
+        known = set(fleet.devices[2].p.known_endpoints)
+        rows = _during(list(fleet.run(timedelta(hours=12))), ep)
+        return sum(any(e not in known for e in r.remote_endpoints) for r in rows) / len(rows)
+
+    low, high = frac(0.1), frac(0.9)
+    assert low < 0.3 and high > 0.7 and high > 3 * low
+
+
+def test_visitors_are_rare_and_brief():
+    rows = list(Fleet(CFG).run(timedelta(hours=8)))
+    fleet_ids = set(CFG.device_ids())
+    with_visitor = [r for r in rows if any(n not in fleet_ids for n in r.nearby_devices)]
+    assert 0 < len(with_visitor) / len(rows) < 0.03
+
+
+def test_devices_head_home_after_work_ends():
+    # 18:00-18:30 is the grace window; by 19:00 everyone is back in their home zone area.
+    cfg = SimConfig(seed=11, n_devices=8, start=CFG.start + timedelta(hours=17, minutes=30))
+    rows = list(Fleet(cfg).run(timedelta(hours=2)))
+    late = [r for r in rows if r.timestamp >= cfg.start.astimezone(timezone.utc) + timedelta(minutes=95)]
+    in_allowed_or_transit = [r for r in late if (z := zone_of((r.latitude, r.longitude))) is None or z.name in {"Office", "Lab"}]
+    assert len(in_allowed_or_transit) / len(late) > 0.95  # nobody is still sitting in the meeting room
 
 
 # ---- plan --------------------------------------------------------------------------------
