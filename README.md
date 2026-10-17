@@ -65,3 +65,10 @@ docker compose up -d redis
 .\.venv\Scripts\python -m ml.dataset --seed 2 --out data/rows/seed2.npz
 .\.venv\Scripts\python -m ml.devcheck --train data/rows/seed1.npz --test data/rows/seed2.npz
 ```
+
+## Validation experiment E1 (seeds 10-19 only)
+
+```powershell
+.\.venv\Scripts\python -m ml.dataset --seeds 10 19 --workers 8   # ~10 min
+.\.venv\Scripts\python -m ml.validate --out data/results/e1.json  # ~25 min
+```

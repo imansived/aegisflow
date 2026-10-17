@@ -255,10 +255,18 @@ def run(rows_dir: Path, out: Path) -> None:
     print(f"  => FREEZE THE {freeze.upper()} DESIGN")
 
     # ---- secondary: half-life sweep for the frozen score type ----
-    print(f"\n== Secondary: half-life sweep ({freeze} scores) ==")
-    base = c.soft if freeze == "soft" else c.hard
+    sweep, best_hl = half_life_sweep(c, freeze, SWEEP, rng)
+
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps({"table": table, "comparisons": comps, "decision": freeze, "sweep": {str(k): v for k, v in sweep.items()}, "half_life": best_hl}, indent=2))
+    print(f"\nwrote {out}")
+
+
+def half_life_sweep(c: Combined, score_type: str, values: list[float], rng) -> tuple[dict, float]:
+    print(f"\n== Half-life sweep ({score_type} scores) ==")
+    base = c.soft if score_type == "soft" else c.hard
     sweep = {}
-    for hl in SWEEP:
+    for hl in values:
         eff = hold(c, base, hl)
         sys_hl = {}
         for fold in FOLDS:
@@ -269,24 +277,28 @@ def run(rows_dir: Path, out: Path) -> None:
                 "noisy_or": (lambda rows, eff=eff: NoisyOr().score_batch(eff[rows])),
                 "learned": (lambda rows, lf=lf, eff=eff: lf.score_batch(eff[rows])),
             }
-        r2 = evaluate(c, sys_hl)
-        t2 = summarise(c, r2, rng)
+        t2 = summarise(c, evaluate(c, sys_hl), rng)
         sweep[hl] = {k: {"ap": v["ap"], "weak": v["weak_correlated"]["recall"], "fp": v["fp_rate"]} for k, v in t2.items()}
         print(f"  half-life {hl:>5.0f}s  " + "  ".join(f"{k}: AP {v['ap']:.3f} weak {v['weak_correlated']['recall']:.2f} FP {v['fp_rate']:.2%}" for k, v in t2.items()), flush=True)
     # Rule fixed in code before the data existed: highest mean AP of noisy-OR and learned; ties -> 60 s.
-    best_hl = max(SWEEP, key=lambda h: (round((sweep[h]["noisy_or"]["ap"] + sweep[h]["learned"]["ap"]) / 2, 3), h == 60.0))
-    print(f"  => chosen half-life: {best_hl:.0f} s")
-
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"table": table, "comparisons": comps, "decision": freeze, "sweep": {str(k): v for k, v in sweep.items()}, "half_life": best_hl}, indent=2))
-    print(f"\nwrote {out}")
+    best = max(values, key=lambda h: (round((sweep[h]["noisy_or"]["ap"] + sweep[h]["learned"]["ap"]) / 2, 3), h == 60.0))
+    edge = " (AT THE EDGE of the swept range: the optimum may lie beyond it)" if best in (min(values), max(values)) else ""
+    print(f"  => chosen half-life: {best:.0f} s{edge}")
+    return sweep, best
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rows", type=Path, default=Path("data/rows"))
     ap.add_argument("--out", type=Path, default=Path("data/results/e1.json"))
+    ap.add_argument("--sweep-only", choices=["soft", "hard"], help="skip the main comparison; only sweep half-lives")
+    ap.add_argument("--half-lives", type=float, nargs="+", default=SWEEP)
     a = ap.parse_args()
+    if a.sweep_only:
+        sweep, best = half_life_sweep(load_combined(a.rows), a.sweep_only, a.half_lives, np.random.default_rng(0))
+        a.out.parent.mkdir(parents=True, exist_ok=True)
+        a.out.write_text(json.dumps({"sweep": {str(k): v for k, v in sweep.items()}, "half_life": best}, indent=2))
+        return
     run(a.rows, a.out)
 
 
