@@ -33,15 +33,21 @@ class EarlyFusionIF:
         return hold_offline(ts, device, np.clip(feat, 0.0, None), self.half_life_s)
 
     def fit(self, ts: np.ndarray, device: np.ndarray, feat: np.ndarray, train_mask: np.ndarray) -> "EarlyFusionIF":
+        return self.fit_held(self._inputs(ts, device, feat)[train_mask])
+
+    def score(self, ts: np.ndarray, device: np.ndarray, feat: np.ndarray) -> np.ndarray:
+        """Percentile of the training anomaly scores, in [0, 1]. A ranking, not a probability."""
+        return self.score_held(self._inputs(ts, device, feat))
+
+    # Variants that take inputs already passed through the time-memory hold, so callers that
+    # have many seeds can compute the (slow) hold once.
+    def fit_held(self, X: np.ndarray) -> "EarlyFusionIF":
         from sklearn.ensemble import IsolationForest
 
-        X = self._inputs(ts, device, feat)[train_mask]
         self._model = IsolationForest(n_estimators=self.n_estimators, random_state=self.seed).fit(X)
         self._ref = np.sort(-self._model.score_samples(X))  # higher = more anomalous
         return self
 
-    def score(self, ts: np.ndarray, device: np.ndarray, feat: np.ndarray) -> np.ndarray:
-        """Percentile of the training-normal anomaly scores, in [0, 1]. A ranking, not a probability."""
-        X = self._inputs(ts, device, feat)
+    def score_held(self, X: np.ndarray) -> np.ndarray:
         a = -self._model.score_samples(X)
         return np.searchsorted(self._ref, a, side="right") / len(self._ref)

@@ -118,6 +118,13 @@ def pair_features(e: Sequence[float]) -> list[float]:
     return f
 
 
+def pair_matrix(E: np.ndarray) -> np.ndarray:
+    """Vectorised `pair_features` for many rows (same column order)."""
+    n_mod = E.shape[1]
+    cols = [E] + [(E[:, i] * E[:, j])[:, None] for i in range(n_mod) for j in range(i + 1, n_mod)]
+    return np.hstack(cols)
+
+
 class LearnedFusion(Fusion):
     """Logistic regression on the effective scores and their pairwise products.
 
@@ -136,7 +143,7 @@ class LearnedFusion(Fusion):
     def fit(self, E: np.ndarray, y: np.ndarray, C: float = 1.0) -> "LearnedFusion":
         from sklearn.linear_model import LogisticRegression
 
-        X = np.array([pair_features(row) for row in E])
+        X = pair_matrix(np.asarray(E, dtype=np.float64))
         # Attacks are rare, so weight classes; otherwise it learns to say "benign" always.
         lr = LogisticRegression(C=C, class_weight="balanced", max_iter=1000).fit(X, y)
         self.coef, self.intercept = lr.coef_[0].copy(), float(lr.intercept_[0])
@@ -151,7 +158,5 @@ class LearnedFusion(Fusion):
     def score_batch(self, E):
         if self.coef is None:
             raise RuntimeError("LearnedFusion must be fit() before use")
-        n_mod = E.shape[1]
-        cols = [E] + [(E[:, i] * E[:, j])[:, None] for i in range(n_mod) for j in range(i + 1, n_mod)]
-        z = np.clip(np.hstack(cols) @ self.coef + self.intercept, -50.0, 50.0)
+        z = np.clip(pair_matrix(E) @ self.coef + self.intercept, -50.0, 50.0)
         return 1.0 / (1.0 + np.exp(-z))

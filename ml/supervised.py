@@ -24,13 +24,18 @@ class EarlyFusionSupervised:
         return hold_offline(ts, device, np.clip(feat, 0.0, None), self.half_life_s)
 
     def fit(self, ts, device, feat, y, mask) -> "EarlyFusionSupervised":
+        return self.fit_held(self._inputs(ts, device, feat)[mask], np.asarray(y)[mask])
+
+    def score(self, ts, device, feat) -> np.ndarray:
+        return self.score_held(self._inputs(ts, device, feat))
+
+    def fit_held(self, X: np.ndarray, y: np.ndarray) -> "EarlyFusionSupervised":
         from sklearn.ensemble import HistGradientBoostingClassifier
 
-        X, y = self._inputs(ts, device, feat)[mask], np.asarray(y)[mask]
         # Attacks are ~1% of rows; weight classes equally or the model learns "never attack".
         w = np.where(y == 1, 0.5 / max(1, (y == 1).sum()), 0.5 / max(1, (y == 0).sum())) * len(y)
         self._model = HistGradientBoostingClassifier(random_state=self.seed, max_iter=150).fit(X, y, sample_weight=w)
         return self
 
-    def score(self, ts, device, feat) -> np.ndarray:
-        return self._model.predict_proba(self._inputs(ts, device, feat))[:, 1]
+    def score_held(self, X: np.ndarray) -> np.ndarray:
+        return self._model.predict_proba(X)[:, 1]
