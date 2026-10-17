@@ -83,6 +83,36 @@ def test_ramp_endpoints():
     assert ramp(1.0, 2, 6) == 0 and ramp(6, 2, 6) == 1 and ramp(4, 2, 6) == 0.5 and ramp(99, 2, 6) == 1
 
 
+def test_soft_ramp_keeps_weak_evidence_that_the_hard_ramp_zeroes():
+    from backend.detection.stats import soft_ramp
+
+    assert soft_ramp(0.0, 3.0) == 0.0 and soft_ramp(-2.0, 3.0) == 0.0
+    assert ramp(1.5, 2, 6) == 0.0 and soft_ramp(1.5, 3.0) > 0.1  # the whole point (manual §5.5)
+    vals = [soft_ramp(z, 3.0) for z in (0.5, 1, 2, 3, 6, 9)]
+    assert vals == sorted(vals) and vals[-1] < 1.0 and vals[-1] > 0.98  # monotone, saturating
+    assert soft_ramp(1.0, 3.0) == pytest.approx(1 - np.exp(-1 / 18), abs=1e-9)  # 0.0540
+    assert soft_ramp(6.0, 3.0) == pytest.approx(0.8647, abs=1e-3)
+
+
+def test_modest_cpu_rise_is_zero_when_hard_but_visible_when_soft():
+    eng, rng, n, _ = trained()
+    s = None
+    for i in range(30):  # sustained but modest: about +1.5 sigma on the one-minute average
+        s = eng.process(mk(n + i, rng, cpu_usage=float(np.clip(rng.normal(36, 2), 0, 100))))
+    r = s.results[Modality.DEVICE]
+    assert r.score == 0.0 and 0.0 < r.soft < 0.5
+    assert s.soft(Modality.DEVICE) == r.soft
+
+
+def test_baselines_are_identical_whether_or_not_soft_is_read():
+    # Soft scores must not influence learning; baselines/hard scores are unchanged by them.
+    a, rng_a, n, _ = trained()
+    b, rng_b, _, _ = trained()
+    ea = [a.process(mk(n + i, rng_a, cpu_usage=60.0)).score(Modality.DEVICE) for i in range(40)]
+    eb = [b.process(mk(n + i, rng_b, cpu_usage=60.0)).score(Modality.DEVICE) for i in range(40)]
+    assert ea == eb
+
+
 def test_min_std_floor_prevents_huge_z_on_constant_feature():
     bs = BaselineSet(DetectionConfig(min_samples=5))
     for _ in range(20):

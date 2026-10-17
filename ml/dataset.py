@@ -39,7 +39,8 @@ class RowSet:
     n_devices: int
     ts: np.ndarray  # float64 epoch seconds
     device: np.ndarray  # int16
-    raw: np.ndarray  # (N, 4) float32, detector scores in MODALITIES order
+    raw: np.ndarray  # (N, 4) float32, HARD detector scores (z <= 2 -> 0) in MODALITIES order
+    raw_soft: np.ndarray  # (N, 4) float32, SOFT scores that keep weak evidence (§5.5)
     feat: np.ndarray  # (N, len(FEATURE_NAMES)) float32
     label: np.ndarray  # int8: 1 = inside a MALICIOUS episode
     ignore: np.ndarray  # bool: just after an episode, not judged
@@ -53,7 +54,7 @@ class RowSet:
         path.parent.mkdir(parents=True, exist_ok=True)
         np.savez_compressed(
             path, seed=self.seed, n_devices=self.n_devices, ts=self.ts, device=self.device, raw=self.raw,
-            feat=self.feat, label=self.label, ignore=self.ignore, episode=self.episode,
+            raw_soft=self.raw_soft, feat=self.feat, label=self.label, ignore=self.ignore, episode=self.episode,
             scenario=self.scenario, magnitude=self.magnitude, learning=self.learning,
             episodes=np.array([e.model_dump_json() for e in self.episodes] or [""]),
         )
@@ -62,9 +63,11 @@ class RowSet:
     def load(cls, path: Path) -> "RowSet":
         z = np.load(path, allow_pickle=False)
         eps = [Episode.model_validate_json(s) for s in z["episodes"] if str(s)]
+        if "raw_soft" not in z.files:
+            raise ValueError(f"{path} predates soft scores (§5.5); rebuild it with ml.dataset")
         return cls(
-            int(z["seed"]), int(z["n_devices"]), z["ts"], z["device"], z["raw"], z["feat"], z["label"],
-            z["ignore"], z["episode"], z["scenario"], z["magnitude"], z["learning"], eps,
+            int(z["seed"]), int(z["n_devices"]), z["ts"], z["device"], z["raw"], z["raw_soft"], z["feat"],
+            z["label"], z["ignore"], z["episode"], z["scenario"], z["magnitude"], z["learning"], eps,
         )
 
     def __len__(self) -> int:
@@ -85,7 +88,8 @@ def hold_offline(ts: np.ndarray, device: np.ndarray, x: np.ndarray, half_life_s:
 
 
 def apply_fusion(fusion: Fusion, eff: np.ndarray) -> np.ndarray:
-    return np.fromiter((fusion.score(row) for row in eff), dtype=np.float64, count=len(eff))
+    """Score every row. Uses the fusion's vectorised `score_batch` (tested equal to per-row)."""
+    return fusion.score_batch(np.asarray(eff, dtype=np.float64))
 
 
 def build_rows(
@@ -108,7 +112,7 @@ def build_rows(
     t_warm = (cfg.start + warm).timestamp()
     buf = timedelta(seconds=POST_EPISODE_BUFFER_S)
 
-    cols: dict[str, list] = {k: [] for k in ("ts", "device", "raw", "feat", "label", "ignore", "episode", "scenario", "magnitude", "learning")}
+    cols: dict[str, list] = {k: [] for k in ("ts", "device", "raw", "raw_soft", "feat", "label", "ignore", "episode", "scenario", "magnitude", "learning")}
     for t in Fleet(cfg, plan).run(dur):
         s = engine.process(t)
         ts = t.timestamp.timestamp()
@@ -129,6 +133,7 @@ def build_rows(
         cols["ts"].append(ts)
         cols["device"].append(idx[t.device_id])
         cols["raw"].append([s.results[m].score for m in MODALITIES])
+        cols["raw_soft"].append([s.results[m].soft for m in MODALITIES])
         cols["feat"].append(feat)
         cols["label"].append(label)
         cols["ignore"].append(ignore)
@@ -140,26 +145,47 @@ def build_rows(
     return RowSet(
         seed, n_devices,
         np.asarray(cols["ts"], np.float64), np.asarray(cols["device"], np.int16),
-        np.asarray(cols["raw"], np.float32), np.asarray(cols["feat"], np.float32),
+        np.asarray(cols["raw"], np.float32), np.asarray(cols["raw_soft"], np.float32), np.asarray(cols["feat"], np.float32),
         np.asarray(cols["label"], np.int8), np.asarray(cols["ignore"], bool),
         np.asarray(cols["episode"], np.int32), np.asarray(cols["scenario"], np.int8),
         np.asarray(cols["magnitude"], np.float32), np.asarray(cols["learning"], bool), plan,
     )
 
 
+def _build_and_save(args: tuple) -> dict:
+    seed, devices, hours, warmup, rate, magnitude, out = args
+    rs = build_rows(seed, devices, hours, warmup, rate, magnitude)
+    rs.save(Path(out))
+    return {"seed": seed, "rows": len(rs), "episodes": len(rs.episodes), "malicious_rows": int(rs.label.sum()), "out": str(out)}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--seed", type=int, required=True)
+    g = ap.add_mutually_exclusive_group(required=True)
+    g.add_argument("--seed", type=int)
+    g.add_argument("--seeds", type=int, nargs=2, metavar=("FIRST", "LAST"), help="inclusive range, built in parallel")
     ap.add_argument("--devices", type=int, default=20)
     ap.add_argument("--hours", type=float, default=72)
     ap.add_argument("--warmup-hours", type=float, default=33)
     ap.add_argument("--rate", type=float, default=4.0)
     ap.add_argument("--magnitude", type=float, nargs=2)
-    ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--out", type=Path, help="file for --seed")
+    ap.add_argument("--out-dir", type=Path, default=Path("data/rows"), help="directory for --seeds (seedN.npz)")
+    ap.add_argument("--workers", type=int, default=6)
     a = ap.parse_args()
-    rs = build_rows(a.seed, a.devices, a.hours, a.warmup_hours, a.rate, tuple(a.magnitude) if a.magnitude else None)
-    rs.save(a.out)
-    print(json.dumps({"rows": len(rs), "episodes": len(rs.episodes), "malicious_rows": int(rs.label.sum()), "out": str(a.out)}))
+    mag = tuple(a.magnitude) if a.magnitude else None
+    if a.seed is not None:
+        jobs = [(a.seed, a.devices, a.hours, a.warmup_hours, a.rate, mag, a.out or a.out_dir / f"seed{a.seed}.npz")]
+    else:
+        jobs = [(s, a.devices, a.hours, a.warmup_hours, a.rate, mag, a.out_dir / f"seed{s}.npz") for s in range(a.seeds[0], a.seeds[1] + 1)]
+    if len(jobs) == 1:
+        print(json.dumps(_build_and_save(jobs[0])))
+        return
+    from concurrent.futures import ProcessPoolExecutor
+
+    with ProcessPoolExecutor(max_workers=a.workers) as pool:
+        for r in pool.map(_build_and_save, jobs):
+            print(json.dumps(r), flush=True)
 
 
 if __name__ == "__main__":

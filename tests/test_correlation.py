@@ -302,6 +302,27 @@ def test_apply_fusion_matches_row_by_row():
     assert out[7] == pytest.approx(NoisyOr().score(eff[7]))
 
 
+def test_every_vectorised_fusion_equals_its_per_row_version():
+    rng = np.random.default_rng(4)
+    E = rng.random((300, 4)) * (rng.random((300, 4)) > 0.5)
+    y = (E[:, 0] * E[:, 1] > 0.2).astype(int)
+    fusions = [MaxFusion(), NoisyOr(), WeightedSum(), WeightedSum({Modality.SPATIAL: 5, Modality.NETWORK: 1, Modality.DEVICE: 2, Modality.PROXIMITY: 0}),
+               SingleSignal(Modality.DEVICE), LearnedFusion().fit(E, y)]
+    for f in fusions:
+        batch = f.score_batch(E)
+        np.testing.assert_allclose(batch, [f.score(r) for r in E], atol=1e-9, err_msg=f.name)
+        assert (batch >= 0).all() and (batch <= 1).all()
+
+
+def test_rowset_carries_hard_and_soft_scores(small_rows):
+    rs, _ = small_rows
+    assert rs.raw_soft.shape == rs.raw.shape
+    # soft keeps weak evidence, so it is nonzero in strictly more places than hard
+    assert (rs.raw_soft > 0).sum() > (rs.raw > 0).sum()
+    # spatial is rule-based: soft == hard exactly
+    np.testing.assert_array_equal(rs.raw_soft[:, 0], rs.raw[:, 0])
+
+
 def test_supervised_early_fusion_control_learns_a_label_it_is_given():
     from ml.supervised import EarlyFusionSupervised
 

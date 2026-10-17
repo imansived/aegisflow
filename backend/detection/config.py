@@ -24,6 +24,8 @@ class DetectionConfig:
     # --- z-score -> score ramp -------------------------------------------------------
     z_lo: float = 2.0  # at or below: score 0
     z_hi: float = 6.0  # at or above: score 1
+    # Width of the "soft" score (stats.soft_ramp). Fixed in advance (manual §5.5); not tuned.
+    soft_sigma: float = 3.0
 
     # --- spatial ---------------------------------------------------------------------
     rare_frac: float = 0.08  # a zone occupied less than this fraction of time is "rare"

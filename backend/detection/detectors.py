@@ -17,7 +17,7 @@ from contracts.scenarios import Modality
 from contracts.site import ZoneKind
 
 from .config import DetectionConfig
-from .stats import BaselineSet, ramp
+from .stats import BaselineSet, ramp, soft_ramp
 from .types import Context, DetectorResult
 
 # (name, value, min_std, sided)
@@ -38,7 +38,8 @@ class Detector(ABC):
     # ---- shared mechanics ------------------------------------------------------------
 
     def _score_items(self, bs: BaselineSet, bucket: str, items: list[Item]):
-        best, learning, ev = 0.0, False, {}
+        """Returns (hard score, learning, evidence, soft score) for these features."""
+        best, soft, learning, ev = 0.0, 0.0, False, {}
         for name, x, min_std, sided in items:
             z = bs.z(bucket, name, x, min_std, sided)
             if z is None:
@@ -46,7 +47,8 @@ class Detector(ABC):
                 continue
             ev[name] = round(z, 2)
             best = max(best, ramp(z, self.cfg.z_lo, self.cfg.z_hi))
-        return best, learning, ev
+            soft = max(soft, soft_ramp(z, self.cfg.soft_sigma))
+        return best, learning, ev, soft
 
     def _learn_items(self, bs: BaselineSet, bucket: str, items: list[Item], score: float) -> None:
         for name, x, _min_std, _sided in items:
@@ -122,7 +124,8 @@ class SpatialDetector(Detector):
             "in_restricted": float(in_restricted),
             "zone_rarity": rarity,
         }
-        return DetectorResult(self.modality, score, learning, ev), feats
+        # Spatial is rule-based, so there is no z-score to soften: soft == hard.
+        return DetectorResult(self.modality, score, learning, ev, soft=score), feats
 
 
 # =============================================================================== network
@@ -176,7 +179,7 @@ class NetworkDetector(Detector):
         if endpoints_mature:
             items.append(("unfamiliar_1m", unfam, cfg.unfamiliar_min_std, "high"))
 
-        score, learning, ev = self._score_items(bs, bucket, items)
+        score, learning, ev, soft = self._score_items(bs, bucket, items)
         learning = learning or not endpoints_mature
         self._learn_items(bs, bucket, items, score)
 
@@ -188,7 +191,7 @@ class NetworkDetector(Detector):
 
         feats = {name: x for name, x, _m, _s in items}
         feats.setdefault("unfamiliar_1m", unfam)
-        return DetectorResult(self.modality, score, learning, ev), feats
+        return DetectorResult(self.modality, score, learning, ev, soft), feats
 
 
 # =============================================================================== device
@@ -236,11 +239,11 @@ class DeviceDetector(Detector):
         if drain is not None:
             items.append(("drain", drain, cfg.drain_min_std, "high"))
 
-        score, learning, ev = self._score_items(bs, bucket, items)
+        score, learning, ev, soft = self._score_items(bs, bucket, items)
         self._learn_items(bs, bucket, items, score)
         feats = {name: x for name, x, _m, _s in items}
         feats.setdefault("drain", drain if drain is not None else 0.0)
-        return DetectorResult(self.modality, score, learning, ev), feats
+        return DetectorResult(self.modality, score, learning, ev, soft), feats
 
 
 # ============================================================================= proximity
@@ -279,7 +282,7 @@ class ProximityDetector(Detector):
             ("unenrolled", float(n_unenrolled), cfg.unenrolled_min_std, "high"),
             ("persist_s", s.persist_s, cfg.persist_min_std, "high"),
         ]
-        score, learning, ev = self._score_items(bs, bucket, items)
+        score, learning, ev, soft = self._score_items(bs, bucket, items)
         self._learn_items(bs, bucket, items, score)
         feats = {"unenrolled": float(n_unenrolled), "persist_s": s.persist_s}
-        return DetectorResult(self.modality, score, learning, ev), feats
+        return DetectorResult(self.modality, score, learning, ev, soft), feats

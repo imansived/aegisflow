@@ -1,5 +1,6 @@
 """Online statistics (manual §3.3)."""
 
+import math
 from math import sqrt
 
 from .config import DetectionConfig
@@ -45,6 +46,18 @@ def ramp(z: float, lo: float, hi: float) -> float:
     if z >= hi:
         return 1.0
     return (z - lo) / (hi - lo)
+
+
+def soft_ramp(z: float, sigma: float) -> float:
+    """Smooth map of a z-score to [0, 1] that does NOT zero weak evidence.
+
+    1 - exp(-0.5 (z/sigma)^2) for z > 0. The hard `ramp` returns exactly 0 for z <= 2, so
+    anything below 2 sigma is gone before fusion sees it. This keeps it (z = 1 -> 0.05,
+    z = 2 -> 0.20 with sigma = 3), so fusion can accumulate several weak deviations (§5.5).
+    """
+    if z <= 0:
+        return 0.0
+    return 1.0 - math.exp(-0.5 * (z / sigma) ** 2)
 
 
 class BaselineSet:

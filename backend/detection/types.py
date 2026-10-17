@@ -12,6 +12,9 @@ class DetectorResult:
     score: float  # 0 = ordinary, 1 = extreme. A ranking, NOT a probability (§3.10).
     learning: bool  # True if at least one baseline is still in cold start
     evidence: dict[str, float] = field(default_factory=dict)  # feature -> z (or rule flag)
+    # Same detector, but weak evidence is kept (stats.soft_ramp) instead of zeroed below z = 2.
+    # Baseline learning and alerting use `score`; `soft` exists for the §5.5 experiment.
+    soft: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -28,6 +31,9 @@ class Scores:
 
     def score(self, m: Modality) -> float:
         return self.results[m].score
+
+    def soft(self, m: Modality) -> float:
+        return self.results[m].soft
 
     @property
     def learning(self) -> bool:

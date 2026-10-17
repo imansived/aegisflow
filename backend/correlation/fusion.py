@@ -22,6 +22,10 @@ class Fusion(ABC):
     @abstractmethod
     def score(self, e: Sequence[float]) -> float: ...
 
+    def score_batch(self, E: np.ndarray) -> np.ndarray:
+        """Score many rows at once. Subclasses override with vectorised maths; tested equal to `score`."""
+        return np.fromiter((self.score(row) for row in E), dtype=np.float64, count=len(E))
+
     def contributions(self, e: Sequence[float]) -> dict[Modality, float]:
         """Leave-one-out: how much does the score fall if this modality is silenced?
 
@@ -46,6 +50,9 @@ class MaxFusion(Fusion):
     def score(self, e):
         return max(e)
 
+    def score_batch(self, E):
+        return E.max(axis=1)
+
 
 class SingleSignal(Fusion):
     """One detector only: the spatial-only / network-only / device-only baselines."""
@@ -56,6 +63,9 @@ class SingleSignal(Fusion):
 
     def score(self, e):
         return e[self.idx]
+
+    def score_batch(self, E):
+        return E[:, self.idx].copy()
 
 
 class WeightedSum(Fusion):
@@ -76,6 +86,9 @@ class WeightedSum(Fusion):
     def score(self, e):
         return min(1.0, max(0.0, sum(w * x for w, x in zip(self.w, e))))
 
+    def score_batch(self, E):
+        return np.clip(E @ np.asarray(self.w), 0.0, 1.0)
+
 
 class NoisyOr(Fusion):
     """S = 1 - prod(1 - e_i). An OR that also accumulates several weak signals.
@@ -91,6 +104,9 @@ class NoisyOr(Fusion):
         for x in e:
             p *= 1.0 - min(max(x, 0.0), 1.0)
         return 1.0 - p
+
+    def score_batch(self, E):
+        return 1.0 - np.prod(1.0 - np.clip(E, 0.0, 1.0), axis=1)
 
 
 def pair_features(e: Sequence[float]) -> list[float]:
@@ -131,3 +147,11 @@ class LearnedFusion(Fusion):
             raise RuntimeError("LearnedFusion must be fit() before use")
         z = float(np.dot(self.coef, pair_features(e)) + self.intercept)
         return 1.0 / (1.0 + math.exp(-max(min(z, 50.0), -50.0)))
+
+    def score_batch(self, E):
+        if self.coef is None:
+            raise RuntimeError("LearnedFusion must be fit() before use")
+        n_mod = E.shape[1]
+        cols = [E] + [(E[:, i] * E[:, j])[:, None] for i in range(n_mod) for j in range(i + 1, n_mod)]
+        z = np.clip(np.hstack(cols) @ self.coef + self.intercept, -50.0, 50.0)
+        return 1.0 / (1.0 + np.exp(-z))
