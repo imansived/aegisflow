@@ -1,8 +1,11 @@
-"""Experiment E1 (manual §5.5): does keeping weak evidence close the late-vs-early-fusion gap?
+"""Validation experiments E1 (manual §5.5) and E2 (§5.6) on VALIDATION seeds 10-19.
 
-Runs exactly the pre-registered design on VALIDATION seeds 10-19 and refuses any other seed.
+E1: does keeping weak evidence ("soft" scores) close the late-vs-early-fusion gap?
+E2: does the time window help when deviations are staggered (the `staged` scenario)?
 
-  python -m ml.validate --rows data/rows --out data/results/e1.json
+Runs exactly the pre-registered designs and refuses any other seed.
+
+  python -m ml.validate --rows data/rows --out data/results/e2.json
 """
 
 import argparse
@@ -31,7 +34,9 @@ FP_BUDGET = 0.001  # each system may alert on at most 0.1% of ordinary ticks
 HALF_LIFE = 60.0
 BOOT = 10_000
 NEG_CAP = 600_000  # cap on negative training rows (balanced class weights make this harmless)
-SWEEP = [15.0, 30.0, 60.0, 120.0, 300.0]
+SWEEP = [1.0, 5.0, 10.0, 15.0, 30.0, 60.0, 120.0]  # E2 (manual §5.6)
+# The seven malicious scenario types the half-life rule averages over (macro-average).
+MACRO_GROUPS = ["spatial", "network", "hardware", "proximity", "combined", "weak_correlated", "staged"]
 
 
 # --------------------------------------------------------------------------- data ------
@@ -73,7 +78,13 @@ def load_combined(rows_dir: Path) -> Combined:
 
 
 def hold(c: Combined, x: np.ndarray, half_life: float) -> np.ndarray:
-    return hold_offline(c.ts, c.device, x.astype(np.float64), half_life)
+    """Decayed peak per device, one seed at a time (device ids are unique per seed, so this equals one big
+    call) into a float32 array: keeps peak memory to one seed's worth of float64 temporaries."""
+    out = np.empty(x.shape, np.float32)
+    cuts = np.flatnonzero(np.diff(c.seed)) + 1  # rows of each seed are contiguous and in seed order
+    for a, b in zip(np.concatenate([[0], cuts]), np.concatenate([cuts, [len(c.ts)]])):
+        out[a:b] = hold_offline(c.ts[a:b], c.device[a:b], x[a:b].astype(np.float64), half_life)
+    return out
 
 
 # ------------------------------------------------------------------------ statistics --
@@ -133,6 +144,7 @@ def evaluate(c: Combined, systems: dict, folds=FOLDS) -> dict:
         rows = np.sort(order[lo:hi])
         ep_rows[g] = rows[c.usable[rows]]
 
+    full = np.full(len(c.ts), np.nan, dtype=np.float32)  # scores by row; far cheaper than a dict of millions
     for fold in folds:
         thr_idx = np.flatnonzero(np.isin(c.seed, fold["thr"]) & c.ordinary)
         eval_idx = np.flatnonzero(np.isin(c.seed, fold["eval"]) & c.usable)
@@ -146,12 +158,12 @@ def evaluate(c: Combined, systems: dict, folds=FOLDS) -> dict:
             r["ap"].append(float(average_precision_score(c.label[eval_idx], s_eval)))
             r["fp"] += int((scorer(eval_ord) > thr).sum())
             r["ord"] += len(eval_ord)
-            score_of = dict(zip(eval_idx.tolist(), s_eval.tolist()))
+            full[eval_idx] = s_eval
             for g in eval_eps:
                 rows = ep_rows[g]
                 if len(rows) == 0:
                     continue
-                sc = np.fromiter((score_of[i] for i in rows.tolist()), float, len(rows))
+                sc = full[rows]
                 r["ev"][g] = True
                 hit = np.flatnonzero(sc > thr)
                 if len(hit):
@@ -170,6 +182,9 @@ def episode_groups(c: Combined) -> dict[str, np.ndarray]:
     g = {s.value: pick(lambda e, s=s: e["scenario"] == s.value) for s in
          (ScenarioType.SPATIAL, ScenarioType.NETWORK, ScenarioType.HARDWARE, ScenarioType.PROXIMITY,
           ScenarioType.COMBINED, ScenarioType.WEAK_CORRELATED)}
+    g["staged"] = pick(lambda e: e["scenario"] == "staged")
+    g["staged_cascade"] = pick(lambda e: e["scenario"] == "staged" and e["variant"] == "cascade")
+    g["staged_pulses"] = pick(lambda e: e["scenario"] == "staged" and e["variant"] == "pulses")
     g["firmware_update"] = pick(lambda e: e["variant"] == "firmware_update")
     g["authorized_visit"] = pick(lambda e: e["variant"] == "authorized_visit")
     g["malicious_all"] = pick(lambda e: e["malicious"])
@@ -193,7 +208,7 @@ def summarise(c: Combined, res: dict, rng) -> dict:
 
 
 def print_table(table: dict, names: list[str]) -> None:
-    cols = ["spatial", "network", "hardware", "proximity", "combined", "weak_correlated"]
+    cols = ["spatial", "network", "hardware", "proximity", "combined", "weak_correlated", "staged"]
     print(f"{'system':<22}{'AP':>6}{'FP%':>7}  " + "".join(f"{c[:9]:>10}" for c in cols) + f"{'fw_upd':>8}{'auth':>7}{'ttd_s':>8}")
     for n in names:
         t = table[n]
@@ -207,7 +222,7 @@ def compare(label, res, groups, a, b, rng, group="weak_correlated"):
     idx = idx[res[a]["ev"][idx] & res[b]["ev"][idx]]
     d, lo, hi = paired_diff_ci(res[a]["det"][idx], res[b]["det"][idx], rng)
     print(f"  {label:<46} {a} - {b}: {d:+.3f}  95% CI [{lo:+.3f}, {hi:+.3f}]  (n={len(idx)} {group} episodes)")
-    return {"label": label, "a": a, "b": b, "diff": d, "lo": lo, "hi": hi, "n": int(len(idx))}
+    return {"label": label, "group": group, "a": a, "b": b, "diff": d, "lo": lo, "hi": hi, "n": int(len(idx))}
 
 
 def run(rows_dir: Path, out: Path) -> None:
@@ -227,7 +242,7 @@ def run(rows_dir: Path, out: Path) -> None:
     groups = episode_groups(c)
 
     names = [n for n in table if n.endswith("/hard")] + [n for n in table if n.endswith("/soft")] + ["early_iforest", "early_supervised"]
-    print("\n== E1 main comparison (validation seeds, pooled over both folds; recall = episodes detected) ==")
+    print(f"\n== Main comparison at half-life {HALF_LIFE:g} s (validation seeds, pooled over both folds; recall = episodes detected) ==")
     print_table(table, names)
 
     print("\n== Pre-specified comparisons (paired bootstrap, weak-correlated episodes) ==")
@@ -242,30 +257,32 @@ def run(rows_dir: Path, out: Path) -> None:
         best_single = max((f"{m.value}_only/{tag}" for m in MODALITIES), key=lambda n: table[n]["weak_correlated"]["recall"])
         comps.append(compare(f"C3 best fusion vs best single signal [{tag}]", res, groups, best_fuse, best_single, rng))
 
-    # ---- pre-registered decision rule ----
-    wins = []
+    # ---- C1 replication. Soft scores were frozen by E1 (§5.5); E2 does not re-decide that. ----
     for f in ("noisy_or", "learned"):
         cmp = next(x for x in comps if x["label"] == f"C1 soft vs hard ({f})")
-        fp_ok = table[f"{f}/soft"]["fp_rate"] <= 1.5 * FP_BUDGET
-        wins.append((f, cmp["lo"] > 0 and fp_ok, cmp["lo"], table[f"{f}/soft"]["fp_rate"]))
-    freeze = "soft" if any(w[1] for w in wins) else "hard"
-    print("\n== Decision (pre-registered rule, manual §5.5) ==")
-    for f, ok, lo, fp in wins:
-        print(f"  {f}: CI lower bound {lo:+.3f} (needs > 0), ordinary FP {fp:.3%} (needs <= {1.5 * FP_BUDGET:.3%}) -> {'PASS' if ok else 'fail'}")
-    print(f"  => FREEZE THE {freeze.upper()} DESIGN")
+        print(f"  (replication of E1's C1 for {f}: soft already frozen; this only checks it still holds: lower bound {cmp['lo']:+.3f}, "
+              f"ordinary FP {table[f'{f}/soft']['fp_rate']:.3%})")
 
-    # ---- secondary: half-life sweep for the frozen score type ----
-    sweep, best_hl = half_life_sweep(c, freeze, SWEEP, rng)
+    # ---- half-life sweep (soft scores) and the memory question M1 ----
+    sweep, best_hl, results = half_life_sweep(c, "soft", SWEEP, rng)
+    mem = memory_comparisons(c, results, best_hl, min(SWEEP), rng)
 
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"table": table, "comparisons": comps, "decision": freeze, "sweep": {str(k): v for k, v in sweep.items()}, "half_life": best_hl}, indent=2))
+    out.write_text(json.dumps({"table": table, "comparisons": comps, "memory": mem, "sweep": {str(k): v for k, v in sweep.items()}, "half_life": best_hl}, indent=2))
     print(f"\nwrote {out}")
 
 
-def half_life_sweep(c: Combined, score_type: str, values: list[float], rng) -> tuple[dict, float]:
+def choose_half_life(values: list[float], score: dict[float, float]) -> float:
+    """The pre-registered rule (manual §5.6): highest score; if the best two differ by < 0.01, the shorter."""
+    first, second = sorted(values, key=lambda h: -score[h])[:2]
+    return min(first, second) if score[first] - score[second] < 0.01 else first
+
+
+def half_life_sweep(c: Combined, score_type: str, values: list[float], rng) -> tuple[dict, float, dict]:
+    """Sweep the correlation window. Returns (summary per half-life, chosen half-life, raw results per half-life)."""
     print(f"\n== Half-life sweep ({score_type} scores) ==")
     base = c.soft if score_type == "soft" else c.hard
-    sweep = {}
+    sweep, results = {}, {}
     for hl in values:
         eff = hold(c, base, hl)
         sys_hl = {}
@@ -277,27 +294,61 @@ def half_life_sweep(c: Combined, score_type: str, values: list[float], rng) -> t
                 "noisy_or": (lambda rows, eff=eff: NoisyOr().score_batch(eff[rows])),
                 "learned": (lambda rows, lf=lf, eff=eff: lf.score_batch(eff[rows])),
             }
-        t2 = summarise(c, evaluate(c, sys_hl), rng)
-        sweep[hl] = {k: {"ap": v["ap"], "weak": v["weak_correlated"]["recall"], "fp": v["fp_rate"]} for k, v in t2.items()}
-        print(f"  half-life {hl:>5.0f}s  " + "  ".join(f"{k}: AP {v['ap']:.3f} weak {v['weak_correlated']['recall']:.2f} FP {v['fp_rate']:.2%}" for k, v in t2.items()), flush=True)
-    # Rule fixed in code before the data existed: highest mean AP of noisy-OR and learned; ties -> 60 s.
-    best = max(values, key=lambda h: (round((sweep[h]["noisy_or"]["ap"] + sweep[h]["learned"]["ap"]) / 2, 3), h == 60.0))
+        results[hl] = evaluate(c, sys_hl)
+        t2 = summarise(c, results[hl], rng)
+        sweep[hl] = {
+            k: {"ap": v["ap"], "weak": v["weak_correlated"]["recall"], "staged": v["staged"]["recall"],
+                "staged_cascade": v["staged_cascade"]["recall"], "staged_pulses": v["staged_pulses"]["recall"],
+                "macro": float(np.mean([v[g]["recall"] for g in MACRO_GROUPS])), "fp": v["fp_rate"]}
+            for k, v in t2.items()
+        }
+        print(f"  half-life {hl:>4.0f}s  " + "  ".join(
+            f"{k}: macro {v['macro']:.3f} AP {v['ap']:.3f} weak {v['weak']:.2f} staged {v['staged']:.2f} "
+            f"(cascade {v['staged_cascade']:.2f} pulses {v['staged_pulses']:.2f}) FP {v['fp']:.2%}"
+            for k, v in sweep[hl].items()), flush=True)
+
+    # Selection rule, fixed in the manual (§5.6) BEFORE any E2 data existed: highest macro-averaged
+    # event recall (mean of noisy-OR and learned); if the best two differ by < 0.01, the SHORTER one.
+    score = {h: (sweep[h]["noisy_or"]["macro"] + sweep[h]["learned"]["macro"]) / 2 for h in values}
+    best = choose_half_life(values, score)
     edge = " (AT THE EDGE of the swept range: the optimum may lie beyond it)" if best in (min(values), max(values)) else ""
-    print(f"  => chosen half-life: {best:.0f} s{edge}")
-    return sweep, best
+    print("  macro recall by half-life: " + ", ".join(f"{h:g}s {score[h]:.3f}" for h in values))
+    print(f"  => chosen half-life: {best:g} s{edge}")
+    return sweep, best, results
+
+
+def memory_comparisons(c: Combined, results: dict, best: float, shortest: float, rng) -> list[dict]:
+    """M1 (pre-registered): does recall on staged episodes improve at the chosen half-life vs the shortest?"""
+    print(f"\n== M1: does time memory help on staged episodes? chosen {best:g} s vs {shortest:g} s ==")
+    if best == shortest:
+        print("  The chosen half-life IS the shortest: no memory is as good as any (by the pre-registered rule).")
+        print("  => M1 answer: NO improvement from memory at the chosen half-life.")
+        return []
+    merged = {f"{s}@{hl:g}s": results[hl][s] for hl in (best, shortest) for s in ("noisy_or", "learned")}
+    groups = episode_groups(c)
+    out = []
+    for s in ("noisy_or", "learned"):
+        for g in ("staged", "staged_cascade", "staged_pulses"):
+            out.append(compare(f"M1 memory ({s}, {g})", merged, groups, f"{s}@{best:g}s", f"{s}@{shortest:g}s", rng, group=g))
+    yes = any(x["lo"] > 0 for x in out if x["group"] == "staged")
+    print(f"  => M1 answer (pooled staged, lower bound > 0 for at least one): {'YES' if yes else 'NO'}")
+    return out
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rows", type=Path, default=Path("data/rows"))
-    ap.add_argument("--out", type=Path, default=Path("data/results/e1.json"))
-    ap.add_argument("--sweep-only", choices=["soft", "hard"], help="skip the main comparison; only sweep half-lives")
+    ap.add_argument("--out", type=Path, default=Path("data/results/e2.json"))
+    ap.add_argument("--sweep-only", action="store_true", help="skip the main comparison; only the soft half-life sweep and M1")
     ap.add_argument("--half-lives", type=float, nargs="+", default=SWEEP)
     a = ap.parse_args()
     if a.sweep_only:
-        sweep, best = half_life_sweep(load_combined(a.rows), a.sweep_only, a.half_lives, np.random.default_rng(0))
+        rng = np.random.default_rng(0)
+        c = load_combined(a.rows)
+        sweep, best, results = half_life_sweep(c, "soft", a.half_lives, rng)
+        mem = memory_comparisons(c, results, best, min(a.half_lives), rng)
         a.out.parent.mkdir(parents=True, exist_ok=True)
-        a.out.write_text(json.dumps({"sweep": {str(k): v for k, v in sweep.items()}, "half_life": best}, indent=2))
+        a.out.write_text(json.dumps({"sweep": {str(k): v for k, v in sweep.items()}, "memory": mem, "half_life": best}, indent=2))
         return
     run(a.rows, a.out)
 

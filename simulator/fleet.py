@@ -30,11 +30,12 @@ class Fleet:
             self.episodes_by_device[ep.device_id].append(ep)
 
     def _effects(self, device_id: str, t: datetime) -> list[Effect]:
-        return [
-            Effect(ep.episode_id, ep.modalities, ep.magnitude)
-            for ep in self.episodes_by_device[device_id]
-            if ep.start <= t < ep.end
-        ]
+        out = []
+        for ep in self.episodes_by_device[device_id]:
+            active = ep.active_modalities(t)  # honours staggered windows
+            if active:
+                out.append(Effect(ep.episode_id, active, ep.magnitude))
+        return out
 
     def ticks(self, duration: timedelta) -> Iterator[list[Telemetry]]:
         cfg = self.cfg

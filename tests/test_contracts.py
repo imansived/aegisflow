@@ -164,6 +164,43 @@ def _episode(**over):
     return base
 
 
+def test_staged_scenario_is_weak_multimodal_and_comparable_to_weak_correlated():
+    s, w = SCENARIOS[ScenarioType.STAGED], SCENARIOS[ScenarioType.WEAK_CORRELATED]
+    assert s.is_malicious and s.magnitude_range == w.magnitude_range  # same effect sizes: only timing differs
+    assert s.modalities == frozenset({Modality.SPATIAL, Modality.NETWORK, Modality.DEVICE})
+
+
+def test_episode_windows_validate_and_gate_modalities():
+    t0 = datetime(2026, 10, 7, tzinfo=UTC)
+    ep = Episode(**_episode(
+        scenario=ScenarioType.STAGED, end=t0 + timedelta(seconds=300),
+        modalities=frozenset({Modality.SPATIAL, Modality.NETWORK}),
+        windows_s={"spatial": (0, 100), "network": (150, 250)},
+    ))
+    at = lambda s: ep.active_modalities(t0 + timedelta(seconds=s))
+    assert at(50) == {Modality.SPATIAL}
+    assert at(125) == frozenset()  # the gap: nothing active, but the episode is still running
+    assert at(200) == {Modality.NETWORK}
+    assert at(300) == frozenset() and at(-1) == frozenset()  # outside the episode
+    assert Episode.model_validate_json(ep.model_dump_json()) == ep  # windows survive the JSON round trip
+
+
+def test_modality_without_a_window_is_active_for_the_whole_episode():
+    t0 = datetime(2026, 10, 7, tzinfo=UTC)
+    ep = Episode(**_episode(end=t0 + timedelta(seconds=300)))
+    assert ep.active_modalities(t0 + timedelta(seconds=299)) == {Modality.SPATIAL}
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [{"spatial": (50, 50)}, {"spatial": (80, 20)}, {"spatial": (-5, 20)}, {"spatial": (0, 9999)}, {"warp": (0, 10)}],
+)
+def test_bad_windows_are_rejected(bad):
+    t0 = datetime(2026, 10, 7, tzinfo=UTC)
+    with pytest.raises(ValidationError):
+        Episode(**_episode(end=t0 + timedelta(seconds=300), windows_s=bad))
+
+
 def test_episode_valid():
     assert Episode(**_episode()).is_malicious
 

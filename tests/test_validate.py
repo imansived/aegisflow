@@ -59,6 +59,39 @@ def test_episodes_outside_evaluation_seeds_are_not_counted():
     assert not res["ev"].any()
 
 
+def test_half_life_rule_picks_the_best_and_breaks_near_ties_toward_the_shorter():
+    from ml.validate import choose_half_life
+
+    vals = [1.0, 5.0, 30.0, 60.0]
+    assert choose_half_life(vals, {1.0: 0.40, 5.0: 0.42, 30.0: 0.61, 60.0: 0.50}) == 30.0  # clear winner
+    assert choose_half_life(vals, {1.0: 0.40, 5.0: 0.42, 30.0: 0.600, 60.0: 0.595}) == 30.0  # tie: shorter of the top two
+    assert choose_half_life(vals, {1.0: 0.40, 5.0: 0.42, 30.0: 0.595, 60.0: 0.600}) == 30.0  # order of scores does not matter
+    assert choose_half_life(vals, {1.0: 0.600, 5.0: 0.20, 30.0: 0.10, 60.0: 0.595}) == 1.0
+    assert choose_half_life(vals, {1.0: 0.50, 5.0: 0.20, 30.0: 0.10, 60.0: 0.52}) == 60.0  # 0.02 apart: not a tie
+
+
+def test_staged_groups_are_split_by_variant_and_memory_comparison_finds_a_real_gain():
+    from ml.validate import episode_groups, memory_comparisons
+
+    c, score = make_combined()
+    c.ep_meta[0].update(scenario="staged", variant="cascade")
+    c.ep_meta[1].update(scenario="staged", variant="pulses")
+    g = episode_groups(c)
+    assert g["staged"].tolist() == [0, 1] and g["staged_cascade"].tolist() == [0] and g["staged_pulses"].tolist() == [1]
+
+    # A scorer that detects both staged episodes ("with memory") vs one that detects neither ("without").
+    boosted = score.copy()
+    boosted[c.episode == 1] = 1.0
+    with_mem = {"noisy_or": lambda rows: boosted[rows], "learned": lambda rows: boosted[rows]}
+    without = {"noisy_or": lambda rows: score[rows] * (c.episode[rows] < 0), "learned": lambda rows: score[rows] * (c.episode[rows] < 0)}
+    results = {1.0: evaluate(c, {"X": without}, folds=FOLD), 30.0: evaluate(c, {"X": with_mem}, folds=FOLD)}
+    out = memory_comparisons(c, results, best=30.0, shortest=1.0, rng=np.random.default_rng(0))
+    pooled = [x for x in out if x["group"] == "staged"]
+    assert len(out) == 6 and all(x["diff"] == 1.0 for x in pooled)  # both episodes flip from missed to caught
+    # When the chosen half-life is the shortest there is nothing to compare.
+    assert memory_comparisons(c, results, best=1.0, shortest=1.0, rng=np.random.default_rng(0)) == []
+
+
 def test_bootstrap_ci_brackets_the_mean_and_paired_diff_detects_a_real_gap():
     rng = np.random.default_rng(1)
     x = (rng.random(200) < 0.7).astype(float)

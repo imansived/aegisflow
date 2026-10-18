@@ -33,6 +33,10 @@ class ScenarioType(str, Enum):
     WEAK_CORRELATED = "weak_correlated"
     # Benign episode that LOOKS like an attack: touches signals but is_malicious=False.
     HARD_NEGATIVE = "hard_negative"
+    # Same weak deviations as WEAK_CORRELATED, but STAGGERED in time (spatial, then network,
+    # then device), like the spec's demo. Tests whether a correlation window can link them.
+    # Appended last so existing scenario codes keep their order.
+    STAGED = "staged"
 
 
 class ScenarioSpec(BaseModel):
@@ -109,6 +113,19 @@ SCENARIOS: dict[ScenarioType, ScenarioSpec] = {
             hypothesis="Single detectors miss it; fusion may catch it. This is the key test.",
         ),
         ScenarioSpec(
+            type=ScenarioType.STAGED,
+            description=(
+                "Weak spatial, network and device deviations that start one after another. "
+                "Variants: 'cascade' (staggered onset, all persist) and 'pulses' (each active "
+                "in its own window, no two overlapping)."
+            ),
+            modalities=frozenset({Modality.SPATIAL, Modality.NETWORK, Modality.DEVICE}),
+            is_malicious=True,
+            magnitude_range=(0.05, 0.25),  # same as WEAK_CORRELATED, so the two are comparable
+            duration_s_range=(180, 420),  # cascade only; pulses derive their length from their windows
+            hypothesis="Only a correlation window can link the stages. TO BE VERIFIED (manual §5.6).",
+        ),
+        ScenarioSpec(
             type=ScenarioType.HARD_NEGATIVE,
             description=(
                 "Benign look-alike, e.g. a firmware update (traffic + CPU + drain) or an "
@@ -138,6 +155,10 @@ class Episode(BaseModel):
     seed: int  # the run seed, so the episode can be reproduced
     # Sub-type within a scenario, e.g. HARD_NEGATIVE: "firmware_update" | "authorized_visit".
     variant: str = ""
+    # When each modality's effect is active, as (start, end) seconds after the episode starts.
+    # A modality with no entry is active for the whole episode. This is how STAGED episodes
+    # stagger their deviations. The LABEL still covers the whole episode span.
+    windows_s: dict[str, tuple[float, float]] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def _valid_span(self) -> "Episode":
@@ -145,4 +166,21 @@ class Episode(BaseModel):
             raise ValueError("episode times must be timezone-aware")
         if self.end <= self.start:
             raise ValueError("episode must end after it starts")
+        length = (self.end - self.start).total_seconds()
+        valid = {m.value for m in Modality}
+        for key, (lo, hi) in self.windows_s.items():
+            if key not in valid:
+                raise ValueError(f"unknown modality in windows_s: {key!r}")
+            if not (0 <= lo < hi <= length + 1e-6):
+                raise ValueError(f"window for {key} must satisfy 0 <= start < end <= episode length")
         return self
+
+    def active_modalities(self, t: datetime) -> frozenset[Modality]:
+        """The modalities whose effect is switched on at time t (empty outside the episode)."""
+        if not (self.start <= t < self.end):
+            return frozenset()
+        off = (t - self.start).total_seconds()
+        return frozenset(
+            m for m in self.modalities
+            if m.value not in self.windows_s or self.windows_s[m.value][0] <= off < self.windows_s[m.value][1]
+        )

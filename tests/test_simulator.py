@@ -185,9 +185,66 @@ def test_plan_is_reproducible_and_covers_hard_cases():
     b = build_plan(cfg, timedelta(hours=72), timedelta(hours=12), 3)
     assert a == b
     kinds = {e.scenario for e in a}
-    assert {ScenarioType.WEAK_CORRELATED, ScenarioType.HARD_NEGATIVE, ScenarioType.COMBINED} <= kinds
+    assert {ScenarioType.WEAK_CORRELATED, ScenarioType.HARD_NEGATIVE, ScenarioType.COMBINED, ScenarioType.STAGED} <= kinds
     assert all(not e.is_malicious for e in a if e.scenario is ScenarioType.HARD_NEGATIVE)
     assert all(e.magnitude <= 0.4 for e in a if e.scenario is ScenarioType.WEAK_CORRELATED)
+
+
+def test_plan_builds_both_staged_variants_with_the_designed_timing():
+    cfg = SimConfig(seed=5, n_devices=40)
+    plan = build_plan(cfg, timedelta(hours=72), timedelta(hours=12), 4)
+    staged = [e for e in plan if e.scenario is ScenarioType.STAGED]
+    assert {e.variant for e in staged} == {"cascade", "pulses"}
+    assert all(e.is_malicious and e.magnitude <= 0.25 for e in staged)
+    for e in staged:
+        length = (e.end - e.start).total_seconds()
+        w = e.windows_s
+        assert set(w) == {"spatial", "network", "device"}
+        assert w["spatial"][0] == 0 and w["spatial"][0] < w["network"][0] < w["device"][0]  # in order
+        if e.variant == "cascade":
+            assert all(hi == pytest.approx(length) for _, hi in w.values())  # all persist to the end
+            assert 10 <= w["network"][0] <= 40 and 180 <= length <= 420
+        else:
+            order = [w["spatial"], w["network"], w["device"]]
+            for (_, a_hi), (b_lo, _) in zip(order, order[1:]):
+                assert 0 <= b_lo - a_hi <= 30  # a gap, never an overlap
+            assert all(40 <= hi - lo <= 90 for lo, hi in order)
+            assert order[-1][1] == pytest.approx(length)  # the episode ends when the last pulse does
+
+
+def test_fleet_switches_each_stage_on_and_off_at_the_right_time():
+    cfg = SimConfig(seed=7, n_devices=2)
+    start = cfg.start + timedelta(hours=10)
+    ep = Episode(
+        episode_id="E-1", device_id="D-001", scenario=ScenarioType.STAGED, start=start,
+        end=start + timedelta(seconds=300),
+        modalities=frozenset({Modality.SPATIAL, Modality.NETWORK, Modality.DEVICE}),
+        magnitude=0.2, is_malicious=True, seed=7, variant="pulses",
+        windows_s={"spatial": (0, 60), "network": (80, 140), "device": (160, 220)},
+    )
+    fleet = Fleet(cfg, [ep])
+    at = lambda s: {m for e in fleet._effects("D-001", start + timedelta(seconds=s)) for m in e.modalities}
+    assert at(30) == {Modality.SPATIAL} and at(70) == set() and at(100) == {Modality.NETWORK}
+    assert at(150) == set() and at(180) == {Modality.DEVICE} and at(250) == set()
+    assert fleet._effects("D-002", start + timedelta(seconds=30)) == []
+
+
+def test_a_staged_network_stage_only_acts_inside_its_window():
+    start = CFG.start + timedelta(hours=10)
+    ep = Episode(
+        episode_id="E-1", device_id="D-003", scenario=ScenarioType.STAGED, start=start,
+        end=start + timedelta(seconds=600), modalities=frozenset({Modality.NETWORK}),
+        magnitude=0.9, is_malicious=True, seed=CFG.seed, variant="pulses",
+        windows_s={"network": (200, 400)},
+    )
+    fleet = Fleet(CFG, [ep])
+    known = set(fleet.devices[2].p.known_endpoints)
+    rows = [r for r in fleet.run(timedelta(hours=11)) if r.device_id == "D-003" and ep.start <= r.timestamp < ep.end]
+    off = lambda r: (r.timestamp - ep.start.astimezone(timezone.utc)).total_seconds()
+    share = lambda sel: sum(any(e not in known for e in r.remote_endpoints) for r in sel) / len(sel)
+    inside = [r for r in rows if 200 <= off(r) < 400]
+    outside = [r for r in rows if off(r) < 200 or off(r) >= 400]
+    assert share(inside) > 0.6 and share(outside) < 0.2
 
 
 def test_magnitude_override_for_difficulty_sweep():
