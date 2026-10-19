@@ -1,4 +1,4 @@
-"""Pipeline tests against a REAL Redis (docker compose up -d redis). Skipped if unreachable."""
+"""Pipeline tests against a REAL Redis (docker compose -f docker-compose.dev.yml up -d). Skipped if unreachable."""
 
 import uuid
 from datetime import datetime, timedelta, timezone

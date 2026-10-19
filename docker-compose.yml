@@ -4,7 +4,8 @@
 #   docker compose up -d --build
 #   open http://localhost:8080
 #
-# For development, `docker compose up -d redis` starts only Redis (the tests and local scripts use it).
+# For development, `docker compose -f docker-compose.dev.yml up -d` starts only Redis, with no tokens needed
+# (this file validates all its variables, so it refuses to start without them).
 
 name: aegisflow
 
