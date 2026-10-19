@@ -13,8 +13,9 @@ const MODULES: { id: string; label: string; hint: string }[] = [
 ]
 
 /** The Simulation Deck: start a simulated fleet and inject threats into it. Admin only (the server enforces it). */
-export function SimDeck({ api, isAdmin, demo, selected, onChanged, open, onToggle }: {
-  api: Api; isAdmin: boolean; demo: DemoStatus | null; selected: string | null; onChanged: () => void; open: boolean; onToggle: () => void
+export function SimDeck({ api, isAdmin, demo, selected, targets = [], onSelect, onChanged, open, onToggle }: {
+  api: Api; isAdmin: boolean; demo: DemoStatus | null; selected: string | null; targets?: string[]; onSelect?: (id: string) => void
+  onChanged: () => void; open: boolean; onToggle: () => void
 }) {
   const [devices, setDevices] = useState(10)
   const [speed, setSpeed] = useState(20)
@@ -52,8 +53,13 @@ export function SimDeck({ api, isAdmin, demo, selected, onChanged, open, onToggl
 
           {isAdmin && live && (
             <>
+              <label className="field">Target device
+                <select value={selected ?? ''} onChange={(e) => e.target.value && onSelect?.(e.target.value)}>
+                  <option value="">Choose a device…</option>
+                  {targets.map((d) => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </label>
               <h3>Inject on <b>{selected ?? '…'}</b></h3>
-              {!selected && <p className="note">Select a device first.</p>}
               <label className="field range">Strength {strength.toFixed(2)}<input type="range" min={0.05} max={1} step={0.05} value={strength} onChange={(e) => setStrength(Number(e.target.value))} /></label>
               <div className="modules">
                 {MODULES.map((m) => (

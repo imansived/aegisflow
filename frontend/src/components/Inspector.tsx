@@ -13,7 +13,6 @@ export function Inspector({ snap, points, alerts, status }: { snap: Snapshot | n
     return (
       <section className="rail inspector idle" aria-label="Inspector">
         <div className="empty big">
-          <div className="reticle" aria-hidden="true" />
           Select a beacon in the scene, a line in the Sentinel, or press <kbd>/</kbd> to search.
         </div>
       </section>

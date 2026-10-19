@@ -38,6 +38,7 @@ with sync_playwright() as p:
     page.locator(".deck .deck-toggle .chip").filter(has_text=re.compile("LIVE|OFFLINE|CALIBRATING")).wait_for(timeout=15000)
     time.sleep(3)   # the first status poll decides whether a fleet from an earlier session is still running
     expect(page.locator(".pill")).to_contain_text("LINK", timeout=15000)   # WebSocket connected
+    if page.locator(".deck-toggle").get_attribute("aria-expanded") != "true": page.locator(".deck-toggle").click()
     stop = page.get_by_role("button", name="Stop")
     if stop.count():   # the Docker stack may still be running a fleet from an earlier session
         stop.click(); expect(page.get_by_role("button", name="Start fleet")).to_be_visible(timeout=15000); time.sleep(2)
@@ -94,6 +95,8 @@ with sync_playwright() as p:
 
     print("8. viewer sees the data but no controls")
     page.get_by_label("Access token").fill(VIEWER); page.get_by_role("button", name="Sign in").click()
+    page.locator(".deck-toggle").wait_for(timeout=15000)
+    if page.locator(".deck-toggle").get_attribute("aria-expanded") != "true": page.locator(".deck-toggle").click()
     expect(page.get_by_text("Viewers can watch but not control")).to_be_visible(timeout=15000)
     expect(page.get_by_role("button", name="Start fleet")).to_have_count(0)
     shot(page, "11_viewer")

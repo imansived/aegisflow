@@ -235,7 +235,7 @@ describe('SimDeck', () => {
   const demo = (state: DemoStatus['state'], extra: Partial<DemoStatus> = {}): DemoStatus => ({ state, error: null, devices: 10, speed: 20, warmup_progress: 0, sim_time: null, active_episodes: [], ...extra })
   const fakeApi = (over: Record<string, unknown> = {}) => ({ demoStart: vi.fn().mockResolvedValue({}), demoStop: vi.fn(), demoInject: vi.fn().mockResolvedValue({}), demoClear: vi.fn().mockResolvedValue({ cleared: 1 }), ...over }) as unknown as Api
   const deck = (api: Api, d: DemoStatus, o: { isAdmin?: boolean; selected?: string | null } = {}) =>
-    <SimDeck api={api} isAdmin={o.isAdmin ?? true} demo={d} selected={o.selected === undefined ? null : o.selected} onChanged={() => {}} open onToggle={() => {}} />
+    <SimDeck api={api} isAdmin={o.isAdmin ?? true} targets={['D-001','D-003']} demo={d} selected={o.selected === undefined ? null : o.selected} onChanged={() => {}} open onToggle={() => {}} />
 
   it('hides every control from viewers', () => {
     render(deck(fakeApi(), demo('idle'), { isAdmin: false, selected: 'D-003' }))

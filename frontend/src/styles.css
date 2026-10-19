@@ -478,3 +478,69 @@ body {
   .pill, .chip, .ghost { white-space: nowrap; }
 }
 @media (min-width: 821px) and (max-width: 1500px) { .top .chip { display: none; } }
+
+/* ==== WARM LAYER ============================================================================
+   The house palette from the portfolio and Two Minds: warm near-black with a green cast, cream text, sage accent,
+   serif headings, big soft radii. Overrides the cooler layers above. */
+:root {
+  --void: #0b0f0e;
+  --panel: rgba(24, 30, 27, 0.72);
+  --panel-solid: #151b18;
+  --line: rgba(237, 232, 218, 0.09);
+  --line-strong: rgba(237, 232, 218, 0.22);
+  --ink: #f2ecdd;
+  --ink2: #c4bfae;
+  --muted: #8b8878;
+  --accent: #7fc3ad;
+  --sig-spatial: #86b4e6;
+  --sig-network: #e39a6b;
+  --sig-device: #7fc3ad;
+  --sig-proximity: #d9aa4f;
+  --sev-normal: #8b8878;
+  --sev-low: #d9aa4f;
+  --sev-medium: #e39a6b;
+  --sev-high: #ef6b6b;
+  --good: #7fc3ad;
+  --serif: Georgia, 'Times New Roman', Cambria, serif;
+}
+body {
+  background-color: var(--void);
+  background-image:
+    radial-gradient(900px 600px at 90% -10%, rgba(127, 195, 173, 0.10), transparent 62%),
+    radial-gradient(800px 600px at -10% 110%, rgba(217, 170, 79, 0.06), transparent 62%);
+}
+.top { background: rgba(14, 19, 17, 0.8); }
+.rail, .card, .tile { background: linear-gradient(180deg, rgba(30, 37, 33, 0.7), rgba(20, 26, 23, 0.6)); border-radius: 24px; }
+.stage { border-radius: 28px; background: radial-gradient(800px 500px at 50% 55%, rgba(127, 195, 173, 0.09), transparent 70%), linear-gradient(180deg, rgba(17, 23, 20, 0.8), rgba(11, 15, 14, 0.9)); }
+.brand strong, .rail h2, .card h2, .deck-toggle, .login-card h1 { font-family: var(--serif); font-weight: 600; letter-spacing: 0.08em; }
+.inspector h2 { font-family: var(--serif); font-weight: 600; }
+.tile .value, .kpis dd { font-family: var(--serif); font-weight: 500; }
+.brand span, .login-card h1 span { color: var(--accent); }
+.modes button[aria-current='page'] { background: rgba(127, 195, 173, 0.18); box-shadow: 0 0 0 1px rgba(127, 195, 173, 0.4) inset; }
+.btn.primary { background: linear-gradient(135deg, #7fc3ad, #5ea590); color: #0b1410; }
+.btn.primary:hover:not(:disabled) { box-shadow: 0 6px 26px rgba(94, 165, 144, 0.4); }
+.seg button[aria-selected='true'], .seg button[aria-pressed='true'] { background: rgba(127, 195, 173, 0.18); }
+.card-btn:hover, .card-btn[aria-pressed='true'] { background: rgba(127, 195, 173, 0.09); }
+.vol-top { fill: rgba(127, 195, 173, 0.10); stroke: rgba(127, 195, 173, 0.45); filter: none; }
+.vol-side { stroke: rgba(127, 195, 173, 0.3); }
+.vol-floor { fill: rgba(127, 195, 173, 0.04); }
+.floor-grid line { stroke: rgba(237, 232, 218, 0.06); }
+.chart .line, .ribbon-line { filter: none; }
+.arc, .legend-signals .swatch, .legend-signals .meter i { filter: none; box-shadow: none; }
+.palette-btn:hover { border-color: var(--line-strong); }
+.pip { box-shadow: none; }
+.login-orbits { display: none; }
+.login-card { background: rgba(24, 30, 27, 0.85); box-shadow: 0 20px 70px rgba(0, 0, 0, 0.45); }
+.login-card .logo, .brand .logo { filter: none; }
+.hbar .bar { box-shadow: none; }
+
+/* No full-stage overlay: the standby note is a small card, so the map stays visible and clickable */
+.standby { inset: auto 0 128px 0; display: flex; justify-content: center; background: none; padding: 0; pointer-events: none; }
+.standby p { background: var(--panel-solid); border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 18px; color: var(--ink2); max-width: none; }
+.btn:disabled { opacity: 0.55; }
+.deck { z-index: 7; }
+/* class names shared with the top bar and the inspector: undo their styles inside cards */
+.card-btn .top { background: none; border: 0; backdrop-filter: none; padding: 0; position: static; z-index: auto; flex-wrap: nowrap; }
+.card-btn .why { background: none; border: 0; border-radius: 0; padding: 0; }
+.deck { background: rgba(21, 27, 24, 0.92); }
+.btn { background: rgba(237, 232, 218, 0.05); }

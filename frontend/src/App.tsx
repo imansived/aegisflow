@@ -92,13 +92,11 @@ export default function App() {
             <HoloFloor site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
             {standby && (
               <div className="standby" role="status">
-                <div className="radar" aria-hidden="true"><i /></div>
-                <h2>STANDBY</h2>
-                <p>The facility is dark. {role === 'admin' ? 'Open the Simulation Deck and start the fleet to bring it online.' : 'Waiting for an operator to start the simulated fleet.'}</p>
+                <p><b>No fleet running.</b> {role === 'admin' ? 'Use the Simulation Deck to start one.' : 'Waiting for an operator to start the simulated fleet.'}</p>
               </div>
             )}
             <BootOverlay demo={demo} />
-            <SimDeck api={api} isAdmin={role === 'admin'} demo={demo} selected={selected} onChanged={refreshStatus} open={deckOpen} onToggle={() => setDeckOpen((o) => !o)} />
+            <SimDeck api={api} isAdmin={role === 'admin'} demo={demo} selected={selected} targets={Object.keys(live.devices).sort()} onSelect={setSelected} onChanged={refreshStatus} open={deckOpen} onToggle={() => setDeckOpen((o) => !o)} />
             <TimeRibbon history={live.history} alerts={live.alerts} onSelect={setSelected} />
           </div>
           <Inspector snap={snap} points={selected ? live.history[selected] ?? [] : []} alerts={deviceAlerts} status={status} />
