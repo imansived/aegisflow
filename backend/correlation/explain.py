@@ -5,6 +5,7 @@ from contracts.scenarios import Modality
 from .engine import Fused
 
 Z_SHOW = 2.0  # only quote a z-score when it is actually unusual
+MIN_FACTOR_SCORE = 0.10  # a modality below this effective score is not listed as a contributing factor
 
 _RULES = {
     "restricted_zone": lambda v: "entered a restricted zone",
@@ -44,7 +45,8 @@ def factors(f: Fused) -> list[dict]:
     rows = []
     for m in Modality:
         eff = f.effective.get(m, 0.0)
-        if eff <= 0.0:
+        # Soft scores are rarely exactly 0; listing every faint signal would bury the real ones.
+        if eff < MIN_FACTOR_SCORE:
             continue
         rows.append(
             {

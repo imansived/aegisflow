@@ -27,6 +27,25 @@ CREATE TABLE IF NOT EXISTS alerts (
     payload    TEXT NOT NULL       -- full alert as JSON: factors, explanation text, fusion name
 );
 CREATE INDEX IF NOT EXISTS alerts_device ON alerts (device_id, started);
+
+-- The enrolled-device registry. Only a SHA-256 hash of each device's API key is stored, never the key.
+CREATE TABLE IF NOT EXISTS devices (
+    device_id  TEXT PRIMARY KEY,
+    name       TEXT NOT NULL,
+    type       TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    key_hash   TEXT                -- NULL for devices registered without a key (demo fleet)
+);
+
+-- Sampled fused scores over time, for the dashboard's history charts.
+CREATE TABLE IF NOT EXISTS anomaly_history (
+    device_id TEXT NOT NULL,
+    ts        TEXT NOT NULL,
+    score     REAL NOT NULL,
+    severity  TEXT NOT NULL,
+    effective TEXT NOT NULL,       -- per-modality effective scores as JSON
+    PRIMARY KEY (device_id, ts)
+) WITHOUT ROWID;
 """
 
 
@@ -34,10 +53,11 @@ class EventStore:
     def __init__(self, path: str = ":memory:"):
         # isolation_level=None = autocommit; we issue BEGIN/COMMIT/SAVEPOINT ourselves so a
         # whole batch is one transaction (one disk sync instead of one per event).
-        self.db = sqlite3.connect(path, isolation_level=None)
+        self.db = sqlite3.connect(path, isolation_level=None, timeout=10)
         if path != ":memory:":
-            self.db.execute("PRAGMA journal_mode=WAL")
+            self.db.execute("PRAGMA journal_mode=WAL")  # readers do not block the writer
             self.db.execute("PRAGMA synchronous=NORMAL")
+            self.db.execute("PRAGMA busy_timeout=10000")
         self.db.executescript(SCHEMA)
 
     # --- transaction control -------------------------------------------------------------
@@ -95,6 +115,83 @@ class EventStore:
         if device_id:
             q, args = q + " WHERE device_id = ?", (device_id,)
         return [json.loads(p) for (p,) in self.db.execute(q + " ORDER BY started", args)]
+
+    def query_alerts(self, device_id: str | None = None, status: str | None = None, limit: int = 100) -> list[dict]:
+        """Newest first. status: 'open' (not yet closed), 'closed', or None for both."""
+        import json
+
+        where, args = [], []
+        if device_id:
+            where.append("device_id = ?")
+            args.append(device_id)
+        if status == "open":
+            where.append("ended IS NULL")
+        elif status == "closed":
+            where.append("ended IS NOT NULL")
+        q = "SELECT payload, ended FROM alerts" + (" WHERE " + " AND ".join(where) if where else "")
+        rows = self.db.execute(q + " ORDER BY started DESC LIMIT ?", (*args, int(limit))).fetchall()
+        out = []
+        for payload, ended in rows:
+            a = json.loads(payload)
+            a["status"] = "open" if ended is None else "closed"
+            out.append(a)
+        return out
+
+    def get_alert(self, alert_id: str) -> dict | None:
+        import json
+
+        row = self.db.execute("SELECT payload, ended FROM alerts WHERE alert_id = ?", (alert_id,)).fetchone()
+        if not row:
+            return None
+        a = json.loads(row[0])
+        a["status"] = "open" if row[1] is None else "closed"
+        return a
+
+    def latest_events(self, device_id: str, limit: int = 100) -> list[Telemetry]:
+        """The device's most recent events, newest first."""
+        rows = self.db.execute(
+            "SELECT payload FROM events WHERE device_id = ? ORDER BY ts DESC LIMIT ?", (device_id, int(limit))
+        ).fetchall()
+        return [Telemetry.model_validate_json(r[0]) for r in rows]
+
+    # --- device registry -----------------------------------------------------------------
+    def register_device(self, device_id: str, name: str, type_: str, created_at: str, key_hash: str | None) -> bool:
+        """True if newly registered, False if the id already exists (nothing is changed)."""
+        cur = self.db.execute(
+            "INSERT OR IGNORE INTO devices (device_id, name, type, created_at, key_hash) VALUES (?, ?, ?, ?, ?)",
+            (device_id, name, type_, created_at, key_hash),
+        )
+        return cur.rowcount == 1
+
+    def get_device(self, device_id: str) -> dict | None:
+        r = self.db.execute(
+            "SELECT device_id, name, type, created_at, key_hash FROM devices WHERE device_id = ?", (device_id,)
+        ).fetchone()
+        return None if r is None else {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "key_hash": r[4]}
+
+    def list_devices(self) -> list[dict]:
+        return [
+            {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "has_key": r[4] is not None}
+            for r in self.db.execute("SELECT device_id, name, type, created_at, key_hash FROM devices ORDER BY device_id")
+        ]
+
+    # --- anomaly history -----------------------------------------------------------------
+    def record_score(self, device_id: str, ts: str, score: float, severity: str, effective: dict) -> None:
+        import json
+
+        self.db.execute(
+            "INSERT OR REPLACE INTO anomaly_history (device_id, ts, score, severity, effective) VALUES (?, ?, ?, ?, ?)",
+            (device_id, ts, float(score), severity, json.dumps(effective)),
+        )
+
+    def score_history(self, device_id: str | None = None, limit: int = 500) -> list[dict]:
+        import json
+
+        q, args = "SELECT device_id, ts, score, severity, effective FROM anomaly_history", []
+        if device_id:
+            q, args = q + " WHERE device_id = ?", [device_id]
+        rows = self.db.execute(q + " ORDER BY ts DESC LIMIT ?", (*args, int(limit))).fetchall()
+        return [{"device_id": r[0], "ts": r[1], "score": r[2], "severity": r[3], "effective": json.loads(r[4])} for r in rows]
 
     def iter_events(self):
         """Every stored event in event-time order. Used to rebuild detector state after a restart."""

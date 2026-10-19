@@ -34,7 +34,11 @@ def stats(r: redis.Redis, stream: str = STREAM, group: str = GROUP) -> dict:
     pending = entries delivered but not yet acknowledged (in flight, or stuck).
     """
     out = {"length": r.xlen(stream), "lag": None, "pending": 0}
-    for g in r.xinfo_groups(stream):
+    try:
+        groups = r.xinfo_groups(stream)
+    except redis.ResponseError:  # the stream does not exist yet (nothing published, no processor started)
+        return out
+    for g in groups:
         if g["name"] == group:
             out["lag"] = g.get("lag")
             out["pending"] = g["pending"]

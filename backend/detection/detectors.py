@@ -263,7 +263,7 @@ class ProximityDetector(Detector):
 
     modality = Modality.PROXIMITY
 
-    def __init__(self, cfg: DetectionConfig, enrolled: frozenset[str]):
+    def __init__(self, cfg: DetectionConfig, enrolled: "frozenset[str] | set[str]"):
         super().__init__(cfg)
         self.enrolled = enrolled
         self._state: dict[str, _ProximityState] = defaultdict(_ProximityState)

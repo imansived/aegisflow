@@ -4,7 +4,7 @@ Real-time cross-modal behavioral anomaly detection for connected devices: it lea
 normal looks like per device, scores deviations in spatial, network, device and proximity
 signals, and tests whether *correlating* those weak deviations beats judging each alone.
 
-Status: **research evaluation complete** (simulator, Redis Streams pipeline, detectors, correlation + alerts, validation and final test runs); API, dashboard and demo still to build. See
+Status: **research evaluation and backend API complete** (simulator, pipeline, detectors, correlation + alerts, validation and final test runs, FastAPI + WebSocket + live demo); dashboard and Docker packaging still to build. See
 [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) for the reasoning
 behind every decision.
 
@@ -72,3 +72,25 @@ docker compose up -d redis
 .\.venv\Scripts\python -m ml.dataset --seeds 10 19 --workers 8   # ~10 min
 .\.venv\Scripts\python -m ml.validate --out data/results/e2.json  # ~15 min
 ```
+
+## Run the API and the live demo
+
+```powershell
+docker compose up -d redis
+$env:AEGIS_ADMIN_TOKEN  = "choose-a-long-admin-token"     # >= 16 chars, different from the viewer token
+$env:AEGIS_VIEWER_TOKEN = "choose-a-long-viewer-token"
+.\.venv\Scripts\python -m uvicorn --factory backend.api.app:create_app --port 8010
+```
+
+Interactive docs at http://127.0.0.1:8010/docs. Start the simulated fleet and inject an intrusion
+(`Authorization: Bearer <admin token>`):
+
+```
+POST /demo/start    {"devices": 10, "warmup_hours": 34, "speed": 20}     # ~1 min warm-up, then live
+POST /demo/inject   {"device_id": "D-003", "scenario": "spatial", "magnitude": 1.0, "duration_s": 240}
+POST /demo/clear    {"device_id": "D-003"}
+```
+
+Watch live with a WebSocket to `/ws?token=<viewer token>`. Without both tokens the server refuses to start
+(set `AEGIS_AUTH=off` only for a local demo). `models/frozen_design.json` is the learned fusion and thresholds
+exported from validation seeds (`python -m ml.export_design`); without it the server uses noisy-OR.

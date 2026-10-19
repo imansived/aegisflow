@@ -21,7 +21,9 @@ class DetectionEngine:
         sink: Callable[[Scores], None] | None = None,
     ):
         self.cfg = cfg or DetectionConfig()
-        self.enrolled = frozenset(enrolled)
+        # A mutable set is kept by REFERENCE, so devices registered later (POST /devices) are
+        # recognised as enrolled without rebuilding the engine. Anything else is frozen.
+        self.enrolled = enrolled if isinstance(enrolled, set) else frozenset(enrolled)
         self.sink = sink
         self.detectors = [
             SpatialDetector(self.cfg),

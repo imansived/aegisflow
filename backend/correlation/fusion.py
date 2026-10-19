@@ -149,6 +149,17 @@ class LearnedFusion(Fusion):
         self.coef, self.intercept = lr.coef_[0].copy(), float(lr.intercept_[0])
         return self
 
+    def to_dict(self) -> dict:
+        if self.coef is None:
+            raise RuntimeError("nothing to save: LearnedFusion has not been fit")
+        return {"coef": [float(x) for x in self.coef], "intercept": self.intercept}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "LearnedFusion":
+        lf = cls()
+        lf.coef, lf.intercept = np.asarray(d["coef"], dtype=np.float64), float(d["intercept"])
+        return lf
+
     def score(self, e):
         if self.coef is None:
             raise RuntimeError("LearnedFusion must be fit() before use")

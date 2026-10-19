@@ -21,12 +21,19 @@ from .fusion import MODALITIES, Fusion
 @dataclass(frozen=True)
 class CorrelationConfig:
     half_life_s: float = 60.0  # hyperparameter: tuned on validation seeds, then frozen
+    # Which detector score feeds fusion: "hard" (z <= 2 -> 0) or "soft" (keeps weak evidence).
+    # The frozen design (manual §5.5-5.7) is soft + 1 s; the default stays "hard" for older code.
+    score_type: str = "hard"
     # Severity bands from the spec (illustrative, configurable; manual §3.16).
     low: float = 0.30
     medium: float = 0.60
     high: float = 0.80
     # Only compute leave-one-out contributions above this score (they cost 4 extra evaluations).
     explain_above: float = 0.30
+
+
+# The design frozen by validation experiments E1/E2 and used for the final test (manual §5.7).
+FROZEN_CORRELATION = CorrelationConfig(half_life_s=1.0, score_type="soft")
 
 
 def severity(score: float, cfg: CorrelationConfig) -> str:
@@ -76,10 +83,11 @@ class CorrelationEngine:
         raw = {}
         for i, m in enumerate(MODALITIES):
             res = scores.results[m]
-            raw[m] = res.score
+            v = res.soft if self.cfg.score_type == "soft" else res.score
+            raw[m] = v
             held = st.e[i] * decay
-            if res.score >= held:
-                st.e[i] = res.score
+            if v >= held:
+                st.e[i] = v
                 st.ev[i] = dict(res.evidence)  # remember WHY this is the current peak
             else:
                 st.e[i] = held

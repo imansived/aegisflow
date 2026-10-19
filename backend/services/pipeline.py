@@ -30,16 +30,20 @@ class Pipeline:
         alert_cfg: AlertConfig | None = None,
         on_alert: Callable[[dict], None] | None = None,
         on_fused: Callable[[Fused], None] | None = None,
+        on_processed: Callable[[Telemetry, Fused], None] | None = None,
     ):
         self.detection = DetectionEngine(enrolled, det_cfg)
         self.correlation = CorrelationEngine(fusion, corr_cfg)
         self.alerts = AlertManager(alert_cfg, corr_cfg)
         self.store, self.on_alert, self.on_fused = store, on_alert, on_fused
+        self.on_processed = on_processed  # gets the event AND its result: the live dashboard needs both
 
     def process(self, t: Telemetry) -> Fused:
         fused = self.correlation.update(self.detection.process(t))
         if self.on_fused:
             self.on_fused(fused)
+        if self.on_processed:
+            self.on_processed(t, fused)
         for ev in self.alerts.update(fused):
             if self.store:
                 self.store.upsert_alert(ev)
