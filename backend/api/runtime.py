@@ -103,13 +103,51 @@ class Runtime:
 
     # ---- construction (called in the thread that will own the write connection) ------------------
 
-    def _build(self) -> None:
-        self._store = EventStore(self.settings.db_path)
-        self._pipeline = Pipeline(
+    def _new_pipeline(self) -> Pipeline:
+        return Pipeline(
             self.enrolled, self.fusion, self._store,
             det_cfg=self.det_cfg, corr_cfg=self.corr_cfg, alert_cfg=self.alert_cfg,
             on_alert=self._on_alert, on_processed=self._on_processed,
         )
+
+    def reset_analysis(self) -> None:
+        """Start the analysis from scratch: fresh detectors, correlation and alert state.
+
+        A new demo run replays simulated time from the beginning, so state left over from the previous run
+        (baselines for a different fleet, windows at a later time) would be wrong for it. The stored events
+        and alerts are kept; only the in-memory analysis restarts."""
+        self.close_open_alerts()  # nothing will track the old ones any more
+        with self.lock:
+            self._pipeline = self._new_pipeline()
+            self.live.clear()
+            self._last_sample.clear()
+            self._last_push.clear()
+        # Tell every connected dashboard: the devices and score histories they hold belong to the OLD run and
+        # would otherwise be drawn into the new one (a line across weeks of simulated time, seen in the browser).
+        self.hub.publish({"type": "reset"})
+
+    def close_open_alerts(self) -> int:
+        """Close every open alert, store and announce it. Safe to call from any thread: it uses a short-lived
+        connection, because the write connection belongs to the processor thread."""
+        if self._pipeline is None:
+            return 0
+        with self.lock:
+            events = self._pipeline.alerts.close_all()
+        if events:
+            db = EventStore(self.settings.db_path, check_same_thread=False)
+            try:
+                for ev in events:
+                    db.upsert_alert(ev)
+            finally:
+                db.close()
+            for ev in events:
+                self.hub.publish({"type": "alert", **ev})
+        return len(events)
+
+    def _build(self) -> None:
+        self._store = EventStore(self.settings.db_path)
+        self._store.close_stale_alerts()  # a previous process may have died with alerts open
+        self._pipeline = self._new_pipeline()
 
         def handler(t: Telemetry) -> None:
             with self.lock:
@@ -218,6 +256,8 @@ class Runtime:
             "stream": bus.stats(self.redis, self.settings.stream, self.settings.group),
             "dead_letters": self.redis.xlen(self.settings.dead_letter),
             "processor": p.metrics.summary() if p else None,
+            "late_events": self._pipeline.late_events if self._pipeline else 0,
+            "clock_resets": self._pipeline.clock_resets if self._pipeline else 0,
             "devices_live": len(self.live),
             "websocket_clients": len(self.hub.clients),
         }

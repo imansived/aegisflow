@@ -11,12 +11,14 @@ Scenarios can then be injected on a chosen device and cleared again (the spec's 
 
 import threading
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import numpy as np
 
+from backend.database.store import EventStore
 from backend.streaming.publisher import publish
 from contracts.scenarios import SCENARIOS, Episode, ScenarioType
+from contracts.site import SITE_TZ
 from simulator.config import SimConfig
 from simulator.fleet import Fleet
 from simulator.plan import staged_shape
@@ -59,11 +61,30 @@ class LiveSimulator:
         if self.rt._pipeline is None:
             raise DemoError("the processor is not running (AEGIS_RUN_PROCESSOR=off?)")
         self.speed, self.error, self.warm_progress = speed, None, 0.0
-        self.cfg = SimConfig(seed=seed, n_devices=devices)
+        self.cfg = SimConfig(seed=seed, n_devices=devices, start=self._next_start())
         self.fleet = Fleet(self.cfg, [])
         self._stop.clear()
         self._thread = threading.Thread(target=self._run, args=(warmup_hours,), name="aegis-demo", daemon=True)
         self._thread.start()
+
+    def _next_start(self) -> datetime:
+        """The simulated start time of this run: a Monday 00:00 (site time) AFTER everything already stored.
+
+        Replaying the same simulated times would make every live event a duplicate of one stored by the
+        previous run, and the processor silently skips duplicates, so a second demo would show nothing.
+        Monday keeps warm-up (34 h) ending at a weekday working hour, when devices occupy the zones."""
+        default = SimConfig().start
+        store = EventStore(self.rt.settings.db_path, check_same_thread=False)
+        try:
+            latest = store.latest_event_ts()
+        finally:
+            store.close()
+        if not latest:
+            return default
+        t = max(default, datetime.fromisoformat(latest) + timedelta(days=1)).astimezone(SITE_TZ)
+        midnight = t.replace(hour=0, minute=0, second=0, microsecond=0)
+        days = (7 - midnight.weekday()) % 7
+        return midnight + timedelta(days=days if days or midnight >= t else 7)
 
     def stop(self) -> None:
         if self._thread and self._thread.is_alive():
@@ -71,6 +92,7 @@ class LiveSimulator:
             self._stop.set()
             self._thread.join(timeout=10)
         self.state = "idle"
+        self.rt.close_open_alerts()  # the source of telemetry has stopped: no alert should stay open
 
     def status(self) -> dict:
         eps = []
@@ -138,9 +160,6 @@ class LiveSimulator:
         rt = self.rt
         try:
             self.state = "registering"
-            from backend.database.store import EventStore
-            from datetime import timezone
-
             store = EventStore(rt.settings.db_path)  # this thread's own connection
             stamp = datetime.now(timezone.utc).isoformat()
             for d in self.cfg.device_ids():
@@ -149,7 +168,7 @@ class LiveSimulator:
             store.close()
 
             self.state = "warming"
-            rt.live.clear()
+            rt.reset_analysis()  # fresh detectors for THIS run's fleet (also clears the live snapshots)
             gen = self.fleet.ticks(timedelta(days=3650))
             n_warm = int(warmup_hours * 3600 / self.cfg.tick_s)
             pipe = rt.pipeline

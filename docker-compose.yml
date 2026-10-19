@@ -1,10 +1,60 @@
+# AegisFlow: Redis + API + dashboard.
+#
+#   cp .env.example .env     # then put two long random tokens in it
+#   docker compose up -d --build
+#   open http://localhost:8080
+#
+# For development, `docker compose up -d redis` starts only Redis (the tests and local scripts use it).
+
+name: aegisflow
+
 services:
   redis:
     image: redis:7-alpine
+    # Bound to the loopback address only: the stream carries raw telemetry and Redis has no password here.
     ports:
-      - "6379:6379"
+      - "127.0.0.1:6379:6379"
     volumes:
       - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    environment:
+      AEGIS_REDIS_URL: redis://redis:6379/0
+      AEGIS_DB: /data/aegis.db
+      # Fail closed: compose refuses to start unless both tokens are set (see .env.example).
+      AEGIS_ADMIN_TOKEN: ${AEGIS_ADMIN_TOKEN:?set AEGIS_ADMIN_TOKEN in .env (at least 16 characters)}
+      AEGIS_VIEWER_TOKEN: ${AEGIS_VIEWER_TOKEN:?set AEGIS_VIEWER_TOKEN in .env (at least 16 characters, different from the admin token)}
+      AEGIS_CORS_ORIGINS: ""   # same-origin through nginx: no cross-origin access at all
+    volumes:
+      - api-data:/data
+    depends_on:
+      redis:
+        condition: service_healthy
+    expose:
+      - "8000"   # reachable by the web container only; NOT published to the host
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    ports:
+      # Loopback by default. To serve other machines, put TLS in front and change this deliberately.
+      - "127.0.0.1:${AEGIS_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   redis-data:
+  api-data:

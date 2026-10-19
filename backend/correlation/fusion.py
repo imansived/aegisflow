@@ -149,6 +149,33 @@ class LearnedFusion(Fusion):
         self.coef, self.intercept = lr.coef_[0].copy(), float(lr.intercept_[0])
         return self
 
+    def contributions(self, e: Sequence[float]) -> dict[Modality, float]:
+        """Each modality's share of the score, from the model's own additive structure.
+
+        The logit is linear in the scores and their pairwise products, so each modality's part is exact:
+        its own term plus HALF of every product term it appears in (the Shapley split for a pairwise
+        polynomial). Positive parts are then scaled to sum to the score. The generic leave-one-out of
+        `Fusion` fails here: this model saturates near 1, so removing one of several redundant signals
+        barely moves the score and every signal would read ~0 (found in the Phase 8 demo, manual §4.9)."""
+        if self.coef is None:
+            raise RuntimeError("LearnedFusion must be fit() before use")
+        x = np.asarray(e, dtype=np.float64)
+        n = len(x)
+        phi = self.coef[:n] * x
+        k = n
+        for i in range(n):
+            for j in range(i + 1, n):
+                half = 0.5 * self.coef[k] * x[i] * x[j]
+                phi[i] += half
+                phi[j] += half
+                k += 1
+        pos = np.maximum(phi, 0.0)
+        total = float(pos.sum())
+        if total <= 0.0:
+            return {m: 0.0 for m in MODALITIES}
+        s = self.score(e)
+        return {m: float(s * pos[i] / total) for i, m in enumerate(MODALITIES)}
+
     def to_dict(self) -> dict:
         if self.coef is None:
             raise RuntimeError("nothing to save: LearnedFusion has not been fit")

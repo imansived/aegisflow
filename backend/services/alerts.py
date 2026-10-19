@@ -21,12 +21,21 @@ class AlertConfig:
     clear_after_s: float = 60.0
 
 
+ACTIVE_SIGNAL = 0.30  # a modality at or above this effective score counts as "contributing" to an alert
+
+
+def _n_active(f: Fused) -> int:
+    return sum(1 for v in f.effective.values() if v >= ACTIVE_SIGNAL)
+
+
 class _Open:
     def __init__(self, alert_id: str, started: datetime, fused: Fused):
         self.alert_id, self.started = alert_id, started
         self.peak = fused.score
         self.peak_fused = fused
+        self.n_active = _n_active(fused)
         self.below_since: float | None = None
+        self.last_seen = fused.ts  # the newest event seen while the alert was open
 
 
 def _iso(ts: datetime) -> str:
@@ -39,8 +48,24 @@ class AlertManager:
         self.corr = corr or CorrelationConfig()
         self._open: dict[str, _Open] = {}
 
+    def reset_device(self, device_id: str) -> list[dict]:
+        """Close any open alert for a device whose clock jumped backwards, so none is left open forever.
+
+        Returns the 'closed' event (ended at the alert's last seen moment) to publish and store."""
+        cur = self._open.pop(device_id, None)
+        return [self._event("closed", cur, cur.last_seen)] if cur else []
+
+    def close_all(self) -> list[dict]:
+        """Close every open alert (the analysis is being reset, or the source has stopped), each ended at the
+        last moment it was seen. Without this a stopped or restarted system leaves 'open' alerts behind forever."""
+        events = [self._event("closed", cur, cur.last_seen) for cur in self._open.values()]
+        self._open.clear()
+        return events
+
     def update(self, f: Fused) -> list[dict]:
-        """Feed one fused result; returns alert events ('opened'/'escalated'/'closed') to publish."""
+        """Feed one fused result; returns alert events to publish.
+
+        Kinds: 'opened', 'escalated' (severity rose), 'updated' (another signal joined) and 'closed'."""
         events: list[dict] = []
         cur = self._open.get(f.device_id)
         now = f.ts.timestamp()
@@ -51,11 +76,21 @@ class AlertManager:
                 events.append(self._event("opened", cur, None))
             return events
 
-        if f.score > cur.peak:
-            before = severity(cur.peak, self.corr)
-            cur.peak, cur.peak_fused = f.score, f  # keep the explanation for the WORST moment
-            if _ORDER[severity(f.score, self.corr)] > _ORDER[before]:
-                events.append(self._event("escalated", cur, None))
+        cur.last_seen = f.ts
+        before = severity(cur.peak, self.corr)
+        n = _n_active(f)
+        joined = n > cur.n_active
+        if joined:
+            cur.n_active = n
+        if f.score > cur.peak or joined:
+            # The explanation follows the worst moment, OR a moment when another signal joined. A saturating
+            # fusion's score stops rising once one signal is enough, so "peak only" would hide the very signals
+            # that arrive afterwards (found in the Phase 8 demo, manual §4.9).
+            cur.peak, cur.peak_fused = max(cur.peak, f.score), f
+        if _ORDER[severity(cur.peak, self.corr)] > _ORDER[before]:
+            events.append(self._event("escalated", cur, None))
+        elif joined:
+            events.append(self._event("updated", cur, None))
 
         if f.score < self.cfg.clear_at:
             cur.below_since = cur.below_since if cur.below_since is not None else now

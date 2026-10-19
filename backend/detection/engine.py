@@ -64,6 +64,12 @@ class DetectionEngine:
             self.sink(scores)
         return scores
 
+    def reset_device(self, device_id: str) -> None:
+        """A device's clock jumped backwards: clear its time-based state, keep what it has learned."""
+        self._prev.pop(device_id, None)
+        for det in self.detectors:
+            det.reset_windows(device_id)
+
     def __call__(self, t: Telemetry) -> None:
         """Lets the engine be passed straight to `Processor(handler=engine)`."""
         self.process(t)

@@ -329,6 +329,22 @@ def test_websocket_receives_the_real_alert_from_the_pipeline(api, r):
         assert any(m["type"] == "score" for m in seen)  # score updates flowed too
 
 
+def test_resetting_the_analysis_tells_connected_dashboards_to_drop_the_old_run(api):
+    import types
+
+    client, rt, s = api
+    rt.hub.loop = types.SimpleNamespace(call_soon_threadsafe=lambda fn, *a: fn(*a))  # deliver synchronously
+    watcher = rt.hub.connect()
+    rt.drain()  # builds the pipeline in this thread
+    rt.live["D-001"] = {"device_id": "D-001"}
+    rt.reset_analysis()
+    assert rt.live == {}
+    msgs = []
+    while not watcher.queue.empty():
+        msgs.append(watcher.queue.get_nowait())
+    assert {"type": "reset"} in msgs
+
+
 def test_severity_bands_follow_the_alert_thresholds_so_red_means_alert(api):
     client, rt, s = api
     st = client.get("/system/status", headers=VH).json()
@@ -437,6 +453,67 @@ def test_demo_injection_and_clear_change_what_a_device_does(api):
             bad()
     staged = demo.inject("D-002", "staged", 0.2, 100)
     assert staged["scenario"] == "staged" and any(e.windows_s for e in demo.fleet.episodes_by_device["D-002"])
+
+
+def test_a_new_demo_starts_after_everything_already_stored_on_a_monday(api):
+    from zoneinfo import ZoneInfo  # noqa: F401 - IST is a fixed +05:30 offset; SITE_TZ is used below
+
+    from contracts.site import SITE_TZ
+
+    client, rt, s = api
+    demo = client.app.state.demo
+    first = demo._next_start()
+    assert first == SimConfig().start and first.weekday() == 0  # nothing stored: the default Monday 00:00 IST
+
+    db = EventStore(s.db_path)
+    tue = datetime(2026, 10, 6, 10, 0, tzinfo=SITE_TZ)  # the previous run ended on a Tuesday morning
+    db.insert_event(Telemetry(**{**ev(), "timestamp": tue}))
+    db.close()
+    nxt = demo._next_start()
+    assert nxt == datetime(2026, 10, 12, 0, 0, tzinfo=SITE_TZ) and nxt.weekday() == 0  # the following Monday, after all stored data
+
+    db = EventStore(s.db_path)
+    sun = datetime(2026, 10, 18, 23, 0, tzinfo=SITE_TZ)  # even a Sunday-night run must not collide
+    db.insert_event(Telemetry(**{**ev(sec=1), "timestamp": sun}))
+    db.close()
+    assert demo._next_start() == datetime(2026, 10, 26, 0, 0, tzinfo=SITE_TZ)
+
+
+@pytest.mark.slow
+def test_the_demo_can_be_stopped_and_started_again_and_alerts_the_second_time_too(tmp_path, r):
+    """Regression (manual §4.9): a second demo run in the same process replayed earlier simulated times, which
+    made detector windows grow without bound (a 15x slowdown) and made every live event a stored duplicate."""
+    s = make_settings(tmp_path, run_processor=True)
+    with TestClient(create_app(s, det_cfg=DET)) as client:
+        def run_once():
+            assert client.post("/demo/start", headers=AH, json={"devices": 2, "warmup_hours": 12, "speed": 60}).status_code == 202
+            deadline = time.time() + 120
+            while client.get("/demo/status", headers=VH).json()["state"] != "live":
+                assert time.time() < deadline and client.get("/demo/status", headers=VH).json()["state"] != "error"
+                time.sleep(0.4)
+            sim_start = client.get("/demo/status", headers=VH).json()["sim_time"]
+            before = {a["alert_id"] for a in client.get("/alerts", headers=VH, params={"device_id": "D-001"}).json()}
+            assert client.post("/demo/inject", headers=AH, json={"device_id": "D-001", "scenario": "spatial", "magnitude": 1.0, "duration_s": 300}).status_code == 201
+            deadline, new = time.time() + 90, []
+            while not new and time.time() < deadline:
+                new = [a for a in client.get("/alerts", headers=VH, params={"device_id": "D-001"}).json() if a["alert_id"] not in before]
+                time.sleep(0.5)
+            assert new, "no alert raised in this run"
+            client.post("/demo/stop", headers=AH)
+            # Stopping the demo must not leave the alert open forever (found when an alert from an earlier run stayed open).
+            assert client.get("/alerts", headers=VH, params={"status": "open"}).json() == []
+            return sim_start
+
+        t0 = time.time()
+        first = run_once()
+        d1 = time.time() - t0
+        t1 = time.time()
+        second = run_once()
+        d2 = time.time() - t1
+        assert second > first  # the second run starts later in simulated time than the first
+        assert d2 < 4 * d1 + 10, (d1, d2)  # and is not dramatically slower (it was 15x before the fix)
+        assert client.get("/system/status", headers=VH).json()["clock_resets"] == 0  # a fresh pipeline: no clock regression
+    r.delete(s.stream, s.dead_letter)
 
 
 @pytest.mark.slow

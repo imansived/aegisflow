@@ -8,13 +8,17 @@ import { MODALITIES, type HistoryPoint, type Severity, type Status } from '../ty
 
 const SEV_COLOR: Record<Severity, string> = { normal: 'var(--sev-normal)', low: 'var(--sev-low)', medium: 'var(--sev-medium)', high: 'var(--sev-high)' }
 
-/** Highest fused score across the fleet per simulated minute, from the stored history. */
-export function fleetPeakSeries(points: HistoryPoint[]): { t: number; v: number }[] {
+/** Highest fused score across the fleet per simulated minute, over the last hour of stored history. Older runs
+ *  (each starts a week later in simulated time) are left out so the chart shows the current run only. */
+export function fleetPeakSeries(points: HistoryPoint[], windowMs = 60 * 60_000): { t: number; v: number }[] {
+  const times = points.map((p) => Date.parse(p.ts))
+  const newest = Math.max(-Infinity, ...times)
   const byMinute = new Map<number, number>()
-  for (const p of points) {
-    const m = Math.floor(Date.parse(p.ts) / 60_000) * 60_000
+  points.forEach((p, i) => {
+    if (times[i] < newest - windowMs) return
+    const m = Math.floor(times[i] / 60_000) * 60_000
     byMinute.set(m, Math.max(byMinute.get(m) ?? 0, p.score))
-  }
+  })
   return [...byMinute.entries()].sort((a, b) => a[0] - b[0]).map(([t, v]) => ({ t, v }))
 }
 

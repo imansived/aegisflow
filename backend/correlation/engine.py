@@ -73,6 +73,10 @@ class CorrelationEngine:
         self.cfg = cfg or CorrelationConfig()
         self._state: dict[str, _DeviceState] = {}
 
+    def reset_device(self, device_id: str) -> None:
+        """Drop a device's decayed-peak state (its clock jumped backwards, so the decay times are meaningless)."""
+        self._state.pop(device_id, None)
+
     def update(self, scores: Scores) -> Fused:
         st = self._state.setdefault(scores.device_id, _DeviceState())
         now = scores.ts.timestamp()

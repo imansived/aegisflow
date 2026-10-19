@@ -120,6 +120,26 @@ class EventStore:
             q, args = q + " WHERE device_id = ?", (device_id,)
         return [json.loads(p) for (p,) in self.db.execute(q + " ORDER BY started", args)]
 
+    def close_stale_alerts(self) -> int:
+        """Close alerts left 'open' by a previous process. At startup nothing is tracking them (the alert state
+        lives in memory), so they would stay open forever. Each ends at its device's newest stored event, or at
+        its own start if there is none. Returns how many were closed."""
+        import json
+
+        rows = self.db.execute("SELECT alert_id, device_id, started, payload FROM alerts WHERE ended IS NULL").fetchall()
+        for alert_id, device_id, started, payload in rows:
+            latest = self.db.execute("SELECT MAX(ts) FROM events WHERE device_id = ?", (device_id,)).fetchone()[0]
+            ended = max(started, latest) if latest else started
+            a = json.loads(payload)
+            a["ended"], a["event"] = ended, "closed"
+            self.db.execute("UPDATE alerts SET ended = ?, payload = ? WHERE alert_id = ?", (ended, json.dumps(a), alert_id))
+        return len(rows)
+
+    def latest_event_ts(self) -> str | None:
+        """ISO time of the newest stored event, or None if there are none."""
+        row = self.db.execute("SELECT MAX(ts) FROM events").fetchone()
+        return row[0] if row else None
+
     def query_alerts(self, device_id: str | None = None, status: str | None = None, limit: int = 100) -> list[dict]:
         """Newest first. status: 'open' (not yet closed), 'closed', or None for both."""
         import json

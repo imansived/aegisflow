@@ -154,6 +154,9 @@ describe('charts', () => {
     const s = fleetPeakSeries([p('2026-10-06T04:31:30+00:00', 0.9), p('2026-10-06T04:30:10+00:00', 0.2), p('2026-10-06T04:30:50+00:00', 0.6)])
     expect(s.map((x) => x.v)).toEqual([0.6, 0.9])
     expect(s[0].t).toBeLessThan(s[1].t)
+    // an earlier run (a week before) must not be drawn beside the current one
+    const withOldRun = fleetPeakSeries([p('2026-10-27T04:31:30+00:00', 0.99), p('2026-11-03T04:31:30+00:00', 0.5)])
+    expect(withOldRun.map((x) => x.v)).toEqual([0.5])
   })
 })
 

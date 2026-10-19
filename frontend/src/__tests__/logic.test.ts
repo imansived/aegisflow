@@ -117,6 +117,22 @@ describe('live reducer', () => {
     expect(s.feed.map((f) => f.text)).toEqual(expect.arrayContaining([expect.stringMatching(/closed/), expect.stringMatching(/High anomaly: entered a restricted zone/)]))
   })
 
+  it('updates an open alert in place when another signal joins, and says so in the feed', () => {
+    let s = reducer(initialState, { type: 'alert', alert: alert({ event: 'opened' }) })
+    const joined = alert({
+      event: 'updated',
+      factors: [
+        { modality: 'spatial', contribution: 0.5, effective_score: 1, reasons: ['entered a restricted zone'] },
+        { modality: 'network', contribution: 0.4, effective_score: 0.9, reasons: [] },
+      ],
+    })
+    s = reducer(s, { type: 'alert', alert: joined })
+    expect(s.alerts).toHaveLength(1)
+    expect(s.alerts[0].factors).toHaveLength(2)
+    expect(s.alerts[0].status).toBe('open')
+    expect(s.feed[0].text).toBe('Another signal joined (2 now): spatial, network')
+  })
+
   it('keeps alerts newest first', () => {
     const s = reducer(initialState, { type: 'alerts_loaded', alerts: [
       alert({ alert_id: 'a', started: '2026-10-06T01:00:00+00:00' }), alert({ alert_id: 'b', started: '2026-10-06T03:00:00+00:00' }), alert({ alert_id: 'c', started: '2026-10-06T02:00:00+00:00' })] })
@@ -133,6 +149,33 @@ describe('live reducer', () => {
     expect(s.history['D-001'][1].score).toBe(0.1) // the live value wins over the stored one
   })
 
+  it('ignores stored history from an earlier run, which would draw as a sawtooth beside the live points', () => {
+    let s = reducer(initialState, { type: 'score', snap: snap({ ts: '2026-11-03T04:30:00+00:00' }) })
+    const p = (ts: string, score: number): HistoryPoint => ({ device_id: 'D-001', ts, score, severity: 'normal', effective: EFF })
+    s = reducer(s, { type: 'history_loaded', device_id: 'D-001', points: [
+      p('2026-10-27T04:35:00+00:00', 0.99), // a week earlier: a previous run
+      p('2026-11-03T04:20:00+00:00', 0.2), // ten minutes before now: keep
+      p('2026-11-03T03:00:00+00:00', 0.3), // an hour before now: outside the window
+      p('2026-11-03T05:00:00+00:00', 0.4), // after the newest live point: cannot be part of this run yet
+    ] })
+    expect(s.history['D-001'].map((x) => x.score)).toEqual([0.2, 0.1])
+  })
+
+  it('drops the old run on reset but keeps stored alerts, so the new run starts clean', () => {
+    let s = reducer(initialState, { type: 'snapshot', live: [snap()], open_alerts: [alert()] })
+    s = reducer(s, { type: 'score', snap: snap({ ts: '2026-10-06T04:30:05+00:00', severity: 'high', score: 0.97 }) })
+    expect(Object.keys(s.devices)).toHaveLength(1)
+    expect(s.feed).toHaveLength(1)
+    s = reducer(s, { type: 'reset' })
+    expect(s.devices).toEqual({})
+    expect(s.history).toEqual({})
+    expect(s.feed).toEqual([])
+    expect(s.alerts).toHaveLength(1)
+    // and the next run's first point is not anchored to the old run's time
+    s = reducer(s, { type: 'score', snap: snap({ ts: '2026-11-03T04:30:00+00:00' }) })
+    expect(s.history['D-001']).toHaveLength(1)
+  })
+
   it('tracks the connection state', () => {
     expect(reducer(initialState, { type: 'connection', state: 'open' }).connection).toBe('open')
   })
@@ -147,6 +190,7 @@ describe('websocket helpers', () => {
   })
   it('accepts known frames and ignores junk', () => {
     expect(parseMessage('{"type":"ping"}')).toEqual({ type: 'ping' })
+    expect(parseMessage('{"type":"reset"}')).toEqual({ type: 'reset' })
     expect(parseMessage('{"type":"warp"}')).toBeNull()
     expect(parseMessage('not json')).toBeNull()
     expect(parseMessage('null')).toBeNull()

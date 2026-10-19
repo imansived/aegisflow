@@ -5,12 +5,15 @@ below, Redis, and `npm run dev` on :5173. Drives the UI as a person would and sa
 
   python scripts/e2e_dashboard.py [output_dir]
 """
-import sys, time
+import os, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
-BASE = "http://localhost:5173"
-ADMIN, VIEWER = "admin-demo-token-0123456789", "viewer-demo-token-0123456789"
+# Defaults match the local dev setup; point AEGIS_UI at http://localhost:8080 and export the real tokens
+# to run the same script against the Docker stack.
+BASE = os.environ.get("AEGIS_UI", "http://localhost:5173")
+ADMIN = os.environ.get("AEGIS_ADMIN_TOKEN", "admin-demo-token-0123456789")
+VIEWER = os.environ.get("AEGIS_VIEWER_TOKEN", "viewer-demo-token-0123456789")
 OUT = Path(sys.argv[1] if len(sys.argv) > 1 else "e2e_shots"); OUT.mkdir(parents=True, exist_ok=True)
 
 def shot(page, name): page.screenshot(path=str(OUT / f"{name}.png"), full_page=True); print("  screenshot:", name)
@@ -49,9 +52,11 @@ with sync_playwright() as p:
     page.locator("section[aria-label='Devices'] button.row", has_text="D-003").click()
     expect(page.get_by_role("region", name="Device D-003")).to_be_visible()
     page.get_by_role("button", name="Enter restricted zone").click()
-    alert_row = page.locator("section[aria-label='Alerts and activity'] button.row", has_text="D-003")
-    expect(alert_row).to_be_visible(timeout=90000)
-    expect(alert_row).to_contain_text("entered a restricted zone")
+    # The Docker stack keeps its data between runs, so older D-003 alerts may be listed: target the OPEN one.
+    feed_rows = page.locator("section[aria-label='Alerts and activity'] button.row")
+    open_alert = feed_rows.filter(has_text="D-003").filter(has_text="Open")
+    expect(open_alert.first).to_be_visible(timeout=90000)
+    expect(open_alert.first).to_contain_text("entered a restricted zone")
     time.sleep(3); shot(page, "06_alert_raised")
     expect(page.get_by_text("Why it was flagged")).to_be_visible()
     assert page.locator(".marker.pulse").count() >= 1, "a high-severity device should pulse on the map"
@@ -60,7 +65,8 @@ with sync_playwright() as p:
 
     print("5. restore normal; the alert should close")
     page.get_by_role("button", name="Restore normal").click()
-    expect(page.locator("section[aria-label='Alerts and activity'] button.row", has_text="Closed")).to_be_visible(timeout=60000)
+    expect(open_alert).to_have_count(0, timeout=90000)  # that alert closes...
+    expect(feed_rows.filter(has_text="D-003").filter(has_text="Closed").first).to_be_visible()  # ...and is listed as closed
     shot(page, "07_alert_closed")
 
     print("6. analytics and evidence pages, light theme")

@@ -14,6 +14,7 @@ from backend.detection.types import DetectorResult, Scores
 from backend.services.alerts import AlertConfig, AlertManager
 from backend.services.pipeline import Pipeline
 from contracts.scenarios import Episode, Modality, ScenarioType
+from contracts.telemetry import Telemetry
 from ml.dataset import RowSet, apply_fusion, build_rows, hold_offline
 from ml.iforest import EarlyFusionIF
 from simulator.config import SimConfig
@@ -261,6 +262,133 @@ def test_pipeline_raises_a_stored_explained_alert_and_replay_is_idempotent():
     for t in events:
         pipe2(t)
     assert len(store.alerts()) == 1
+
+
+# ---- out-of-order and rewound clocks ------------------------------------------------------
+
+
+def test_learned_fusion_attributes_a_saturated_score_to_every_active_signal():
+    """Leave-one-out read ~0 for each of several redundant signals once the score saturated (the Phase 8 demo
+    showed 'contributes 0.00'). The model's own additive structure shares the score out instead."""
+    rng = np.random.default_rng(3)
+    E = rng.random((3000, 4)) * (rng.random((3000, 4)) > 0.6)
+    y = ((E[:, 0] > 0.5) | (E[:, 1] > 0.5)).astype(int)  # either spatial OR network is enough
+    lf = LearnedFusion().fit(E, y)
+    both = [1.0, 1.0, 0.0, 0.0]
+    s = lf.score(both)
+    assert s > 0.97  # saturated: each signal alone would already suffice
+    loo = super(LearnedFusion, lf).contributions(both)
+    assert max(loo.values()) < 0.1  # the generic method sees ~nothing to attribute
+    c = lf.contributions(both)
+    assert c[Modality.SPATIAL] > 0.2 and c[Modality.NETWORK] > 0.2  # the model's method credits both
+    assert sum(c.values()) == pytest.approx(s)  # and the shares add up to the score
+    assert c[Modality.DEVICE] == 0.0 and c[Modality.PROXIMITY] == 0.0
+    assert all(v == 0.0 for v in lf.contributions([0, 0, 0, 0]).values())
+
+
+def test_an_open_alert_is_updated_when_another_signal_joins_even_if_the_score_is_saturated():
+    am = AlertManager(AlertConfig(raise_at=0.6, clear_at=0.4, clear_after_s=60))
+
+    def at(sec, spatial=0.0, network=0.0, device=0.0, score_fusion=MaxFusion()):
+        ce = CorrelationEngine(score_fusion, CorrelationConfig(half_life_s=1e-9, explain_above=0.0))
+        return ce.update(scores(sec, spatial=spatial, network=network, device=device, ev={"network": {"unfamiliar_1m": 7.0}}))
+
+    ev = am.update(at(0, spatial=1.0))
+    assert [e["event"] for e in ev] == ["opened"] and [f["modality"] for f in ev[0]["factors"]] == ["spatial"]
+    ev = am.update(at(5, spatial=1.0))  # nothing new: no event
+    assert ev == []
+    ev = am.update(at(10, spatial=1.0, network=0.9))  # the score cannot rise (already 1.0), but a signal joined
+    assert [e["event"] for e in ev] == ["updated"]
+    assert {f["modality"] for f in ev[0]["factors"]} == {"spatial", "network"}  # the explanation now shows both
+    assert any("endpoints" in r for f in ev[0]["factors"] for r in f["reasons"])
+    ev = am.update(at(15, spatial=1.0, network=0.9, device=0.8))
+    assert [e["event"] for e in ev] == ["updated"] and len(ev[0]["factors"]) == 3
+    assert am.update(at(20, spatial=1.0, network=0.9, device=0.8)) == []  # no change, no event
+
+
+def test_close_all_ends_every_open_alert_at_its_last_seen_moment():
+    am = AlertManager(AlertConfig(raise_at=0.6, clear_at=0.4, clear_after_s=60))
+    am.update(fused_at(100, 0.9, dev="D-001"))
+    am.update(fused_at(100, 0.9, dev="D-002"))
+    am.update(fused_at(130, 0.8, dev="D-001"))  # D-001 was last seen 30 s later
+    events = {e["device_id"]: e for e in am.close_all()}
+    assert set(events) == {"D-001", "D-002"} and all(e["event"] == "closed" for e in events.values())
+    assert events["D-001"]["ended"] > events["D-002"]["ended"]
+    assert am.close_all() == []  # idempotent: nothing left
+
+
+def test_stale_open_alerts_from_a_dead_process_are_closed_at_startup(tmp_path):
+    st = EventStore(str(tmp_path / "s.db"))
+    st.insert_event(Telemetry(device_id="D-001", timestamp=datetime(2026, 10, 5, 12, 5, tzinfo=timezone.utc), latitude=18.52, longitude=73.85,
+                              battery=80, cpu_usage=1, memory_usage=1, temperature=30, uptime_s=1, network_connections=1, bytes_sent=1, bytes_received=1))
+    st.upsert_alert({"alert_id": "D-001@x", "device_id": "D-001", "started": "2026-10-05T12:00:00+00:00", "ended": None,
+                     "peak_score": 0.99, "severity": "high", "event": "opened"})
+    st.upsert_alert({"alert_id": "D-009@y", "device_id": "D-009", "started": "2026-10-05T12:00:00+00:00", "ended": None,
+                     "peak_score": 0.8, "severity": "medium", "event": "opened"})  # no events stored for this device
+    assert st.close_stale_alerts() == 2
+    a = st.get_alert("D-001@x")
+    assert a["status"] == "closed" and a["ended"] == "2026-10-05T12:05:00+00:00" and a["event"] == "closed"  # ends at the device's newest event
+    assert st.get_alert("D-009@y")["ended"] == "2026-10-05T12:00:00+00:00"  # no events: ends at its own start
+    assert st.query_alerts(status="open") == [] and st.close_stale_alerts() == 0
+
+
+def test_alert_manager_closes_an_open_alert_when_a_device_is_reset():
+    am = AlertManager(AlertConfig(raise_at=0.6, clear_at=0.4, clear_after_s=60))
+    assert [e["event"] for e in am.update(fused_at(100, 0.9))] == ["opened"]
+    closed = am.reset_device("D-001")
+    assert [e["event"] for e in closed] == ["closed"] and closed[0]["ended"]
+    assert am.reset_device("D-001") == []  # nothing left to close
+    assert [e["event"] for e in am.update(fused_at(10, 0.9))] == ["opened"]  # a new incident can open
+
+
+def test_pipeline_drops_slightly_late_events_and_resets_on_a_big_clock_jump():
+    from backend.services.pipeline import MAX_LATE_S
+
+    cfg = SimConfig(seed=9, n_devices=2)
+    ep = _spatial_episode(cfg)
+    events = [t for t in Fleet(cfg, [ep]).run(timedelta(hours=14))]
+    published, store = [], EventStore()
+    pipe = Pipeline(cfg.device_ids(), MaxFusion(), store, det_cfg=DetectionConfig(occ_min_samples=500), on_alert=published.append)
+    cut = next(i for i, t in enumerate(events) if t.device_id == "D-001" and t.timestamp >= ep.start + timedelta(minutes=4))
+    for t in events[:cut]:
+        pipe.process(t)
+    assert [e["event"] for e in published] == ["opened"]  # the intrusion is under way, alert open
+    last = events[cut - 1] if events[cut - 1].device_id == "D-001" else events[cut - 2]
+
+    late = last.model_copy(update={"timestamp": last.timestamp - timedelta(seconds=MAX_LATE_S - 10)})
+    assert pipe.process(late) is None and pipe.late_events == 1  # slightly late: dropped, state untouched
+    assert [e["event"] for e in published] == ["opened"]
+
+    rewound = last.model_copy(update={"timestamp": last.timestamp - timedelta(hours=3)})
+    assert pipe.process(rewound) is not None and pipe.clock_resets == 1  # a big jump: a new epoch, analysis continues
+    assert [e["event"] for e in published] == ["opened", "closed"]  # the stranded alert was closed, not left open forever
+    assert store.alerts("D-001")[0]["ended"] is not None
+
+    for _ in range(3):  # the device can keep going afterwards: later events are accepted again
+        rewound = rewound.model_copy(update={"timestamp": rewound.timestamp + timedelta(seconds=5)})
+        assert pipe.process(rewound) is not None
+    assert pipe.clock_resets == 1
+
+
+def test_pipeline_cost_per_event_does_not_grow_after_a_clock_jump():
+    """The measured failure was 46 -> 583 -> 2607 us/event. After the fix it stays flat."""
+    import time
+
+    cfg = SimConfig(seed=9, n_devices=2)
+    events = [t for t in Fleet(cfg, []).run(timedelta(hours=3)) if t.device_id == "D-001"]
+    pipe = Pipeline(cfg.device_ids(), MaxFusion(), None, det_cfg=DetectionConfig(occ_min_samples=500))
+    for t in events:
+        pipe.process(t)
+
+    def per_event(shift_h):
+        rows = [t.model_copy(update={"timestamp": t.timestamp - timedelta(hours=shift_h)}) for t in events]
+        t0 = time.perf_counter()
+        for r in rows:
+            pipe.process(r)
+        return (time.perf_counter() - t0) / len(rows)
+
+    first, second = per_event(48), per_event(96)  # two successive jumps back
+    assert second < 3 * first + 5e-5, (first, second)  # a growing window would make `second` many times larger
 
 
 # ---- dataset and the Isolation Forest control -----------------------------------------

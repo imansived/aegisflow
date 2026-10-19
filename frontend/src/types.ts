@@ -42,7 +42,7 @@ export interface Alert {
   factors: Factor[]
   explanation: string
   status?: 'open' | 'closed'
-  event?: 'opened' | 'escalated' | 'closed'
+  event?: 'opened' | 'escalated' | 'updated' | 'closed'
 }
 
 export interface DeviceInfo {
@@ -107,4 +107,5 @@ export type WsMessage =
   | { type: 'snapshot'; live: Snapshot[]; open_alerts: Alert[] }
   | ({ type: 'score' } & Snapshot)
   | ({ type: 'alert' } & Alert)
+  | { type: 'reset' } // the server restarted its analysis: drop live devices and histories
   | { type: 'ping' }

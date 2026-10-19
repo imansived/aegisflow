@@ -262,6 +262,35 @@ def test_brief_visitor_ignored_but_persistent_unenrolled_device_alerts():
     assert max(long) >= 0.8  # 4 min
 
 
+# ---- clocks that run backwards -------------------------------------------------------
+
+def test_sliding_windows_stay_bounded_when_a_devices_clock_runs_backwards():
+    """Regression (manual §4.9): windows are trimmed by TIME, so after a backwards jump nothing was trimmed and each
+    event cost more than the last (46 us -> 2607 us measured). The cap makes the bound independent of timestamps."""
+    from backend.detection.detectors import MAX_WINDOW_EVENTS
+
+    rng = np.random.default_rng(0)
+    eng = DetectionEngine(["D-001"], CFG)
+    for i in range(500):
+        eng.process(mk(i, rng))
+    for i in range(3 * MAX_WINDOW_EVENTS):  # time jumps far back, then keeps going back-and-forth
+        eng.process(mk(-100_000 + (i % 7), rng, battery=50.0, uptime_s=1))  # explicit: the helper derives these from i
+    net, dev = eng.detectors[1]._state["D-001"], eng.detectors[2]._state["D-001"]
+    for window in (net.window, net.recent, dev.battery_hist, dev.recent):
+        assert len(window) <= MAX_WINDOW_EVENTS
+
+
+def test_reset_clears_time_state_but_keeps_what_was_learned():
+    eng, rng, n, _ = trained()
+    net = eng.detectors[1]._state["D-001"]
+    known_before = {e for e, c in net.counts.items() if c >= CFG.endpoint_known_count}
+    assert known_before and len(net.window) > 0
+    eng.reset_device("D-001")
+    assert len(net.window) == 0 and len(net.recent) == 0 and net.first_s is None
+    assert {e for e, c in net.counts.items() if c >= CFG.endpoint_known_count} == known_before  # still known
+    assert eng.detectors[2]._baselines["D-001"].stat("work", "cpu").n > 0  # baselines survive
+
+
 # ---- poisoning / replay ---------------------------------------------------------------
 
 

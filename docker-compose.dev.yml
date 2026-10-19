@@ -1,0 +1,21 @@
+# Development only: Redis on its own, with no tokens needed. The tests and local scripts use this.
+#   docker compose -f docker-compose.dev.yml up -d
+# (The full stack, in docker-compose.yml, refuses to start without access tokens.)
+
+name: aegisflow
+
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  redis-data:

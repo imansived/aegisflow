@@ -23,6 +23,16 @@ from .types import Context, DetectorResult
 # (name, value, min_std, sided)
 Item = tuple[str, float, float, str]
 
+# Hard cap on every sliding window. Windows are trimmed by TIME, so if a device's clock ever goes backwards
+# nothing would be trimmed and each event would cost more than the last (a 57x slowdown was measured, manual
+# §4.9). A cap makes the cost bounded whatever the timestamps say. 1000 entries covers a 5-minute window at
+# 3 events/s, above the ingestion rate limit.
+MAX_WINDOW_EVENTS = 1000
+
+
+def _window() -> deque:
+    return deque(maxlen=MAX_WINDOW_EVENTS)
+
 
 class Detector(ABC):
     modality: Modality
@@ -34,6 +44,12 @@ class Detector(ABC):
     @abstractmethod
     def step(self, ctx: Context) -> tuple[DetectorResult, dict[str, float]]:
         """Return (result, raw features) for this event."""
+
+    def reset_windows(self, device_id: str) -> None:
+        """Forget a device's TIME-based state (windows, run counters) after its clock jumped backwards.
+
+        Learned knowledge (baselines, zone occupancy, known endpoints) is kept: it describes behaviour,
+        not time. Default: nothing to clear."""
 
     # ---- shared mechanics ------------------------------------------------------------
 
@@ -75,6 +91,11 @@ class SpatialDetector(Detector):
     def __init__(self, cfg: DetectionConfig):
         super().__init__(cfg)
         self._state: dict[str, _SpatialState] = defaultdict(_SpatialState)
+
+    def reset_windows(self, device_id: str) -> None:
+        s = self._state.get(device_id)
+        if s:  # keep the learned zone occupancy; forget the run counter and the bucket-change clock
+            s.restricted_run, s.bucket, s.bucket_since = 0, None, 0.0
 
     def step(self, ctx: Context):
         cfg, dev = self.cfg, ctx.t.device_id
@@ -136,8 +157,8 @@ class _NetworkState:
         self.first_s: float | None = None
         self.counts: dict[str, int] = defaultdict(int)
         self.last_counted: dict[str, float] = {}
-        self.window: deque[tuple[float, int]] = deque()  # (time, unfamiliar endpoints that tick)
-        self.recent: deque[tuple[float, float, float, float]] = deque()  # (time, log_sent, log_recv, conns)
+        self.window: deque[tuple[float, int]] = _window()  # (time, unfamiliar endpoints that tick)
+        self.recent: deque[tuple[float, float, float, float]] = _window()  # (time, log_sent, log_recv, conns)
 
 
 class NetworkDetector(Detector):
@@ -146,6 +167,14 @@ class NetworkDetector(Detector):
     def __init__(self, cfg: DetectionConfig):
         super().__init__(cfg)
         self._state: dict[str, _NetworkState] = defaultdict(_NetworkState)
+
+    def reset_windows(self, device_id: str) -> None:
+        s = self._state.get(device_id)
+        if s:  # keep which endpoints are known; forget the time windows and the rate-limit clocks
+            s.window.clear()
+            s.recent.clear()
+            s.last_counted.clear()
+            s.first_s = None  # the "endpoints have had time to form" timer restarts in the new epoch
 
     def step(self, ctx: Context):
         cfg, t, dev = self.cfg, ctx.t, ctx.t.device_id
@@ -199,8 +228,8 @@ class NetworkDetector(Detector):
 
 class _DeviceState:
     def __init__(self) -> None:
-        self.battery_hist: deque[tuple[float, float]] = deque()  # (time, battery %)
-        self.recent: deque[tuple[float, float, float]] = deque()  # (time, cpu, temp)
+        self.battery_hist: deque[tuple[float, float]] = _window()  # (time, battery %)
+        self.recent: deque[tuple[float, float, float]] = _window()  # (time, cpu, temp)
 
 
 class DeviceDetector(Detector):
@@ -209,6 +238,12 @@ class DeviceDetector(Detector):
     def __init__(self, cfg: DetectionConfig):
         super().__init__(cfg)
         self._state: dict[str, _DeviceState] = defaultdict(_DeviceState)
+
+    def reset_windows(self, device_id: str) -> None:
+        s = self._state.get(device_id)
+        if s:
+            s.battery_hist.clear()
+            s.recent.clear()
 
     def step(self, ctx: Context):
         cfg, t, dev = self.cfg, ctx.t, ctx.t.device_id
@@ -267,6 +302,11 @@ class ProximityDetector(Detector):
         super().__init__(cfg)
         self.enrolled = enrolled
         self._state: dict[str, _ProximityState] = defaultdict(_ProximityState)
+
+    def reset_windows(self, device_id: str) -> None:
+        s = self._state.get(device_id)
+        if s:
+            s.persist_s = 0.0
 
     def step(self, ctx: Context):
         cfg, dev = self.cfg, ctx.t.device_id

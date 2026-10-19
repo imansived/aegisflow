@@ -1,0 +1,7 @@
+# Runtime dependencies of the API container only. scikit-learn is deliberately absent: the server never trains
+# anything (it loads the exported design), and the learned fusion is evaluated with NumPy.
+pydantic>=2.6
+numpy>=1.26
+redis>=5
+fastapi>=0.110
+uvicorn[standard]>=0.29

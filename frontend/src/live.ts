@@ -28,6 +28,7 @@ export interface LiveState {
   history: Record<string, Point[]> // oldest first
 }
 
+export const HISTORY_WINDOW_MS = 30 * 60_000 // a device chart shows at most the last 30 (simulated) minutes
 export const MAX_FEED = 150
 export const MAX_POINTS = 240
 export const MAX_ALERTS = 300
@@ -36,6 +37,7 @@ export const initialState: LiveState = { connection: 'connecting', devices: {}, 
 
 export type Action =
   | { type: 'connection'; state: LiveState['connection'] }
+  | { type: 'reset' }
   | { type: 'snapshot'; live: Snapshot[]; open_alerts: Alert[] }
   | { type: 'score'; snap: Snapshot }
   | { type: 'alert'; alert: Alert }
@@ -59,6 +61,7 @@ function alertText(a: Alert): string {
   const why = lead?.reasons[0] ?? lead?.modality ?? 'elevated behaviour'
   if (a.event === 'closed') return `Alert closed (peak ${a.peak_score.toFixed(2)})`
   if (a.event === 'escalated') return `Escalated to ${SEVERITY_LABEL[a.severity]}: ${why}`
+  if (a.event === 'updated') return `Another signal joined (${a.factors.length} now): ${a.factors.map((f) => f.modality).join(', ')}`
   return `${SEVERITY_LABEL[a.severity]} anomaly: ${why}`
 }
 
@@ -66,6 +69,11 @@ export function reducer(state: LiveState, action: Action): LiveState {
   switch (action.type) {
     case 'connection':
       return { ...state, connection: action.state }
+
+    case 'reset':
+      // A new run: its devices and score histories replace the old run's. Alerts are kept (they are stored
+      // history, and the server has already closed any that were open).
+      return { ...state, devices: {}, history: {}, feed: [] }
 
     case 'snapshot': {
       const devices: Record<string, Snapshot> = {}
@@ -119,10 +127,15 @@ export function reducer(state: LiveState, action: Action): LiveState {
       return { ...state, alerts: upsertAlerts(state.alerts, action.alerts) }
 
     case 'history_loaded': {
-      const loaded: Point[] = action.points.map((h) => ({
+      const existing = state.history[action.device_id] ?? []
+      const all: Point[] = action.points.map((h) => ({
         t: Date.parse(h.ts), score: h.score, severity: h.severity, lat: NaN, lon: NaN, effective: h.effective,
       }))
-      const existing = state.history[action.device_id] ?? []
+      // Only the recent past, relative to the live data. The server returns a device's newest stored points
+      // across ALL runs; a demo run starts a week later in simulated time, so without this window an old
+      // run's alert episodes were drawn into the same chart, squeezed together (a sawtooth, seen in the browser).
+      const newest = existing.length ? existing[existing.length - 1].t : Math.max(-Infinity, ...all.map((p) => p.t))
+      const loaded = all.filter((p) => p.t <= newest && p.t >= newest - HISTORY_WINDOW_MS)
       const seen = new Set(existing.map((p) => p.t))
       const merged = [...loaded.filter((p) => !seen.has(p.t)), ...existing].sort((a, b) => a.t - b.t)
       return { ...state, history: { ...state.history, [action.device_id]: merged.slice(-MAX_POINTS) } }
@@ -141,7 +154,7 @@ export const SILENCE_LIMIT_MS = 60_000 // the server pings every 25 s; silence t
 export function parseMessage(raw: string): WsMessage | null {
   try {
     const m = JSON.parse(raw)
-    if (m && typeof m === 'object' && ['snapshot', 'score', 'alert', 'ping'].includes(m.type)) return m as WsMessage
+    if (m && typeof m === 'object' && ['snapshot', 'score', 'alert', 'reset', 'ping'].includes(m.type)) return m as WsMessage
   } catch {
     /* ignore malformed frames */
   }
@@ -172,7 +185,8 @@ export function useLive(token: string | null): [LiveState, Dispatch<Action>] {
         lastMessage = Date.now()
         const m = parseMessage(String(e.data))
         if (!m || m.type === 'ping') return
-        if (m.type === 'snapshot') dispatch({ type: 'snapshot', live: m.live, open_alerts: m.open_alerts })
+        if (m.type === 'reset') dispatch({ type: 'reset' })
+        else if (m.type === 'snapshot') dispatch({ type: 'snapshot', live: m.live, open_alerts: m.open_alerts })
         else if (m.type === 'score') dispatch({ type: 'score', snap: m })
         else dispatch({ type: 'alert', alert: m })
       }
