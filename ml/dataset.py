@@ -112,7 +112,22 @@ def build_rows(
     t_warm = (cfg.start + warm).timestamp()
     buf = timedelta(seconds=POST_EPISODE_BUFFER_S)
 
-    cols: dict[str, list] = {k: [] for k in ("ts", "device", "raw", "raw_soft", "feat", "label", "ignore", "episode", "scenario", "magnitude", "learning")}
+    # Preallocated arrays, not Python lists of lists (which cost ~800 bytes per row and made parallel
+    # builds thrash a memory-starved machine; manual §4.6). Capacity = post-warm-up ticks x devices.
+    n_ticks = int(dur.total_seconds() // cfg.tick_s)
+    cap = n_devices * max(0, n_ticks - int(np.ceil(warm.total_seconds() / cfg.tick_s)))
+    a_ts = np.empty(cap, np.float64)
+    a_dev = np.empty(cap, np.int16)
+    a_raw = np.empty((cap, len(MODALITIES)), np.float32)
+    a_soft = np.empty((cap, len(MODALITIES)), np.float32)
+    a_feat = np.empty((cap, len(FEATURE_NAMES)), np.float32)
+    a_label = np.empty(cap, np.int8)
+    a_ign = np.empty(cap, bool)
+    a_ep = np.empty(cap, np.int32)
+    a_sc = np.empty(cap, np.int8)
+    a_mag = np.empty(cap, np.float32)
+    a_learn = np.empty(cap, bool)
+    n = 0
     for t in Fleet(cfg, plan).run(dur):
         s = engine.process(t)
         ts = t.timestamp.timestamp()
@@ -130,25 +145,16 @@ def build_rows(
                 break
             if e.end <= t.timestamp < e.end + buf:
                 ignore, epi = True, k
-        cols["ts"].append(ts)
-        cols["device"].append(idx[t.device_id])
-        cols["raw"].append([s.results[m].score for m in MODALITIES])
-        cols["raw_soft"].append([s.results[m].soft for m in MODALITIES])
-        cols["feat"].append(feat)
-        cols["label"].append(label)
-        cols["ignore"].append(ignore)
-        cols["episode"].append(epi)
-        cols["scenario"].append(sc)
-        cols["magnitude"].append(mag)
-        cols["learning"].append(s.learning)
+        a_ts[n], a_dev[n] = ts, idx[t.device_id]
+        for j, m in enumerate(MODALITIES):
+            a_raw[n, j], a_soft[n, j] = s.results[m].score, s.results[m].soft
+        a_feat[n] = feat
+        a_label[n], a_ign[n], a_ep[n], a_sc[n], a_mag[n], a_learn[n] = label, ignore, epi, sc, mag, s.learning
+        n += 1
 
     return RowSet(
-        seed, n_devices,
-        np.asarray(cols["ts"], np.float64), np.asarray(cols["device"], np.int16),
-        np.asarray(cols["raw"], np.float32), np.asarray(cols["raw_soft"], np.float32), np.asarray(cols["feat"], np.float32),
-        np.asarray(cols["label"], np.int8), np.asarray(cols["ignore"], bool),
-        np.asarray(cols["episode"], np.int32), np.asarray(cols["scenario"], np.int8),
-        np.asarray(cols["magnitude"], np.float32), np.asarray(cols["learning"], bool), plan,
+        seed, n_devices, a_ts[:n].copy(), a_dev[:n].copy(), a_raw[:n].copy(), a_soft[:n].copy(), a_feat[:n].copy(),
+        a_label[:n].copy(), a_ign[:n].copy(), a_ep[:n].copy(), a_sc[:n].copy(), a_mag[:n].copy(), a_learn[:n].copy(), plan,
     )
 
 
