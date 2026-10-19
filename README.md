@@ -4,7 +4,7 @@ Real-time cross-modal behavioral anomaly detection for connected devices: it lea
 normal looks like per device, scores deviations in spatial, network, device and proximity
 signals, and tests whether *correlating* those weak deviations beats judging each alone.
 
-Status: **Phase 4** (simulator, Redis Streams pipeline, detectors, correlation + alerts, comparison controls). See
+Status: **research evaluation complete** (simulator, Redis Streams pipeline, detectors, correlation + alerts, validation and final test runs); API, dashboard and demo still to build. See
 [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) for the reasoning
 behind every decision.
 
