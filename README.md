@@ -70,5 +70,5 @@ docker compose up -d redis
 
 ```powershell
 .\.venv\Scripts\python -m ml.dataset --seeds 10 19 --workers 8   # ~10 min
-.\.venv\Scripts\python -m ml.validate --out data/results/e1.json  # ~25 min
+.\.venv\Scripts\python -m ml.validate --out data/results/e2.json  # ~15 min
 ```
