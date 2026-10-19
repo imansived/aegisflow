@@ -3,7 +3,7 @@ import { siteTime } from '../format'
 
 /** The element's rendered width, kept up to date. Charts draw at this width so their text stays one size
  *  whether the card is narrow or wide, instead of scaling a fixed drawing. Falls back where there is no layout (tests). */
-function useWidth(ref: RefObject<HTMLElement | null>, fallback = 560, min = 240, max = 900): number {
+export function useWidth(ref: RefObject<HTMLElement | null>, fallback = 560, min = 240, max = 900): number {
   const [w, setW] = useState(fallback)
   useLayoutEffect(() => {
     const el = ref.current

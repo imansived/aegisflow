@@ -1,5 +1,7 @@
 # AegisFlow
 
+![The Observatory during a restricted-zone alert](docs/img/observatory-alert.png)
+
 **Real-time cross-modal behavioural anomaly detection for connected devices.**
 
 AegisFlow learns what "normal" looks like for each device, scores deviations in four signals (location, network,

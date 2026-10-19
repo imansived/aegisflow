@@ -1,13 +1,16 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Api, ApiError } from '../api'
-import { AlertFeed } from '../components/AlertFeed'
 import { HBars, IntervalPlot, LineChart } from '../components/Charts'
-import { DemoPanel } from '../components/DemoPanel'
-import { DeviceDetail } from '../components/DeviceDetail'
-import { DeviceList } from '../components/DeviceList'
+import { CommandPalette, buildItems, filterItems } from '../components/CommandPalette'
+import { HoloFloor } from '../components/HoloFloor'
+import { Inspector } from '../components/Inspector'
 import { Login } from '../components/Login'
-import { SiteMap } from '../components/SiteMap'
+import { Sentinel } from '../components/Sentinel'
+import { SignalRing, activeSignals } from '../components/SignalRing'
+import { SimDeck } from '../components/SimDeck'
+import { ribbonSeries } from '../components/TimeRibbon'
+import { makeIso } from '../iso'
 import Evidence from '../pages/Evidence'
 import { fleetPeakSeries } from '../pages/Analytics'
 import type { Alert, DemoStatus, Modality, Severity, Site, Snapshot, Status } from '../types'
@@ -32,95 +35,134 @@ const SITE: Site = {
 }
 const STATUS = { alert_thresholds: { raise_at: 0.98, clear_at: 0.9 } } as Status
 
-describe('SiteMap', () => {
+describe('HoloFloor', () => {
   it('draws every zone, labels the restricted one, and gives each device an accessible name with its severity', () => {
     const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99, { zone: 'ServerRoom', restricted: true }) }
-    render(<SiteMap site={SITE} devices={devices} selected={null} onSelect={() => {}} trail={[]} />)
-    expect(screen.getByText('ServerRoom · restricted')).toBeTruthy()
-    expect(screen.getByText('Office')).toBeTruthy()
+    render(<HoloFloor site={SITE} devices={devices} selected={null} onSelect={() => {}} trail={[]} />)
+    expect(screen.getByText(/SERVER ROOM · RESTRICTED/)).toBeTruthy()
+    expect(screen.getByText('OFFICE')).toBeTruthy()
     expect(screen.getByRole('button', { name: /D-002, High, score 0.99, in ServerRoom/ })).toBeTruthy()
     expect(screen.getByRole('button', { name: /D-001, Normal/ })).toBeTruthy()
   })
 
-  it('selects a device on click and on Enter, and labels only unusual or selected devices', () => {
+  it('selects a device on click and on Enter', () => {
     const onSelect = vi.fn()
     const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'medium', 0.7) }
-    const { container } = render(<SiteMap site={SITE} devices={devices} selected="D-001" onSelect={onSelect} trail={[]} />)
+    render(<HoloFloor site={SITE} devices={devices} selected="D-001" onSelect={onSelect} trail={[]} />)
     fireEvent.click(screen.getByRole('button', { name: /D-002/ }))
     fireEvent.keyDown(screen.getByRole('button', { name: /D-001/ }), { key: 'Enter' })
     expect(onSelect.mock.calls.map((c) => c[0])).toEqual(['D-002', 'D-001'])
-    const labels = [...container.querySelectorAll('.marker text')].map((t) => t.textContent)
-    expect(labels.sort()).toEqual(['D-001', 'D-002']) // D-001 because selected, D-002 because unusual
   })
 
-  it('does not label a quiet, unselected device and shows a pulse only for high severity', () => {
+  it('pings only for high severity and shows a loading note until the site is known', () => {
     const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99) }
-    const { container } = render(<SiteMap site={SITE} devices={devices} selected={null} onSelect={() => {}} trail={[]} />)
-    expect([...container.querySelectorAll('.marker text')].map((t) => t.textContent)).toEqual(['D-002'])
-    expect(container.querySelectorAll('.marker.pulse')).toHaveLength(1)
-  })
-
-  it('shows a loading note until the site is known', () => {
-    render(<SiteMap site={null} devices={{}} selected={null} onSelect={() => {}} trail={[]} />)
-    expect(screen.getByText('Loading site…')).toBeTruthy()
+    const { container, rerender } = render(<HoloFloor site={SITE} devices={devices} selected={null} onSelect={() => {}} trail={[]} />)
+    expect(container.querySelectorAll('.ping')).toHaveLength(1)
+    rerender(<HoloFloor site={null} devices={{}} selected={null} onSelect={() => {}} trail={[]} />)
+    expect(screen.getByText('Loading the facility…')).toBeTruthy()
   })
 })
 
-describe('DeviceList', () => {
-  it('lists the highest risk first and marks learning devices', () => {
-    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99), 'D-003': snap('D-003', 'low', 0.4, { learning: true }) }
-    render(<DeviceList devices={devices} selected={null} onSelect={() => {}} />)
-    const ids = screen.getAllByRole('button').map((b) => b.textContent!.slice(0, 5))
-    expect(ids).toEqual(['D-002', 'D-003', 'D-001'])
-    expect(screen.getByText(/learning/)).toBeTruthy()
+describe('iso projection', () => {
+  it('keeps projected points inside the view box', () => {
+    const iso = makeIso(SITE)
+    for (const p of [iso.at(18.5205, 73.8568), iso.at(18.5201, 73.8579)]) {
+      expect(p.x).toBeGreaterThanOrEqual(iso.viewBox.x)
+      expect(p.x).toBeLessThanOrEqual(iso.viewBox.x + iso.viewBox.w)
+      expect(p.y).toBeGreaterThanOrEqual(iso.viewBox.y)
+      expect(p.y).toBeLessThanOrEqual(iso.viewBox.y + iso.viewBox.h)
+    }
   })
 })
 
-describe('AlertFeed', () => {
+describe('SignalRing', () => {
+  it('counts signals at or above the alert manager level and announces a lock at three', () => {
+    expect(activeSignals({ ...EFF, spatial: 0.3, network: 0.29 })).toBe(1)
+    render(<SignalRing effective={{ spatial: 1, network: 0.8, device: 0.5, proximity: 0 }} score={0.99} severity="high" />)
+    expect(screen.getByLabelText(/3 of 4 signals active/)).toBeTruthy()
+    expect(screen.getByText('LOCK · 3 SIGNALS')).toBeTruthy()
+  })
+})
+
+describe('Sentinel', () => {
   const alerts = [alert('a', 'D-001', 'high'), alert('b', 'D-002', 'low', { status: 'closed', started: '2026-10-06T04:20:00+00:00' })]
+  const feed = [{ id: 'f1', ts: '2026-10-06T04:30:00+00:00', kind: 'severity' as const, device_id: 'D-009', severity: 'medium' as Severity, text: 'Rose from Normal to Medium (score 0.70)' }]
 
-  it('shows alerts with their leading reason and filters to open ones', () => {
-    render(<AlertFeed alerts={alerts} feed={[]} selected={null} onSelect={() => {}} />)
+  it('narrates the log first and selects the device on click', () => {
+    const onSelect = vi.fn()
+    render(<Sentinel alerts={alerts} feed={feed} devices={{}} selected={null} onSelect={onSelect} />)
+    fireEvent.click(screen.getByText(/Rose from Normal to Medium/))
+    expect(onSelect).toHaveBeenCalledWith('D-009')
+  })
+
+  it('lists alerts with their leading reason and filters to open ones', () => {
+    render(<Sentinel alerts={alerts} feed={[]} devices={{}} selected={null} onSelect={() => {}} />)
+    fireEvent.click(screen.getByRole('tab', { name: /Alerts/ }))
     expect(screen.getAllByText('entered a restricted zone')).toHaveLength(2)
     fireEvent.click(screen.getByRole('button', { name: 'Open' }))
     expect(screen.queryByText('D-002')).toBeNull()
     expect(screen.getByText('D-001')).toBeTruthy()
   })
 
-  it('selects the device when an alert is clicked and can switch to the activity view', () => {
-    const onSelect = vi.fn()
-    render(<AlertFeed alerts={alerts} feed={[{ id: 'f1', ts: '2026-10-06T04:30:00+00:00', kind: 'severity', device_id: 'D-009', severity: 'medium', text: 'Rose from Normal to Medium (score 0.70)' }]} selected={null} onSelect={onSelect} />)
-    fireEvent.click(screen.getByText('D-001'))
-    expect(onSelect).toHaveBeenCalledWith('D-001')
-    fireEvent.click(screen.getByRole('button', { name: 'Activity' }))
-    expect(screen.getByText(/Rose from Normal to Medium/)).toBeTruthy()
-  })
-
-  it('explains the empty state', () => {
-    render(<AlertFeed alerts={[]} feed={[]} selected={null} onSelect={() => {}} />)
+  it('ranks the roster riskiest first, marks learning devices, and explains empty states', () => {
+    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99), 'D-003': snap('D-003', 'low', 0.4, { learning: true }) }
+    const { unmount } = render(<Sentinel alerts={[]} feed={[]} devices={devices} selected={null} onSelect={() => {}} />)
+    fireEvent.click(screen.getByRole('tab', { name: 'Roster' }))
+    const ids = screen.getAllByRole('button').filter((b) => b.className.includes('card-btn')).map((b) => b.textContent!.slice(0, 5))
+    expect(ids).toEqual(['D-002', 'D-003', 'D-001'])
+    expect(screen.getByText(/learning/)).toBeTruthy()
+    unmount()
+    render(<Sentinel alerts={[]} feed={[]} devices={{}} selected={null} onSelect={() => {}} />)
+    expect(screen.getByText(/Listening/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('tab', { name: /Alerts/ }))
     expect(screen.getByText(/No alerts yet/)).toBeTruthy()
   })
 })
 
-describe('DeviceDetail', () => {
+describe('Inspector', () => {
   it('prompts for a selection when none is made', () => {
-    render(<DeviceDetail snap={null} points={[]} alerts={[]} status={null} />)
-    expect(screen.getByText(/Select a device/)).toBeTruthy()
+    render(<Inspector snap={null} points={[]} alerts={[]} status={null} />)
+    expect(screen.getByText(/Select a beacon/i)).toBeTruthy()
   })
 
   it('shows why an open alert fired and states that the score is not a probability', () => {
     const s = snap('D-003', 'high', 0.99, { effective: { ...EFF, spatial: 1 }, contributions: { spatial: 0.89 } })
-    const { container } = render(<DeviceDetail snap={s} points={[]} alerts={[alert('a', 'D-003', 'high')]} status={STATUS} />)
+    render(<Inspector snap={s} points={[]} alerts={[alert('a', 'D-003', 'high')]} status={STATUS} />)
     expect(screen.getByText('Why it was flagged')).toBeTruthy()
     expect(screen.getByText('entered a restricted zone')).toBeTruthy()
     expect(screen.getByText(/not a probability/)).toBeTruthy()
-    expect(screen.getByText(/contributes 0.90/)).toBeTruthy() // the alert's own factor list
-    expect(container.querySelector('[title*="contributes 0.89"]')).toBeTruthy() // the live bar's tooltip
   })
 
   it('says when baselines are still learning', () => {
-    render(<DeviceDetail snap={snap('D-003', 'normal', 0.05, { learning: true })} points={[]} alerts={[]} status={STATUS} />)
+    render(<Inspector snap={snap('D-003', 'normal', 0.05, { learning: true })} points={[]} alerts={[]} status={STATUS} />)
     expect(screen.getByText(/Still learning/)).toBeTruthy()
+  })
+})
+
+describe('CommandPalette', () => {
+  it('filters by every typed term and lists devices before commands', () => {
+    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99, { zone: 'ServerRoom' }) }
+    const items = buildItems(devices, () => {}, () => {}, () => {})
+    expect(items[0].id).toBe('D-002')
+    expect(filterItems(items, 'high server').map((i) => i.id)).toEqual(['D-002'])
+    expect(filterItems(items, '')).toHaveLength(items.length)
+    expect(filterItems(items, 'zzz')).toHaveLength(0)
+  })
+
+  it('runs the highlighted item on Enter and closes', () => {
+    const run = vi.fn(), onClose = vi.fn()
+    render(<CommandPalette open onClose={onClose} items={[{ id: 'x', label: 'Go to Archive', hint: 'stats', run }]} />)
+    fireEvent.keyDown(screen.getByLabelText('Search'), { key: 'Enter' })
+    expect(run).toHaveBeenCalled()
+    expect(onClose).toHaveBeenCalled()
+  })
+})
+
+describe('ribbonSeries', () => {
+  it('keeps the highest score per bucket, in time order', () => {
+    const p = (ts: string, score: number) => ({ t: Date.parse(ts), score, severity: 'normal', lat: 0, lon: 0 }) as never
+    const s = ribbonSeries({ a: [p('2026-10-06T04:30:05+00:00', 0.2), p('2026-10-06T04:30:10+00:00', 0.7)], b: [p('2026-10-06T04:30:30+00:00', 0.4)] })
+    expect(s.map((x) => x.v)).toEqual([0.7, 0.4])
   })
 })
 
@@ -189,38 +231,33 @@ describe('Login', () => {
   })
 })
 
-describe('DemoPanel', () => {
+describe('SimDeck', () => {
   const demo = (state: DemoStatus['state'], extra: Partial<DemoStatus> = {}): DemoStatus => ({ state, error: null, devices: 10, speed: 20, warmup_progress: 0, sim_time: null, active_episodes: [], ...extra })
   const fakeApi = (over: Record<string, unknown> = {}) => ({ demoStart: vi.fn().mockResolvedValue({}), demoStop: vi.fn(), demoInject: vi.fn().mockResolvedValue({}), demoClear: vi.fn().mockResolvedValue({ cleared: 1 }), ...over }) as unknown as Api
+  const deck = (api: Api, d: DemoStatus, o: { isAdmin?: boolean; selected?: string | null } = {}) =>
+    <SimDeck api={api} isAdmin={o.isAdmin ?? true} demo={d} selected={o.selected === undefined ? null : o.selected} onChanged={() => {}} open onToggle={() => {}} />
 
   it('hides every control from viewers', () => {
-    render(<DemoPanel api={fakeApi()} isAdmin={false} demo={demo('idle')} selected="D-003" onChanged={() => {}} />)
+    render(deck(fakeApi(), demo('idle'), { isAdmin: false, selected: 'D-003' }))
     expect(screen.queryByRole('button', { name: 'Start fleet' })).toBeNull()
     expect(screen.getByText(/Viewers can watch but not control/)).toBeTruthy()
   })
 
-  it('shows warm-up progress while the baselines are being built', () => {
-    render(<DemoPanel api={fakeApi()} isAdmin demo={demo('warming', { warmup_progress: 0.4 })} selected={null} onChanged={() => {}} />)
-    expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe('40')
-  })
-
   it('injects the chosen scenario on the selected device and can restore it', async () => {
     const api = fakeApi()
-    const onChanged = vi.fn()
-    render(<DemoPanel api={api} isAdmin demo={demo('live')} selected="D-003" onChanged={onChanged} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Enter restricted zone' }))
+    render(deck(api, demo('live'), { selected: 'D-003' }))
+    fireEvent.click(screen.getByRole('button', { name: /Breach/ }))
     await waitFor(() => expect(api.demoInject).toHaveBeenCalledWith({ device_id: 'D-003', scenario: 'spatial', magnitude: 0.8, duration_s: 240 }))
     fireEvent.click(screen.getByRole('button', { name: 'Restore normal' }))
     await waitFor(() => expect(api.demoClear).toHaveBeenCalledWith('D-003'))
-    expect(onChanged).toHaveBeenCalledTimes(2)
   })
 
   it('disables scenarios until a device is selected, and surfaces a server error', async () => {
     const api = fakeApi({ demoInject: vi.fn().mockRejectedValue(new ApiError(409, 'the demo is not live yet')) })
-    const { rerender } = render(<DemoPanel api={api} isAdmin demo={demo('live')} selected={null} onChanged={() => {}} />)
-    expect((screen.getByRole('button', { name: 'Combined' }) as HTMLButtonElement).disabled).toBe(true)
-    rerender(<DemoPanel api={api} isAdmin demo={demo('live')} selected="D-001" onChanged={() => {}} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Combined' }))
+    const { rerender } = render(deck(api, demo('live')))
+    expect((screen.getByRole('button', { name: /Combined strike/ }) as HTMLButtonElement).disabled).toBe(true)
+    rerender(deck(api, demo('live'), { selected: 'D-001' }))
+    fireEvent.click(screen.getByRole('button', { name: /Combined strike/ }))
     await waitFor(() => expect(screen.getByRole('alert').textContent).toBe('the demo is not live yet'))
   })
 })

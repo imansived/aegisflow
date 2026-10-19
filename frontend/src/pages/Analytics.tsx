@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ApiError, type Api } from '../api'
 import { HBars, LineChart } from '../components/Charts'
 import { SeverityBadge } from '../components/Glyph'
+import { RiskSpectrum } from '../components/RiskSpectrum'
 import { MODALITY_LABEL, SEVERITY_LABEL, formatUptime, sevRank } from '../format'
 import type { LiveState } from '../live'
 import { MODALITIES, type HistoryPoint, type Severity, type Status } from '../types'
@@ -56,12 +57,17 @@ export default function Analytics({ api, live, status, onUnauthorised }: { api: 
 
       <div className="grid-2">
         <section className="card">
-          <header><h2>Risk score by device</h2><span className="sub">current, 15 highest</span></header>
+          <header><h2>Risk spectrum</h2><span className="sub">every device, 0 = ordinary, 1 = extreme</span></header>
           {table ? (
             <table className="data"><thead><tr><th>Device</th><th>Severity</th><th>Score</th></tr></thead>
               <tbody>{devices.slice(0, 15).map((d) => <tr key={d.device_id}><td>{d.device_id}</td><td>{SEVERITY_LABEL[d.severity]}</td><td>{d.score.toFixed(3)}</td></tr>)}</tbody></table>
+          ) : devices.length === 0 ? (
+            <div className="empty">No devices yet.</div>
           ) : (
-            <HBars ariaLabel="Current risk score by device" max={1} rows={devices.slice(0, 15).map((d) => ({ label: d.device_id, value: d.score, glyph: <SeverityBadge severity={d.severity} label={false} />, color: 'var(--accent)' }))} />
+            <>
+              <RiskSpectrum devices={devices} threshold={status?.alert_thresholds.raise_at} />
+              <HBars ariaLabel="Highest current risk scores" max={1} rows={devices.slice(0, 5).map((d) => ({ label: d.device_id, value: d.score, glyph: <SeverityBadge severity={d.severity} label={false} />, color: 'var(--accent)' }))} />
+            </>
           )}
         </section>
 

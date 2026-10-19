@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Api, ApiError } from './api'
-import { AlertFeed } from './components/AlertFeed'
-import { DemoPanel } from './components/DemoPanel'
-import { DeviceDetail } from './components/DeviceDetail'
-import { DeviceList } from './components/DeviceList'
-import { Header, type Tab } from './components/Header'
+import { BootOverlay } from './components/BootOverlay'
+import { CommandPalette, buildItems } from './components/CommandPalette'
+import { HoloFloor } from './components/HoloFloor'
+import { Inspector } from './components/Inspector'
 import { Login } from './components/Login'
-import { SiteMap } from './components/SiteMap'
+import { Sentinel } from './components/Sentinel'
+import { SimDeck } from './components/SimDeck'
+import { TimeRibbon } from './components/TimeRibbon'
+import { TopBar, type Mode } from './components/TopBar'
 import { useLive } from './live'
 import Analytics from './pages/Analytics'
 import Evidence from './pages/Evidence'
@@ -19,10 +21,12 @@ const write = (k: string, v: string | null) => { try { v === null ? sessionStora
 export default function App() {
   const [token, setToken] = useState<string | null>(() => read('aegis.token'))
   const [role, setRole] = useState<'admin' | 'viewer'>(() => (read('aegis.role') === 'admin' ? 'admin' : 'viewer'))
-  const [tab, setTab] = useState<Tab>('live')
+  const [mode, setMode] = useState<Mode>('observe')
   const [selected, setSelected] = useState<string | null>(null)
   const [site, setSite] = useState<Site | null>(null)
   const [status, setStatus] = useState<(Status & { demo: DemoStatus }) | null>(null)
+  const [deckOpen, setDeckOpen] = useState(true)
+  const [palette, setPalette] = useState(false)
 
   const api = useMemo(() => (token ? new Api(token) : null), [token])
   const [live, dispatch] = useLive(token)
@@ -30,7 +34,6 @@ export default function App() {
   const logout = useCallback(() => { write('aegis.token', null); write('aegis.role', null); setToken(null); setSelected(null); setSite(null); setStatus(null) }, [])
   const guard = useCallback((e: unknown) => { if (e instanceof ApiError && e.status === 401) logout() }, [logout])
 
-  // Initial load: the zone geometry and recent alerts. Everything after that arrives over the WebSocket.
   useEffect(() => {
     if (!api) return
     api.site().then(setSite).catch(guard)
@@ -45,17 +48,21 @@ export default function App() {
     return () => clearInterval(id)
   }, [api, refreshStatus])
 
-  // When a device is selected, backfill its score history from the server.
   useEffect(() => {
     if (!api || !selected) return
     api.history(selected, 240).then((points) => dispatch({ type: 'history_loaded', device_id: selected, points })).catch(guard)
   }, [api, selected, dispatch, guard])
 
-  const toggleTheme = () => {
-    const root = document.documentElement
-    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
-    root.dataset.theme = dark ? 'light' : 'dark'
-  }
+  // "/" opens the command palette from anywhere that is not a text field.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null
+      const typing = !!t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)
+      if (e.key === '/' && !typing && !e.metaKey && !e.ctrlKey) { e.preventDefault(); setPalette(true) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   if (!token || !api) {
     return <Login onLogin={(t, r) => { write('aegis.token', t); write('aegis.role', r); setRole(r); setToken(t) }} />
@@ -63,32 +70,38 @@ export default function App() {
 
   const snap = selected ? live.devices[selected] ?? null : null
   const deviceAlerts = selected ? live.alerts.filter((a) => a.device_id === selected) : []
+  const empty = Object.keys(live.devices).length === 0
+  const demo = status?.demo ?? null
+  const standby = empty && (!demo || demo.state === 'idle' || demo.state === 'error')
+  const items = buildItems(live.devices, (id) => { setSelected(id); setMode('observe') }, setMode, () => { setMode('observe'); setDeckOpen(true) })
 
   return (
-    <div className="app">
-      <Header tab={tab} onTab={setTab} live={live} status={status} role={role} onLogout={logout} onTheme={toggleTheme} />
-      <main className="main">
-        {tab === 'live' && (
-          <div className="live-grid" style={{ display: 'grid', gap: 16 }}>
-            <div className="col col-feed">
-              <AlertFeed alerts={live.alerts} feed={live.feed} selected={selected} onSelect={setSelected} />
-            </div>
-            <div className="col">
-              <section className="card">
-                <header><h2>Site</h2><span className="sub">click a device to inspect it</span></header>
-                <SiteMap site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
-              </section>
-              <DeviceDetail snap={snap} points={selected ? live.history[selected] ?? [] : []} alerts={deviceAlerts} status={status} />
-            </div>
-            <div className="col">
-              <DemoPanel api={api} isAdmin={role === 'admin'} demo={status?.demo ?? null} selected={selected} onChanged={refreshStatus} />
-              <DeviceList devices={live.devices} selected={selected} onSelect={setSelected} />
-            </div>
+    <div className="obs">
+      <TopBar mode={mode} onMode={setMode} live={live} status={status} role={role} onLogout={logout} onPalette={() => setPalette(true)} />
+      <CommandPalette open={palette} onClose={() => setPalette(false)} items={items} />
+
+      {mode === 'observe' && (
+        <main className="scene">
+          <Sentinel alerts={live.alerts} feed={live.feed} devices={live.devices} selected={selected} onSelect={setSelected} />
+          <div className="stage">
+            <i className="hud tl" aria-hidden="true" /><i className="hud tr" aria-hidden="true" /><i className="hud bl" aria-hidden="true" /><i className="hud br" aria-hidden="true" />
+            <HoloFloor site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
+            {standby && (
+              <div className="standby" role="status">
+                <div className="radar" aria-hidden="true"><i /></div>
+                <h2>STANDBY</h2>
+                <p>The facility is dark. {role === 'admin' ? 'Open the Simulation Deck and start the fleet to bring it online.' : 'Waiting for an operator to start the simulated fleet.'}</p>
+              </div>
+            )}
+            <BootOverlay demo={demo} />
+            <SimDeck api={api} isAdmin={role === 'admin'} demo={demo} selected={selected} onChanged={refreshStatus} open={deckOpen} onToggle={() => setDeckOpen((o) => !o)} />
+            <TimeRibbon history={live.history} alerts={live.alerts} onSelect={setSelected} />
           </div>
-        )}
-        {tab === 'analytics' && <Analytics api={api} live={live} status={status} onUnauthorised={logout} />}
-        {tab === 'evidence' && <Evidence />}
-      </main>
+          <Inspector snap={snap} points={selected ? live.history[selected] ?? [] : []} alerts={deviceAlerts} status={status} />
+        </main>
+      )}
+      {mode === 'archive' && <main className="page-wrap"><Analytics api={api} live={live} status={status} onUnauthorised={logout} /></main>}
+      {mode === 'findings' && <main className="page-wrap"><Evidence /></main>}
     </div>
   )
 }

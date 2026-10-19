@@ -5,7 +5,7 @@ below, Redis, and `npm run dev` on :5173. Drives the UI as a person would and sa
 
   python scripts/e2e_dashboard.py [output_dir]
 """
-import os, sys, time
+import os, re, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright, expect
 
@@ -35,45 +35,54 @@ with sync_playwright() as p:
 
     print("2. admin login")
     page.get_by_label("Access token").fill(ADMIN); page.get_by_role("button", name="Sign in").click()
-    expect(page.get_by_role("button", name="Start fleet")).to_be_visible(timeout=15000)
-    expect(page.get_by_role("status")).to_contain_text("Live", timeout=15000)   # WebSocket connected
-    shot(page, "03_empty_console")
+    page.locator(".deck .deck-toggle .chip").filter(has_text=re.compile("LIVE|OFFLINE|CALIBRATING")).wait_for(timeout=15000)
+    time.sleep(3)   # the first status poll decides whether a fleet from an earlier session is still running
+    expect(page.locator(".pill")).to_contain_text("LINK", timeout=15000)   # WebSocket connected
+    stop = page.get_by_role("button", name="Stop")
+    if stop.count():   # the Docker stack may still be running a fleet from an earlier session
+        stop.click(); expect(page.get_by_role("button", name="Start fleet")).to_be_visible(timeout=15000); time.sleep(2)
+    shot(page, "03_standby")
 
-    print("3. start the fleet (warm-up builds baselines)")
+    print("3. start the fleet (calibration builds baselines)")
     page.get_by_role("spinbutton", name="Devices").fill("10")
     page.get_by_role("button", name="Start fleet").click()
-    expect(page.get_by_role("progressbar")).to_be_visible(timeout=15000); time.sleep(8); shot(page, "04_warming")
+    expect(page.locator(".boot")).to_be_visible(timeout=15000); time.sleep(8); shot(page, "04_calibrating")
     expect(page.get_by_text("Inject on")).to_be_visible(timeout=180000)
-    expect(page.locator(".marker").first).to_be_visible(timeout=30000)
+    expect(page.locator(".beacon").first).to_be_visible(timeout=30000)
     time.sleep(4); shot(page, "05_live_quiet")
-    n_markers = page.locator(".marker").count(); print("  device markers on the map:", n_markers); assert n_markers == 10
+    n = page.locator(".beacon").count(); print("  beacons in the scene:", n); assert n == 10
 
-    print("4. select a device from the list and inject a restricted-zone intrusion")
-    page.locator("section[aria-label='Devices'] button.row", has_text="D-003").click()
+    print("4. select a device from the roster and inject a restricted-zone intrusion")
+    sentinel = page.get_by_label("Sentinel", exact=True)
+    sentinel.get_by_role("tab", name="Roster").click()
+    sentinel.locator("button.card-btn", has_text="D-003").click()
     expect(page.get_by_role("region", name="Device D-003")).to_be_visible()
-    page.get_by_role("button", name="Enter restricted zone").click()
+    page.get_by_role("button", name=re.compile("Breach")).click()
+    sentinel.get_by_role("tab", name=re.compile("Alerts")).click()
     # The Docker stack keeps its data between runs, so older D-003 alerts may be listed: target the OPEN one.
-    feed_rows = page.locator("section[aria-label='Alerts and activity'] button.row")
-    open_alert = feed_rows.filter(has_text="D-003").filter(has_text="Open")
+    open_alert = sentinel.locator("button.card-btn").filter(has_text="D-003").filter(has_text="Open")
     expect(open_alert.first).to_be_visible(timeout=90000)
     expect(open_alert.first).to_contain_text("entered a restricted zone")
-    time.sleep(3); shot(page, "06_alert_raised")
+    time.sleep(4); shot(page, "06_alert_raised")
     expect(page.get_by_text("Why it was flagged")).to_be_visible()
-    assert page.locator(".marker.pulse").count() >= 1, "a high-severity device should pulse on the map"
+    assert page.locator(".beacon .ping").count() >= 1, "a high-severity device should ping in the scene"
     detail = page.get_by_role("region", name="Device D-003").inner_text()
     assert "not a probability" in detail and "restricted zone" in detail
 
     print("5. restore normal; the alert should close")
     page.get_by_role("button", name="Restore normal").click()
     expect(open_alert).to_have_count(0, timeout=90000)  # that alert closes...
-    expect(feed_rows.filter(has_text="D-003").filter(has_text="Closed").first).to_be_visible()  # ...and is listed as closed
+    expect(sentinel.locator("button.card-btn").filter(has_text="D-003").filter(has_text="Closed").first).to_be_visible()
     shot(page, "07_alert_closed")
 
-    print("6. analytics and evidence pages, light theme")
-    page.get_by_role("button", name="Analytics").click(); time.sleep(2); shot(page, "08_analytics")
-    page.get_by_role("button", name="Show data as tables").click(); expect(page.locator("table.data").first).to_be_visible(); shot(page, "09_analytics_tables")
-    page.get_by_role("button", name="Evidence").click(); expect(page.get_by_text("Pre-registered comparisons")).to_be_visible(); shot(page, "10_evidence")
-    page.get_by_role("button", name="Live").click(); page.get_by_role("button", name="Toggle light or dark theme").click(); time.sleep(1); shot(page, "11_live_light")
+    print("6. command palette, archive and findings")
+    page.keyboard.press("/"); expect(page.get_by_role("dialog", name="Command palette")).to_be_visible()
+    page.keyboard.type("D-005"); page.keyboard.press("Enter")
+    expect(page.get_by_role("region", name="Device D-005")).to_be_visible()
+    page.get_by_role("button", name="Archive").click(); time.sleep(2); shot(page, "08_archive")
+    page.get_by_role("button", name="Show data as tables").click(); expect(page.locator("table.data").first).to_be_visible(); shot(page, "09_archive_tables")
+    page.get_by_role("button", name="Findings").click(); expect(page.get_by_text("Pre-registered comparisons")).to_be_visible(); shot(page, "10_findings")
+    page.get_by_role("button", name="Observe").click()
 
     print("7. reload keeps the session; sign out returns to login")
     page.reload(); expect(page.get_by_role("button", name="Sign out")).to_be_visible(timeout=15000)
@@ -83,7 +92,17 @@ with sync_playwright() as p:
     page.get_by_label("Access token").fill(VIEWER); page.get_by_role("button", name="Sign in").click()
     expect(page.get_by_text("Viewers can watch but not control")).to_be_visible(timeout=15000)
     expect(page.get_by_role("button", name="Start fleet")).to_have_count(0)
-    shot(page, "12_viewer")
+    shot(page, "11_viewer")
+
+    print("9. phone-sized screen")
+    ph = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=2, is_mobile=True, has_touch=True, color_scheme="dark")
+    mp = ph.new_page(); mp.goto(BASE)
+    mp.get_by_label("Access token").fill(VIEWER); mp.get_by_role("button", name="Sign in").click()
+    expect(mp.locator(".beacon").first).to_be_visible(timeout=30000); time.sleep(2)
+    mp.screenshot(path=str(OUT / "12_phone.png"), full_page=True); print("  screenshot: 12_phone")
+    overflow = mp.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+    print("  horizontal overflow (px):", overflow); assert overflow <= 1
+    ph.close()
 
     ctx.close(); browser.close()
     unexpected = [b for b in bad_responses if not (b.startswith("401") and b.endswith("/api/me")) and "favicon" not in b]
