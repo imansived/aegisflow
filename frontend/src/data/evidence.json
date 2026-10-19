@@ -1,0 +1,138 @@
+{
+  "source": "docs/results/f1.json (final evaluation F1, test seeds 100-109, run once)",
+  "frozen_commit": "9b3c7ef",
+  "episodes": 1331,
+  "primary": [
+    {
+      "label": "P1 learned late fusion vs max of detectors (independent detection)",
+      "a": "learned",
+      "b": "max",
+      "diff": 0.43162393162393164,
+      "lo": 0.38675213675213677,
+      "hi": 0.47649572649572647,
+      "n": 468
+    },
+    {
+      "label": "P2 learned late fusion vs network-only (best single detector on validation)",
+      "a": "learned",
+      "b": "network_only",
+      "diff": 0.017094017094017096,
+      "lo": -0.00641025641025641,
+      "hi": 0.0405982905982906,
+      "n": 468
+    },
+    {
+      "label": "P3 learned late fusion vs supervised early fusion",
+      "a": "learned",
+      "b": "early_supervised",
+      "diff": -0.09188034188034189,
+      "lo": -0.11965811965811966,
+      "hi": -0.06623931623931624,
+      "n": 468
+    },
+    {
+      "label": "P4 learned late fusion vs Isolation Forest (unsupervised early fusion)",
+      "a": "learned",
+      "b": "early_iforest",
+      "diff": -0.01282051282051282,
+      "lo": -0.038461538461538464,
+      "hi": 0.01282051282051282,
+      "n": 468
+    },
+    {
+      "label": "P5 noisy-OR (no labels) vs max of detectors",
+      "a": "noisy_or",
+      "b": "max",
+      "diff": 0.13247863247863248,
+      "lo": 0.0961004273504274,
+      "hi": 0.17094017094017094,
+      "n": 468
+    }
+  ],
+  "systems": [
+    {
+      "id": "learned",
+      "name": "Learned late fusion",
+      "ap": 0.721,
+      "macro": 0.89,
+      "weak": 0.96,
+      "staged": 0.85,
+      "hardware": 0.74,
+      "spatial": 0.67,
+      "proximity": 1.0,
+      "onsets": 4.9
+    },
+    {
+      "id": "max",
+      "name": "Max of detectors (independent)",
+      "ap": 0.484,
+      "macro": 0.758,
+      "weak": 0.53,
+      "staged": 0.43,
+      "hardware": 0.83,
+      "spatial": 0.61,
+      "proximity": 0.92,
+      "onsets": 2.32
+    },
+    {
+      "id": "network_only",
+      "name": "Network detector only",
+      "ap": 0.398,
+      "macro": 0.544,
+      "weak": 0.92,
+      "staged": 0.86,
+      "hardware": 0.0,
+      "spatial": 0.02,
+      "proximity": 0.01,
+      "onsets": 5.6
+    },
+    {
+      "id": "noisy_or",
+      "name": "Noisy-OR fusion (no labels)",
+      "ap": 0.513,
+      "macro": 0.787,
+      "weak": 0.76,
+      "staged": 0.47,
+      "hardware": 0.78,
+      "spatial": 0.61,
+      "proximity": 0.9,
+      "onsets": 2.04
+    },
+    {
+      "id": "early_iforest",
+      "name": "Isolation Forest (unsupervised, joint)",
+      "ap": 0.572,
+      "macro": 0.697,
+      "weak": 0.99,
+      "staged": 0.85,
+      "hardware": 0.65,
+      "spatial": 0.04,
+      "proximity": 0.35,
+      "onsets": 3.26
+    },
+    {
+      "id": "early_supervised",
+      "name": "Supervised boosting (joint)",
+      "ap": 0.887,
+      "macro": 0.974,
+      "weak": 1.0,
+      "staged": 0.99,
+      "hardware": 1.0,
+      "spatial": 0.82,
+      "proximity": 1.0,
+      "onsets": 7.2
+    },
+    {
+      "id": "weighted_sum",
+      "name": "Weighted sum",
+      "ap": 0.564,
+      "macro": 0.798,
+      "weak": 0.85,
+      "staged": 0.49,
+      "hardware": 0.77,
+      "spatial": 0.61,
+      "proximity": 0.9,
+      "onsets": 2.05
+    }
+  ]
+}
