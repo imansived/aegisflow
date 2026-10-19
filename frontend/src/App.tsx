@@ -53,6 +53,10 @@ export default function App() {
     api.history(selected, 240).then((points) => dispatch({ type: 'history_loaded', device_id: selected, points })).catch(guard)
   }, [api, selected, dispatch, guard])
 
+  // The deck covers part of the scene, so it opens when there is something to start and tucks away once the fleet is live.
+  const demoState = status?.demo.state
+  useEffect(() => { if (demoState === 'live') setDeckOpen(false); else if (demoState === 'idle') setDeckOpen(true) }, [demoState])
+
   // "/" opens the command palette from anywhere that is not a text field.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

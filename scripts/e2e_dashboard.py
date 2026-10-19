@@ -47,7 +47,9 @@ with sync_playwright() as p:
     page.get_by_role("spinbutton", name="Devices").fill("10")
     page.get_by_role("button", name="Start fleet").click()
     expect(page.locator(".boot")).to_be_visible(timeout=15000); time.sleep(8); shot(page, "04_calibrating")
-    expect(page.get_by_text("Inject on")).to_be_visible(timeout=180000)
+    expect(page.locator(".deck-toggle .chip")).to_have_text("LIVE", timeout=180000)
+    page.locator(".deck-toggle").click() if page.locator(".deck-toggle").get_attribute("aria-expanded") != "true" else None
+    expect(page.get_by_text("Inject on")).to_be_visible()
     expect(page.locator(".beacon").first).to_be_visible(timeout=30000)
     time.sleep(4); shot(page, "05_live_quiet")
     n = page.locator(".beacon").count(); print("  beacons in the scene:", n); assert n == 10
@@ -57,6 +59,8 @@ with sync_playwright() as p:
     sentinel.get_by_role("tab", name="Roster").click()
     sentinel.locator("button.card-btn", has_text="D-003").click()
     expect(page.get_by_role("region", name="Device D-003")).to_be_visible()
+    deck_toggle = page.locator(".deck-toggle")   # the deck tucks itself away once the fleet is live
+    if deck_toggle.get_attribute("aria-expanded") != "true": deck_toggle.click()
     page.get_by_role("button", name=re.compile("Breach")).click()
     sentinel.get_by_role("tab", name=re.compile("Alerts")).click()
     # The Docker stack keeps its data between runs, so older D-003 alerts may be listed: target the OPEN one.
