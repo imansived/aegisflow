@@ -57,9 +57,9 @@ class Combined:
     ep_meta: list[dict]
 
 
-def load_combined(rows_dir: Path) -> Combined:
+def load_combined(rows_dir: Path, seeds: list[int] | None = None) -> Combined:
     parts, meta, ep_off = [], [], 0
-    for k, s in enumerate(SEEDS):
+    for k, s in enumerate(seeds or SEEDS):
         rs = RowSet.load(rows_dir / f"seed{s}.npz")
         assert rs.seed == s, f"{s}: file holds seed {rs.seed}"
         n = len(rs)

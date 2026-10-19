@@ -92,6 +92,20 @@ def test_staged_groups_are_split_by_variant_and_memory_comparison_finds_a_real_g
     assert memory_comparisons(c, results, best=1.0, shortest=1.0, rng=np.random.default_rng(0)) == []
 
 
+def test_alert_onsets_count_only_rising_crossings_inside_ordinary_time():
+    from ml.final_eval import onsets_per_device_day
+
+    s = np.array([0, 1, 1, 0, 0, 0, 1, 0, 1, 1], dtype=np.float32)
+    ordinary = np.ones(10, bool)
+    ordinary[5] = False  # a tick inside an episode: the rise at index 6 follows it, so it is not an ordinary onset
+    n = len(s)
+    c = Combined(np.ones(n, np.int16), np.arange(n) * 5.0, np.zeros(n, np.int32), np.zeros((n, 4)), np.zeros((n, 4)),
+                 np.zeros((n, 3), np.float32), np.zeros(n, np.int8), np.ones(n, bool), ordinary, np.full(n, -1, np.int32), [])
+    # onsets at indices 1 and 8 -> 2; ordinary time = 9 ticks of 5 s
+    assert onsets_per_device_day(c, s, 0.5) == pytest.approx(2 / (9 * 5 / 86_400))
+    assert onsets_per_device_day(c, np.zeros(n, np.float32), 0.5) == 0.0
+
+
 def test_bootstrap_ci_brackets_the_mean_and_paired_diff_detects_a_real_gap():
     rng = np.random.default_rng(1)
     x = (rng.random(200) < 0.7).astype(float)
