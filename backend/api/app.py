@@ -12,6 +12,7 @@ from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
 from backend.database.store import EventStore
+from contracts.site import SITE_ORIGIN, ZONES
 from contracts.telemetry import DEVICE_ID_PATTERN, Telemetry
 
 from .config import Settings
@@ -90,7 +91,9 @@ def create_app(settings: Settings | None = None, det_cfg=None) -> FastAPI:
         return role
 
     def store():
-        s = EventStore(settings.db_path)  # a short-lived READ/WRITE connection for this request
+        # A short-lived connection for this request. FastAPI runs this generator's setup and teardown on
+        # (possibly) different worker threads, hence check_same_thread=False (see EventStore).
+        s = EventStore(settings.db_path, check_same_thread=False)
         try:
             yield s
         finally:
@@ -172,6 +175,22 @@ def create_app(settings: Settings | None = None, det_cfg=None) -> FastAPI:
     def anomalies_history(device_id: str | None = Query(None, pattern=DEVICE_ID_PATTERN), limit: int = Query(500, ge=1, le=5000),
                           _: str = Depends(principal), db: EventStore = Depends(store)) -> list[dict]:
         return db.score_history(device_id, limit)
+
+    @app.get("/me")
+    def me(role: str = Depends(principal)) -> dict:
+        """Who am I? The dashboard uses this to decide whether to show admin controls (the server still enforces them)."""
+        return {"role": role, "auth": settings.auth}
+
+    @app.get("/site")
+    def site(_: str = Depends(principal)) -> dict:
+        """The simulated site's zones, so the dashboard map draws the same geometry the detectors use."""
+        return {
+            "origin": {"latitude": SITE_ORIGIN[0], "longitude": SITE_ORIGIN[1]},
+            "zones": [
+                {"name": z.name, "kind": z.kind.value, "polygon": [{"latitude": p[0], "longitude": p[1]} for p in z.polygon]}
+                for z in ZONES
+            ],
+        }
 
     @app.get("/system/status")
     def system_status(_: str = Depends(principal)) -> dict:

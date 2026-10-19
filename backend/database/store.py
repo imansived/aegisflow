@@ -50,10 +50,14 @@ CREATE TABLE IF NOT EXISTS anomaly_history (
 
 
 class EventStore:
-    def __init__(self, path: str = ":memory:"):
+    def __init__(self, path: str = ":memory:", check_same_thread: bool = True):
         # isolation_level=None = autocommit; we issue BEGIN/COMMIT/SAVEPOINT ourselves so a
         # whole batch is one transaction (one disk sync instead of one per event).
-        self.db = sqlite3.connect(path, isolation_level=None, timeout=10)
+        # check_same_thread=False is for the API's per-request connections: FastAPI may open a
+        # request's dependency on one worker thread and close it on another. Each such connection is
+        # used by one request at a time, so that is safe. The processor's write connection keeps the
+        # strict default so a cross-thread mistake there fails loudly.
+        self.db = sqlite3.connect(path, isolation_level=None, timeout=10, check_same_thread=check_same_thread)
         if path != ":memory:":
             self.db.execute("PRAGMA journal_mode=WAL")  # readers do not block the writer
             self.db.execute("PRAGMA synchronous=NORMAL")

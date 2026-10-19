@@ -4,7 +4,7 @@ Real-time cross-modal behavioral anomaly detection for connected devices: it lea
 normal looks like per device, scores deviations in spatial, network, device and proximity
 signals, and tests whether *correlating* those weak deviations beats judging each alone.
 
-Status: **research evaluation and backend API complete** (simulator, pipeline, detectors, correlation + alerts, validation and final test runs, FastAPI + WebSocket + live demo); dashboard and Docker packaging still to build. See
+Status: **research evaluation, backend API and dashboard complete** (simulator, pipeline, detectors, correlation + alerts, validation and final test runs, FastAPI + WebSocket + live demo, React console); Docker packaging and final walkthrough still to do. See
 [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) for the reasoning
 behind every decision.
 
@@ -94,3 +94,18 @@ POST /demo/clear    {"device_id": "D-003"}
 Watch live with a WebSocket to `/ws?token=<viewer token>`. Without both tokens the server refuses to start
 (set `AEGIS_AUTH=off` only for a local demo). `models/frozen_design.json` is the learned fusion and thresholds
 exported from validation seeds (`python -m ml.export_design`); without it the server uses noisy-OR.
+
+## Run the dashboard
+
+```powershell
+cd frontend
+npm install
+npm run dev          # http://localhost:5173 ; proxies /api to the API on 127.0.0.1:8010
+npm test             # 44 unit and component tests
+npm run build        # type-check + production bundle in frontend/dist
+```
+
+Sign in with the viewer token (watch) or the admin token (also run the demo). In the Demo panel start the
+fleet, select a device, and inject a scenario. With the API and `npm run dev` running, the whole flow is
+checked in a real browser by `python scripts/e2e_dashboard.py` (needs `pip install playwright`; uses the
+installed Edge).

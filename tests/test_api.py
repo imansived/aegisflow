@@ -135,6 +135,24 @@ def test_health_is_open_everything_else_needs_a_token(api):
         assert client.get(path, headers={"Authorization": "Bearer wrong-token-value"}).status_code == 401
 
 
+def test_me_reports_the_callers_role(api):
+    client, *_ = api
+    assert client.get("/me").status_code == 401
+    assert client.get("/me", headers=VH).json() == {"role": "viewer", "auth": True}
+    assert client.get("/me", headers=AH).json() == {"role": "admin", "auth": True}
+
+
+def test_site_endpoint_serves_the_zone_geometry_the_detectors_use(api):
+    client, *_ = api
+    assert client.get("/site").status_code == 401
+    site = client.get("/site", headers=VH).json()
+    zones = {z["name"]: z for z in site["zones"]}
+    assert set(zones) == {"Office", "MeetingRoom", "Lab", "ServerRoom"}
+    assert zones["ServerRoom"]["kind"] == "restricted" and zones["Office"]["kind"] == "allowed"
+    assert all(len(z["polygon"]) == 4 for z in zones.values())
+    assert site["origin"] == {"latitude": 18.5204, "longitude": 73.8567}
+
+
 def test_viewer_can_read_but_only_admin_can_change_things(api):
     client, *_ = api
     assert client.get("/devices", headers=VH).status_code == 200
@@ -309,6 +327,46 @@ def test_websocket_receives_the_real_alert_from_the_pipeline(api, r):
         alert = seen[-1]
         assert alert["device_id"] == "D-001" and "restricted zone" in alert["explanation"]
         assert any(m["type"] == "score" for m in seen)  # score updates flowed too
+
+
+def test_severity_bands_follow_the_alert_thresholds_so_red_means_alert(api):
+    client, rt, s = api
+    st = client.get("/system/status", headers=VH).json()
+    bands, th = st["severity_bands"], st["alert_thresholds"]
+    assert bands["high"] == th["raise_at"] and bands["medium"] == th["clear_at"] and bands["low"] == pytest.approx(th["clear_at"] / 2)
+    # A score just under the alert level must NOT read as "High" (the bug the dashboard screenshot exposed).
+    from backend.correlation.engine import severity
+    assert severity(th["raise_at"] - 0.01, rt.corr_cfg) == "medium"
+    assert severity(th["raise_at"], rt.corr_cfg) == "high"
+    assert severity(th["clear_at"] / 4, rt.corr_cfg) == "normal"
+
+
+def test_a_request_connection_can_be_closed_on_a_different_thread_than_it_was_opened_on(tmp_path):
+    """Regression: FastAPI may open a dependency on one worker thread and close it on another. With SQLite's
+    default thread check that raised ProgrammingError and returned 500 on a real server, while the single-threaded
+    test client hid it (found by driving the dashboard in a real browser)."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    path = str(tmp_path / "x.db")
+    relaxed = EventStore(path, check_same_thread=False)
+    with ThreadPoolExecutor(1) as pool:
+        pool.submit(relaxed.list_devices).result()   # used on another thread
+        pool.submit(relaxed.close).result()          # closed on another thread: fine
+    strict = EventStore(path)  # the processor's write connection stays strict
+    with ThreadPoolExecutor(1) as pool, pytest.raises(Exception, match="same thread"):
+        pool.submit(strict.list_devices).result()
+    strict.close()
+
+
+def test_many_concurrent_requests_do_not_fail(api):
+    from concurrent.futures import ThreadPoolExecutor
+
+    client, *_ = api
+    register(client)
+    with ThreadPoolExecutor(8) as pool:
+        codes = list(pool.map(lambda _: client.get("/devices", headers=VH).status_code, range(60)))
+    assert set(codes) <= {200, 429}  # 429 only if the per-token rate limit kicked in; never a 500
+    assert codes.count(200) > 0
 
 
 # ---- learned fusion artefact -------------------------------------------------------------------------

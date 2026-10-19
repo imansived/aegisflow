@@ -8,6 +8,7 @@ readers and the writer proceed together).
 import json
 import threading
 import time
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -69,9 +70,14 @@ class Runtime:
         self.settings = settings
         self.hub = hub or Hub()
         self.det_cfg = det_cfg
-        self.corr_cfg = corr_cfg or FROZEN_CORRELATION
         self.design = load_design(settings.design_path)
         self.fusion, self.alert_cfg = choose_fusion(settings, self.design)
+        # Severity bands follow the ALERT thresholds, so a red device and an alert mean the same thing:
+        # High = at or above the alert level, Medium = above the clear level (elevated, close to alerting),
+        # Low = above half of it. The spec's example bands (0.3/0.6/0.8) are not tuned to any fusion; with a
+        # learned fusion that saturates near 0 and 1 they showed "High" for scores that never alerted.
+        a = self.alert_cfg
+        self.corr_cfg = corr_cfg or replace(FROZEN_CORRELATION, low=0.5 * a.clear_at, medium=a.clear_at, high=a.raise_at)
         self.redis = bus.connect(settings.redis_url)
         self.started_at = time.time()
 
@@ -207,6 +213,7 @@ class Runtime:
             "uptime_s": round(time.time() - self.started_at, 1),
             "fusion": self.fusion.name,
             "correlation": {"half_life_s": self.corr_cfg.half_life_s, "score_type": self.corr_cfg.score_type},
+            "severity_bands": {"low": self.corr_cfg.low, "medium": self.corr_cfg.medium, "high": self.corr_cfg.high},
             "alert_thresholds": {"raise_at": self.alert_cfg.raise_at, "clear_at": self.alert_cfg.clear_at},
             "stream": bus.stats(self.redis, self.settings.stream, self.settings.group),
             "dead_letters": self.redis.xlen(self.settings.dead_letter),
