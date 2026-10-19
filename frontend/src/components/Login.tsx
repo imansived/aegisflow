@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Api, ApiError } from '../api'
-import { Logo } from './TopBar'
 
 export function Login({ onLogin }: { onLogin: (token: string, role: 'admin' | 'viewer') => void }) {
   const [token, setToken] = useState('')
@@ -22,7 +21,6 @@ export function Login({ onLogin }: { onLogin: (token: string, role: 'admin' | 'v
     <main className="login">
       <div className="login-orbits" aria-hidden="true"><i /><i /><i /></div>
       <form className="login-card" onSubmit={submit}>
-        <Logo />
         <h1>AEGISFLOW <span>OBSERVATORY</span></h1>
         <p className="sub">Behavioural anomaly detection for connected devices. It watches location, network, device health and proximity, and speaks up when several of them change together. Enter your access token to board: the viewer token to watch, the admin token to also run the simulation.</p>
         <label className="field">Access token

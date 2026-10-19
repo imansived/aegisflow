@@ -4,18 +4,6 @@ import type { Status } from '../types'
 
 export type Mode = 'observe' | 'archive' | 'findings'
 
-export function Logo() {
-  return (
-    <svg className="logo" viewBox="0 0 40 40" aria-hidden="true">
-      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="var(--sig-spatial)" /><stop offset="1" stopColor="var(--sig-device)" /></linearGradient></defs>
-      <path d="M20 3 35 9v10c0 9-6 15-15 18C11 34 5 28 5 19V9Z" fill="none" stroke="url(#lg)" strokeWidth="2" />
-      <circle cx="20" cy="20" r="6.5" fill="none" stroke="url(#lg)" strokeWidth="1.5" />
-      <ellipse cx="20" cy="20" rx="11" ry="4" fill="none" stroke="var(--sig-network)" strokeWidth="1" transform="rotate(-28 20 20)" />
-      <circle cx="20" cy="20" r="2" fill="var(--sig-proximity)" />
-    </svg>
-  )
-}
-
 export function TopBar({ mode, onMode, live, status, role, onLogout, onPalette }: {
   mode: Mode; onMode: (m: Mode) => void; live: LiveState; status: Status | null; role: string; onLogout: () => void; onPalette: () => void
 }) {
@@ -28,7 +16,7 @@ export function TopBar({ mode, onMode, live, status, role, onLogout, onPalette }
 
   return (
     <header className="top">
-      <div className="brand"><Logo /><div><strong>AEGISFLOW</strong><span>OBSERVATORY</span></div></div>
+      <div className="brand"><div><strong>AEGISFLOW</strong><span>OBSERVATORY</span></div></div>
       <nav className="modes" aria-label="Sections">
         {MODES.map(([m, label]) => <button key={m} aria-current={mode === m ? 'page' : undefined} onClick={() => onMode(m)}>{label}</button>)}
       </nav>
