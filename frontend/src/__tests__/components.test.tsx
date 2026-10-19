@@ -252,12 +252,15 @@ describe('SimDeck', () => {
     await waitFor(() => expect(api.demoClear).toHaveBeenCalledWith('D-003'))
   })
 
-  it('disables scenarios until a device is selected, and surfaces a server error', async () => {
+  it('acts on the first device when none is chosen, and surfaces a server error', async () => {
     const api = fakeApi({ demoInject: vi.fn().mockRejectedValue(new ApiError(409, 'the demo is not live yet')) })
-    const { rerender } = render(deck(api, demo('live')))
-    expect((screen.getByRole('button', { name: /Combined strike/ }) as HTMLButtonElement).disabled).toBe(true)
-    rerender(deck(api, demo('live'), { selected: 'D-001' }))
-    fireEvent.click(screen.getByRole('button', { name: /Combined strike/ }))
+    const onSelect = vi.fn()
+    render(<SimDeck api={api} isAdmin demo={demo('live')} selected={null} targets={['D-001', 'D-003']} onSelect={onSelect} onChanged={() => {}} open onToggle={() => {}} />)
+    const b = screen.getByRole('button', { name: /Combined strike/ }) as HTMLButtonElement
+    expect(b.disabled).toBe(false)
+    fireEvent.click(b)
+    await waitFor(() => expect(api.demoInject).toHaveBeenCalledWith(expect.objectContaining({ device_id: 'D-001', scenario: 'combined' })))
+    expect(onSelect).toHaveBeenCalledWith('D-001')
     await waitFor(() => expect(screen.getByRole('alert').textContent).toBe('the demo is not live yet'))
   })
 })

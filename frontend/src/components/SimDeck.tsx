@@ -12,7 +12,8 @@ const MODULES: { id: string; label: string; hint: string }[] = [
   { id: 'staged', label: 'Slow burn: weak, staggered', hint: 'Mild deviations one after another.' },
 ]
 
-/** The Simulation Deck: start a simulated fleet and inject threats into it. Admin only (the server enforces it). */
+/** The Simulation panel: start a simulated fleet and inject threats into it. Admin only (the server enforces it).
+ *  Scenario buttons always work: they act on the chosen device, or on the first device if none is chosen yet. */
 export function SimDeck({ api, isAdmin, demo, selected, targets = [], onSelect, onChanged, open, onToggle }: {
   api: Api; isAdmin: boolean; demo: DemoStatus | null; selected: string | null; targets?: string[]; onSelect?: (id: string) => void
   onChanged: () => void; open: boolean; onToggle: () => void
@@ -22,10 +23,17 @@ export function SimDeck({ api, isAdmin, demo, selected, targets = [], onSelect, 
   const [strength, setStrength] = useState(0.8)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [done, setDone] = useState<string | null>(null)
 
-  const run = async (fn: () => Promise<unknown>) => {
-    setBusy(true); setError(null)
-    try { await fn(); onChanged() } catch (e) { setError(e instanceof ApiError ? e.message : 'Request failed') } finally { setBusy(false) }
+  const target = selected ?? targets[0] ?? null
+  const run = async (fn: () => Promise<unknown>, message?: string) => {
+    setBusy(true); setError(null); setDone(null)
+    try { await fn(); setDone(message ?? null); onChanged() } catch (e) { setError(e instanceof ApiError ? e.message : 'Request failed') } finally { setBusy(false) }
+  }
+  const inject = (m: { id: string; label: string }) => {
+    if (!target) return
+    if (!selected) onSelect?.(target)
+    return run(() => api.demoInject({ device_id: target, scenario: m.id, magnitude: strength, duration_s: 240 }), `${m.label.split(':')[0]} started on ${target}. Watch the map and the Alerts tab.`)
   }
   const state = demo?.state ?? 'idle'
   const live = state === 'live'
@@ -34,7 +42,7 @@ export function SimDeck({ api, isAdmin, demo, selected, targets = [], onSelect, 
   return (
     <aside className={`deck ${open ? 'open' : ''}`} aria-label="Simulation deck">
       <button className="deck-toggle" aria-expanded={open} onClick={onToggle}>
-        <span className="pip" aria-hidden="true" />SIMULATION DECK<span className={`chip ${live ? 'live' : ''}`}>{live ? 'LIVE' : starting ? 'CALIBRATING' : state === 'error' ? 'ERROR' : 'OFFLINE'}</span>
+        Simulation<span className={`chip ${live ? 'live' : ''}`}>{live ? 'Live' : starting ? 'Calibrating' : state === 'error' ? 'Error' : 'Offline'}</span>
       </button>
 
       {open && (
@@ -54,20 +62,19 @@ export function SimDeck({ api, isAdmin, demo, selected, targets = [], onSelect, 
           {isAdmin && live && (
             <>
               <label className="field">Target device
-                <select value={selected ?? ''} onChange={(e) => e.target.value && onSelect?.(e.target.value)}>
-                  <option value="">Choose a device…</option>
+                <select value={target ?? ''} onChange={(e) => e.target.value && onSelect?.(e.target.value)}>
                   {targets.map((d) => <option key={d} value={d}>{d}</option>)}
                 </select>
               </label>
-              <h3>Inject on <b>{selected ?? '…'}</b></h3>
+              <h3>Inject on <b>{target ?? '…'}</b></h3>
               <label className="field range">Strength {strength.toFixed(2)}<input type="range" min={0.05} max={1} step={0.05} value={strength} onChange={(e) => setStrength(Number(e.target.value))} /></label>
               <div className="modules">
                 {MODULES.map((m) => (
-                  <button key={m.id} className="btn module" title={m.hint} disabled={busy || !selected}
-                    onClick={() => run(() => api.demoInject({ device_id: selected!, scenario: m.id, magnitude: strength, duration_s: 240 }))}>{m.label}</button>
+                  <button key={m.id} className="btn module" title={m.hint} disabled={busy || !target} onClick={() => inject(m)}>{m.label}</button>
                 ))}
-                <button className="btn danger" disabled={busy || !selected} onClick={() => run(() => api.demoClear(selected!))}>Restore normal</button>
+                <button className="btn danger" disabled={busy || !target} onClick={() => run(() => api.demoClear(target!), `Restored ${target} to normal.`)}>Restore normal</button>
               </div>
+              {done && <p className="note ok" role="status">{done}</p>}
               {demo && demo.active_episodes.length > 0 && <p className="note">Active: {demo.active_episodes.map((e) => `${e.device_id} ${e.scenario}`).join(', ')}</p>}
             </>
           )}

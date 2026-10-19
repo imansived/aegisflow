@@ -53,10 +53,6 @@ export default function App() {
     api.history(selected, 240).then((points) => dispatch({ type: 'history_loaded', device_id: selected, points })).catch(guard)
   }, [api, selected, dispatch, guard])
 
-  // The deck covers part of the scene, so it opens when there is something to start and tucks away once the fleet is live.
-  const demoState = status?.demo.state
-  useEffect(() => { if (demoState === 'live') setDeckOpen(false); else if (demoState === 'idle') setDeckOpen(true) }, [demoState])
-
   // "/" opens the command palette from anywhere that is not a text field.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -86,17 +82,18 @@ export default function App() {
 
       {mode === 'observe' && (
         <main className="scene">
-          <Sentinel alerts={live.alerts} feed={live.feed} devices={live.devices} selected={selected} onSelect={setSelected} />
+          <div className="col">
+            <SimDeck api={api} isAdmin={role === 'admin'} demo={demo} selected={selected} targets={Object.keys(live.devices).sort()} onSelect={setSelected} onChanged={refreshStatus} open={deckOpen} onToggle={() => setDeckOpen((o) => !o)} />
+            <Sentinel alerts={live.alerts} feed={live.feed} devices={live.devices} selected={selected} onSelect={setSelected} />
+          </div>
           <div className="stage">
-            <i className="hud tl" aria-hidden="true" /><i className="hud tr" aria-hidden="true" /><i className="hud bl" aria-hidden="true" /><i className="hud br" aria-hidden="true" />
             <HoloFloor site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
             {standby && (
               <div className="standby" role="status">
-                <p><b>No fleet running.</b> {role === 'admin' ? 'Use the Simulation Deck to start one.' : 'Waiting for an operator to start the simulated fleet.'}</p>
+                <p><b>No fleet running.</b> {role === 'admin' ? 'Use the Simulation panel to start one.' : 'Waiting for an operator to start the simulated fleet.'}</p>
               </div>
             )}
             <BootOverlay demo={demo} />
-            <SimDeck api={api} isAdmin={role === 'admin'} demo={demo} selected={selected} targets={Object.keys(live.devices).sort()} onSelect={setSelected} onChanged={refreshStatus} open={deckOpen} onToggle={() => setDeckOpen((o) => !o)} />
             <TimeRibbon history={live.history} alerts={live.alerts} onSelect={setSelected} />
           </div>
           <Inspector snap={snap} points={selected ? live.history[selected] ?? [] : []} alerts={deviceAlerts} status={status} />

@@ -35,7 +35,7 @@ with sync_playwright() as p:
 
     print("2. admin login")
     page.get_by_label("Access token").fill(ADMIN); page.get_by_role("button", name="Sign in").click()
-    page.locator(".deck .deck-toggle .chip").filter(has_text=re.compile("LIVE|OFFLINE|CALIBRATING")).wait_for(timeout=15000)
+    page.locator(".deck .deck-toggle .chip").filter(has_text=re.compile("Live|Offline|Calibrating")).wait_for(timeout=15000)
     time.sleep(3)   # the first status poll decides whether a fleet from an earlier session is still running
     expect(page.locator(".pill")).to_contain_text("LINK", timeout=15000)   # WebSocket connected
     if page.locator(".deck-toggle").get_attribute("aria-expanded") != "true": page.locator(".deck-toggle").click()
@@ -48,7 +48,7 @@ with sync_playwright() as p:
     page.get_by_role("spinbutton", name="Devices").fill("10")
     page.get_by_role("button", name="Start fleet").click()
     expect(page.locator(".boot")).to_be_visible(timeout=15000); time.sleep(8); shot(page, "04_calibrating")
-    expect(page.locator(".deck-toggle .chip")).to_have_text("LIVE", timeout=180000)
+    expect(page.locator(".deck-toggle .chip")).to_have_text("Live", timeout=180000)
     page.locator(".deck-toggle").click() if page.locator(".deck-toggle").get_attribute("aria-expanded") != "true" else None
     expect(page.get_by_text("Inject on")).to_be_visible()
     expect(page.locator(".beacon").first).to_be_visible(timeout=30000)
