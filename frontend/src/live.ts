@@ -18,6 +18,13 @@ export interface Point {
   lat: number // NaN for points loaded from history, which carries no position
   lon: number
   effective: Record<Modality, number>
+  // Telemetry, NaN where unknown (points loaded from stored history carry only the score and the four signals).
+  battery: number
+  cpu: number
+  temp: number
+  conns: number
+  sent: number
+  recv: number
 }
 
 export interface LiveState {
@@ -46,6 +53,7 @@ export type Action =
 
 const toPoint = (s: Snapshot): Point => ({
   t: Date.parse(s.ts), score: s.score, severity: s.severity, lat: s.latitude, lon: s.longitude, effective: s.effective,
+  battery: s.battery, cpu: s.cpu_usage, temp: s.temperature, conns: s.network_connections, sent: s.bytes_sent ?? NaN, recv: s.bytes_received ?? NaN,
 })
 
 function upsertAlerts(existing: Alert[], incoming: Alert[]): Alert[] {
@@ -129,7 +137,7 @@ export function reducer(state: LiveState, action: Action): LiveState {
     case 'history_loaded': {
       const existing = state.history[action.device_id] ?? []
       const all: Point[] = action.points.map((h) => ({
-        t: Date.parse(h.ts), score: h.score, severity: h.severity, lat: NaN, lon: NaN, effective: h.effective,
+        t: Date.parse(h.ts), score: h.score, severity: h.severity, lat: NaN, lon: NaN, effective: h.effective, battery: NaN, cpu: NaN, temp: NaN, conns: NaN, sent: NaN, recv: NaN,
       }))
       // Only the recent past, relative to the live data. The server returns a device's newest stored points
       // across ALL runs; a demo run starts a week later in simulated time, so without this window an old

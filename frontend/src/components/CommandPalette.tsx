@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { SEVERITY_LABEL, sevRank } from '../format'
 import type { Snapshot } from '../types'
-import type { Mode } from './TopBar'
+import type { View } from './SideNav'
 
 export interface PaletteItem { id: string; label: string; hint: string; run: () => void }
 
@@ -13,15 +13,17 @@ export function filterItems(items: PaletteItem[], query: string): PaletteItem[] 
   return items.filter((i) => terms.every((t) => `${i.label} ${i.hint}`.toLowerCase().includes(t)))
 }
 
-export function buildItems(devices: Record<string, Snapshot>, onDevice: (id: string) => void, onMode: (m: Mode) => void, onDeck: () => void): PaletteItem[] {
+export function buildItems(devices: Record<string, Snapshot>, onDevice: (id: string) => void, onView: (v: View) => void): PaletteItem[] {
   const devs = Object.values(devices).sort((a, b) => sevRank(b.severity) - sevRank(a.severity) || b.score - a.score)
     .map((d): PaletteItem => ({ id: d.device_id, label: d.device_id, hint: `${SEVERITY_LABEL[d.severity]} · ${d.zone ?? 'in transit'} · score ${d.score.toFixed(2)}`, run: () => onDevice(d.device_id) }))
   return [
     ...devs,
-    { id: 'go-observe', label: 'Go to Observe', hint: 'the live scene', run: () => onMode('observe') },
-    { id: 'go-archive', label: 'Go to Archive', hint: 'fleet statistics', run: () => onMode('archive') },
-    { id: 'go-findings', label: 'Go to Findings', hint: 'what the final test showed', run: () => onMode('findings') },
-    { id: 'deck', label: 'Open Simulation Deck', hint: 'start the fleet, inject threats', run: onDeck },
+    { id: 'go-overview', label: 'Go to Overview', hint: 'map, live anomalies, correlation', run: () => onView('overview') },
+    { id: 'go-network', label: 'Go to Device Network', hint: 'every device at a glance', run: () => onView('network') },
+    { id: 'go-anomalies', label: 'Go to Anomalies', hint: 'all alerts and why they fired', run: () => onView('anomalies') },
+    { id: 'go-scenarios', label: 'Go to Scenarios', hint: 'start the fleet, inject threats', run: () => onView('scenarios') },
+    { id: 'go-stats', label: 'Go to Statistics', hint: 'fleet-wide numbers', run: () => onView('stats') },
+    { id: 'go-evidence', label: 'Go to Evidence', hint: 'what the final test showed', run: () => onView('evidence') },
   ]
 }
 

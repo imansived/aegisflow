@@ -177,6 +177,7 @@ class Runtime:
             "zone": zone.name if zone else None, "restricted": bool(zone and zone.kind.value == "restricted"),
             "battery": t.battery, "cpu_usage": t.cpu_usage, "temperature": t.temperature,
             "network_connections": t.network_connections, "nearby_devices": len(t.nearby_devices),
+            "memory_usage": t.memory_usage, "bytes_sent": t.bytes_sent, "bytes_received": t.bytes_received,
             "score": round(f.score, 4), "severity": f.severity,
             "effective": {m.value: round(v, 3) for m, v in f.effective.items()},
             "contributions": {m.value: round(v, 3) for m, v in f.contributions.items()},

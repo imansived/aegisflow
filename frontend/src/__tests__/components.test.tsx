@@ -4,12 +4,14 @@ import { Api, ApiError } from '../api'
 import { HBars, IntervalPlot, LineChart } from '../components/Charts'
 import { CommandPalette, buildItems, filterItems } from '../components/CommandPalette'
 import { HoloFloor } from '../components/HoloFloor'
-import { Inspector } from '../components/Inspector'
+import { CorrelationPanel, AnomalyFeed, correlationSentence, focusDevice } from '../components/Panels'
+import { linePath } from '../components/MiniCharts'
+import { SideNav } from '../components/SideNav'
+import Anomalies from '../pages/Anomalies'
+import Network from '../pages/Network'
+import Scenarios from '../pages/Scenarios'
 import { Login } from '../components/Login'
-import { Sentinel } from '../components/Sentinel'
 import { SignalRing, activeSignals } from '../components/SignalRing'
-import { SimDeck } from '../components/SimDeck'
-import { ribbonSeries } from '../components/TimeRibbon'
 import { makeIso } from '../iso'
 import Evidence from '../pages/Evidence'
 import { fleetPeakSeries } from '../pages/Analytics'
@@ -84,65 +86,100 @@ describe('SignalRing', () => {
   })
 })
 
-describe('Sentinel', () => {
+describe('AnomalyFeed', () => {
   const alerts = [alert('a', 'D-001', 'high'), alert('b', 'D-002', 'low', { status: 'closed', started: '2026-10-06T04:20:00+00:00' })]
   const feed = [{ id: 'f1', ts: '2026-10-06T04:30:00+00:00', kind: 'severity' as const, device_id: 'D-009', severity: 'medium' as Severity, text: 'Rose from Normal to Medium (score 0.70)' }]
 
-  it('narrates the log first and selects the device on click', () => {
+  it('pins open alerts with their leading reason and signals, and leaves closed ones out', () => {
+    render(<AnomalyFeed alerts={alerts} feed={[]} selected={null} onSelect={() => {}} onOpenAll={() => {}} />)
+    expect(screen.getByText('entered a restricted zone')).toBeTruthy()
+    expect(screen.queryByText('D-002')).toBeNull()
+    expect(screen.getByText('1 open · view all')).toBeTruthy()
+  })
+
+  it('narrates activity and selects the device on click', () => {
     const onSelect = vi.fn()
-    render(<Sentinel alerts={alerts} feed={feed} devices={{}} selected={null} onSelect={onSelect} />)
+    render(<AnomalyFeed alerts={[]} feed={feed} selected={null} onSelect={onSelect} onOpenAll={() => {}} />)
     fireEvent.click(screen.getByText(/Rose from Normal to Medium/))
     expect(onSelect).toHaveBeenCalledWith('D-009')
   })
 
-  it('lists alerts with their leading reason and filters to open ones', () => {
-    render(<Sentinel alerts={alerts} feed={[]} devices={{}} selected={null} onSelect={() => {}} />)
-    fireEvent.click(screen.getByRole('tab', { name: /Alerts/ }))
-    expect(screen.getAllByText('entered a restricted zone')).toHaveLength(2)
-    fireEvent.click(screen.getByRole('button', { name: 'Open' }))
-    expect(screen.queryByText('D-002')).toBeNull()
-    expect(screen.getByText('D-001')).toBeTruthy()
-  })
-
-  it('ranks the roster riskiest first, marks learning devices, and explains empty states', () => {
-    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99), 'D-003': snap('D-003', 'low', 0.4, { learning: true }) }
-    const { unmount } = render(<Sentinel alerts={[]} feed={[]} devices={devices} selected={null} onSelect={() => {}} />)
-    fireEvent.click(screen.getByRole('tab', { name: 'Roster' }))
-    const ids = screen.getAllByRole('button').filter((b) => b.className.includes('card-btn')).map((b) => b.textContent!.slice(0, 5))
-    expect(ids).toEqual(['D-002', 'D-003', 'D-001'])
-    expect(screen.getByText(/learning/)).toBeTruthy()
-    unmount()
-    render(<Sentinel alerts={[]} feed={[]} devices={{}} selected={null} onSelect={() => {}} />)
+  it('explains the empty state', () => {
+    render(<AnomalyFeed alerts={[]} feed={[]} selected={null} onSelect={() => {}} onOpenAll={() => {}} />)
     expect(screen.getByText(/Listening/)).toBeTruthy()
-    fireEvent.click(screen.getByRole('tab', { name: /Alerts/ }))
-    expect(screen.getByText(/No alerts yet/)).toBeTruthy()
   })
 })
 
-describe('Inspector', () => {
-  it('prompts for a selection when none is made', () => {
-    render(<Inspector snap={null} points={[]} alerts={[]} status={null} />)
-    expect(screen.getByText(/Select a beacon/i)).toBeTruthy()
+describe('correlation', () => {
+  it('describes how the signals combine, in words', () => {
+    expect(correlationSentence(snap('D-1', 'normal', 0.1))).toMatch(/within their normal range/)
+    expect(correlationSentence(snap('D-1', 'low', 0.5, { effective: { ...EFF, network: 0.6 } }))).toMatch(/One signal is active: Network 0.60/)
+    const s = correlationSentence(snap('D-1', 'high', 0.97, { effective: { spatial: 0.35, network: 0.62, device: 0.5, proximity: 0 } }))
+    expect(s).toMatch(/3 signals are active at once/)
+    expect(s).toMatch(/strongest alone is 0.62; combined they score 0.97/)
   })
 
-  it('shows why an open alert fired and states that the score is not a probability', () => {
-    const s = snap('D-003', 'high', 0.99, { effective: { ...EFF, spatial: 1 }, contributions: { spatial: 0.89 } })
-    render(<Inspector snap={s} points={[]} alerts={[alert('a', 'D-003', 'high')]} status={STATUS} />)
+  it('focuses the selected device, else the riskiest one', () => {
+    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99) }
+    expect(focusDevice(devices, null)?.device_id).toBe('D-002')
+    expect(focusDevice(devices, 'D-001')?.device_id).toBe('D-001')
+    expect(focusDevice({}, null)).toBeNull()
+  })
+
+  it('shows why an open alert fired, and that the score is not a probability', () => {
+    const s = snap('D-003', 'high', 0.99, { effective: { ...EFF, spatial: 1 } })
+    render(<CorrelationPanel snap={s} history={{}} alerts={[alert('a', 'D-003', 'high')]} status={STATUS} />)
     expect(screen.getByText('Why it was flagged')).toBeTruthy()
     expect(screen.getByText('entered a restricted zone')).toBeTruthy()
     expect(screen.getByText(/not a probability/)).toBeTruthy()
   })
 
-  it('says when baselines are still learning', () => {
-    render(<Inspector snap={snap('D-003', 'normal', 0.05, { learning: true })} points={[]} alerts={[]} status={STATUS} />)
-    expect(screen.getByText(/Still learning/)).toBeTruthy()
+  it('tells the user what to do when nothing is running', () => {
+    render(<CorrelationPanel snap={null} history={{}} alerts={[]} status={null} />)
+    expect(screen.getByText(/Start the fleet in Scenarios/)).toBeTruthy()
+  })
+
+  it('linePath breaks the line at missing values instead of bridging them', () => {
+    expect(linePath([0, 1, 2, 3], [5, 6, NaN, 7])).toBe('M0.0 5.0L1.0 6.0M3.0 7.0')
+  })
+})
+
+describe('Device network and Anomalies pages', () => {
+  it('lists devices riskiest first and opens one on click', () => {
+    const onOpen = vi.fn()
+    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99), 'D-003': snap('D-003', 'low', 0.4, { learning: true }) }
+    render(<Network devices={devices} selected={null} onOpen={onOpen} />)
+    const ids = screen.getAllByRole('button').map((b) => b.textContent)
+    expect(ids.slice(0, 3)).toEqual(['D-002', 'D-003', 'D-001'])
+    expect(screen.getByText(/learning/)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'D-002' }))
+    expect(onOpen).toHaveBeenCalledWith('D-002')
+  })
+
+  it('shows the signals behind an alert, and filters to open ones', () => {
+    const alerts = [alert('a', 'D-001', 'high'), alert('b', 'D-002', 'low', { status: 'closed', started: '2026-10-06T04:20:00+00:00' })]
+    render(<Anomalies alerts={alerts} onOpen={() => {}} />)
+    expect(screen.getByText('Signals that combined')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Open' }))
+    expect(screen.queryByText('D-002')).toBeNull()
+  })
+})
+
+describe('SideNav', () => {
+  it('marks the current section and switches on click', () => {
+    const onView = vi.fn()
+    render(<SideNav view="overview" onView={onView} openAlerts={2} />)
+    expect(screen.getByRole('button', { name: /Overview/ }).getAttribute('aria-current')).toBe('page')
+    fireEvent.click(screen.getByRole('button', { name: /Scenarios/ }))
+    expect(onView).toHaveBeenCalledWith('scenarios')
+    expect(screen.getByLabelText('2 open')).toBeTruthy()
   })
 })
 
 describe('CommandPalette', () => {
   it('filters by every typed term and lists devices before commands', () => {
     const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': snap('D-002', 'high', 0.99, { zone: 'ServerRoom' }) }
-    const items = buildItems(devices, () => {}, () => {}, () => {})
+    const items = buildItems(devices, () => {}, () => {})
     expect(items[0].id).toBe('D-002')
     expect(filterItems(items, 'high server').map((i) => i.id)).toEqual(['D-002'])
     expect(filterItems(items, '')).toHaveLength(items.length)
@@ -155,14 +192,6 @@ describe('CommandPalette', () => {
     fireEvent.keyDown(screen.getByLabelText('Search'), { key: 'Enter' })
     expect(run).toHaveBeenCalled()
     expect(onClose).toHaveBeenCalled()
-  })
-})
-
-describe('ribbonSeries', () => {
-  it('keeps the highest score per bucket, in time order', () => {
-    const p = (ts: string, score: number) => ({ t: Date.parse(ts), score, severity: 'normal', lat: 0, lon: 0 }) as never
-    const s = ribbonSeries({ a: [p('2026-10-06T04:30:05+00:00', 0.2), p('2026-10-06T04:30:10+00:00', 0.7)], b: [p('2026-10-06T04:30:30+00:00', 0.4)] })
-    expect(s.map((x) => x.v)).toEqual([0.7, 0.4])
   })
 })
 
@@ -231,21 +260,21 @@ describe('Login', () => {
   })
 })
 
-describe('SimDeck', () => {
+describe('Scenarios', () => {
   const demo = (state: DemoStatus['state'], extra: Partial<DemoStatus> = {}): DemoStatus => ({ state, error: null, devices: 10, speed: 20, warmup_progress: 0, sim_time: null, active_episodes: [], ...extra })
   const fakeApi = (over: Record<string, unknown> = {}) => ({ demoStart: vi.fn().mockResolvedValue({}), demoStop: vi.fn(), demoInject: vi.fn().mockResolvedValue({}), demoClear: vi.fn().mockResolvedValue({ cleared: 1 }), ...over }) as unknown as Api
-  const deck = (api: Api, d: DemoStatus, o: { isAdmin?: boolean; selected?: string | null } = {}) =>
-    <SimDeck api={api} isAdmin={o.isAdmin ?? true} targets={['D-001','D-003']} demo={d} selected={o.selected === undefined ? null : o.selected} onChanged={() => {}} open onToggle={() => {}} />
+  const page = (api: Api, d: DemoStatus, o: { isAdmin?: boolean; selected?: string | null; onSelect?: () => void } = {}) =>
+    <Scenarios api={api} isAdmin={o.isAdmin ?? true} demo={d} selected={o.selected === undefined ? null : o.selected} targets={['D-001', 'D-003']} onSelect={o.onSelect ?? (() => {})} onChanged={() => {}} onWatch={() => {}} />
 
   it('hides every control from viewers', () => {
-    render(deck(fakeApi(), demo('idle'), { isAdmin: false, selected: 'D-003' }))
+    render(page(fakeApi(), demo('idle'), { isAdmin: false, selected: 'D-003' }))
     expect(screen.queryByRole('button', { name: 'Start fleet' })).toBeNull()
     expect(screen.getByText(/Viewers can watch but not control/)).toBeTruthy()
   })
 
   it('injects the chosen scenario on the selected device and can restore it', async () => {
     const api = fakeApi()
-    render(deck(api, demo('live'), { selected: 'D-003' }))
+    render(page(api, demo('live'), { selected: 'D-003' }))
     fireEvent.click(screen.getByRole('button', { name: /Breach/ }))
     await waitFor(() => expect(api.demoInject).toHaveBeenCalledWith({ device_id: 'D-003', scenario: 'spatial', magnitude: 0.8, duration_s: 240 }))
     fireEvent.click(screen.getByRole('button', { name: 'Restore normal' }))
@@ -255,7 +284,7 @@ describe('SimDeck', () => {
   it('acts on the first device when none is chosen, and surfaces a server error', async () => {
     const api = fakeApi({ demoInject: vi.fn().mockRejectedValue(new ApiError(409, 'the demo is not live yet')) })
     const onSelect = vi.fn()
-    render(<SimDeck api={api} isAdmin demo={demo('live')} selected={null} targets={['D-001', 'D-003']} onSelect={onSelect} onChanged={() => {}} open onToggle={() => {}} />)
+    render(page(api, demo('live'), { onSelect }))
     const b = screen.getByRole('button', { name: /Combined strike/ }) as HTMLButtonElement
     expect(b.disabled).toBe(false)
     fireEvent.click(b)

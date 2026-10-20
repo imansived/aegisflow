@@ -18,7 +18,7 @@ const SPIRE_MAX = 26 // metres of height for a signal at 1.0
 export function HoloFloor({ site, devices, selected, onSelect, trail }: {
   site: Site | null; devices: Record<string, Snapshot>; selected: string | null; onSelect: (id: string) => void; trail: Point[]
 }) {
-  const iso = useMemo(() => (site ? makeIso(site) : null), [site])
+  const iso = useMemo(() => (site ? makeIso(site, 6, 30) : null), [site])
   const [hover, setHover] = useState<string | null>(null)
   if (!site || !iso) return <div className="empty stage-empty">Loading the facility…</div>
 

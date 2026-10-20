@@ -17,6 +17,9 @@ export interface Snapshot {
   temperature: number
   network_connections: number
   nearby_devices: number
+  memory_usage?: number // added later: older servers do not send these three
+  bytes_sent?: number
+  bytes_received?: number
   score: number
   severity: Severity
   effective: Record<Modality, number>
