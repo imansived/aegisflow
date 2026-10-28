@@ -8,7 +8,7 @@ from contracts.telemetry import Telemetry
 
 from .config import DetectionConfig
 from .detectors import DeviceDetector, NetworkDetector, ProximityDetector, SpatialDetector
-from .types import Context, Scores
+from .types import Context, DetectorResult, Scores
 
 MAX_GAP_S = 60.0  # a longer silence than this and "speed since last fix" is meaningless
 
@@ -35,27 +35,34 @@ class DetectionEngine:
 
     def process(self, t: Telemetry) -> Scores:
         now_s = t.timestamp.timestamp()
+        lost = t.unavailable  # signal groups the device reported as unavailable this tick
         prev = self._prev.get(t.device_id)
         dt_s = speed = None
         if prev is not None:
             dt = now_s - prev[0]
             if 0 < dt <= MAX_GAP_S:
                 dt_s = dt
-                speed = haversine_m((prev[1], prev[2]), (t.latitude, t.longitude)) / dt
+                if "spatial" not in lost:
+                    speed = haversine_m((prev[1], prev[2]), (t.latitude, t.longitude)) / dt
             elif dt > MAX_GAP_S:
                 dt_s = dt
-        self._prev[t.device_id] = (now_s, t.latitude, t.longitude)
+        if "spatial" not in lost:  # no fix this tick: keep the last known position and its time
+            self._prev[t.device_id] = (now_s, t.latitude, t.longitude)
 
         ctx = Context(
             t=t,
             now_s=now_s,
             bucket="work" if is_working(t.timestamp) else "off",
             dt_s=dt_s,
-            zone=zone_of((t.latitude, t.longitude)),
+            zone=None if "spatial" in lost else zone_of((t.latitude, t.longitude)),
             speed_mps=speed,
         )
         results, features = {}, {}
         for det in self.detectors:
+            if det.modality.value in lost:
+                # Nothing was observed: no score, no baseline update, no features. Never a zero reading.
+                results[det.modality] = DetectorResult(det.modality, 0.0, False, {}, 0.0, available=False)
+                continue
             res, feats = det.step(ctx)
             results[res.modality] = res
             features |= feats

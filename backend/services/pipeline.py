@@ -10,6 +10,7 @@ from collections.abc import Callable, Iterable
 
 from backend.correlation.engine import CorrelationConfig, CorrelationEngine, Fused
 from backend.correlation.fusion import Fusion
+from backend.correlation.thresholds import ThresholdTable
 from backend.database.store import EventStore
 from backend.detection.config import DetectionConfig
 from backend.detection.engine import DetectionEngine
@@ -31,12 +32,13 @@ class Pipeline:
         det_cfg: DetectionConfig | None = None,
         corr_cfg: CorrelationConfig | None = None,
         alert_cfg: AlertConfig | None = None,
+        table: ThresholdTable | None = None,
         on_alert: Callable[[dict], None] | None = None,
         on_fused: Callable[[Fused], None] | None = None,
         on_processed: Callable[[Telemetry, Fused], None] | None = None,
     ):
         self.detection = DetectionEngine(enrolled, det_cfg)
-        self.correlation = CorrelationEngine(fusion, corr_cfg)
+        self.correlation = CorrelationEngine(fusion, corr_cfg, table)
         self.alerts = AlertManager(alert_cfg, corr_cfg)
         self.store, self.on_alert, self.on_fused = store, on_alert, on_fused
         self.on_processed = on_processed  # gets the event AND its result: the live dashboard needs both

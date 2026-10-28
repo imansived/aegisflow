@@ -15,6 +15,9 @@ class DetectorResult:
     # Same detector, but weak evidence is kept (stats.soft_ramp) instead of zeroed below z = 2.
     # Baseline learning and alerting use `score`; `soft` exists for the §5.5 experiment.
     soft: float = 0.0
+    # False when the device reported this signal as unavailable this tick. Then `score` and `soft` are placeholders,
+    # NOT a reading of 'normal': nothing was observed and the detector's baseline was not updated.
+    available: bool = True
 
 
 @dataclass(frozen=True)
@@ -38,6 +41,10 @@ class Scores:
     @property
     def learning(self) -> bool:
         return any(r.learning for r in self.results.values())
+
+    @property
+    def unavailable(self) -> frozenset[Modality]:
+        return frozenset(m for m, r in self.results.items() if not r.available)
 
 
 @dataclass(frozen=True)

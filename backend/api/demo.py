@@ -17,7 +17,7 @@ import numpy as np
 
 from backend.database.store import EventStore
 from backend.streaming.publisher import publish
-from contracts.scenarios import SCENARIOS, Episode, ScenarioType
+from contracts.scenarios import SCENARIOS, Episode, Modality, ScenarioType
 from contracts.site import SITE_TZ
 from simulator.config import SimConfig
 from simulator.fleet import Fleet
@@ -26,6 +26,7 @@ from simulator.plan import staged_shape
 from .runtime import Runtime
 
 INJECTABLE = [t for t in ScenarioType if t not in (ScenarioType.NORMAL, ScenarioType.HARD_NEGATIVE)]
+SIGNALS = {m.value for m in Modality}
 
 
 class DemoError(RuntimeError):
@@ -108,7 +109,8 @@ class LiveSimulator:
 
     # ---- scenarios ----------------------------------------------------------------------------
 
-    def inject(self, device_id: str, scenario: str, magnitude: float = 0.8, duration_s: float = 120.0) -> dict:
+    def inject(self, device_id: str, scenario: str, magnitude: float = 0.8, duration_s: float = 120.0,
+               signals: list[str] | None = None) -> dict:
         if self.state != "live" or not self.fleet or not self.sim_now:
             raise DemoError("the demo is not live yet")
         if device_id not in self.fleet.episodes_by_device:
@@ -123,6 +125,13 @@ class LiveSimulator:
             raise DemoError("magnitude must be in [0, 1] and duration_s in [10, 900]")
 
         spec = SCENARIOS[stype]
+        modalities = spec.modalities
+        if stype is ScenarioType.SIGNAL_LOSS:
+            if not signals or not set(signals) <= SIGNALS:
+                raise DemoError(f"signal_loss needs `signals`, a non-empty subset of {sorted(SIGNALS)}")
+            modalities = frozenset(Modality(x) for x in signals)
+        elif signals:
+            raise DemoError("`signals` applies only to the signal_loss scenario")
         variant, windows, length = "", {}, float(duration_s)
         if stype is ScenarioType.STAGED:
             variant, length, windows = staged_shape(self._rng)
@@ -130,7 +139,7 @@ class LiveSimulator:
         self._n += 1
         ep = Episode(
             episode_id=f"DEMO-{self._n:04d}", device_id=device_id, scenario=stype, start=start,
-            end=start + timedelta(seconds=length), modalities=spec.modalities, magnitude=magnitude,
+            end=start + timedelta(seconds=length), modalities=modalities, magnitude=magnitude,
             is_malicious=spec.is_malicious, seed=self.cfg.seed, variant=variant, windows_s=windows,
         )
         self.fleet.episodes_by_device[device_id] = [*self.fleet.episodes_by_device[device_id], ep]  # replace the list atomically

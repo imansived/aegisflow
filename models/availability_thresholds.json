@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "model": "learned fusion from models/frozen_design.json, unchanged",
+  "budget_false_onsets_per_device_day": 3.0,
+  "half_life_s": 1.0,
+  "score_type": "soft",
+  "threshold_seeds": [
+    16,
+    17,
+    18,
+    19
+  ],
+  "code_head": "b02c0184cce5761ceeff1a254070cd1210e64fd9",
+  "created": "2026-10-28T09:49:46.283187+00:00",
+  "note": "Calibrated on ordinary time of validation seeds 16-19 only. A missing signal's column is held at 0 and the threshold is calibrated for that exact input; patterns not listed as validated take the conservative fallback.",
+  "patterns": {
+    "1": {
+      "available": [
+        "spatial"
+      ],
+      "describe": "spatial",
+      "raise_at": 0.908572,
+      "clear_at": 0.828572,
+      "false_per_day": 3.0,
+      "rows": 2212068,
+      "validated": true
+    },
+    "2": {
+      "available": [
+        "network"
+      ],
+      "describe": "network",
+      "raise_at": 0.99068,
+      "clear_at": 0.91068,
+      "false_per_day": 2.554,
+      "rows": 2212068,
+      "validated": true
+    },
+    "3": {
+      "available": [
+        "spatial",
+        "network"
+      ],
+      "describe": "spatial+network",
+      "raise_at": 0.994394,
+      "clear_at": 0.914394,
+      "false_per_day": 2.547,
+      "rows": 2212068,
+      "validated": true
+    },
+    "4": {
+      "available": [
+        "device"
+      ],
+      "describe": "device",
+      "raise_at": 0.932878,
+      "clear_at": 0.852878,
+      "false_per_day": 2.64,
+      "rows": 2212068,
+      "validated": true
+    },
+    "5": {
+      "available": [
+        "spatial",
+        "device"
+      ],
+      "describe": "spatial+device",
+      "raise_at": 0.951266,
+      "clear_at": 0.871266,
+      "false_per_day": 2.781,
+      "rows": 2212068,
+      "validated": true
+    },
+    "6": {
+      "available": [
+        "network",
+        "device"
+      ],
+      "describe": "network+device",
+      "raise_at": 0.986621,
+      "clear_at": 0.906621,
+      "false_per_day": 2.562,
+      "rows": 2212068,
+      "validated": true
+    },
+    "7": {
+      "available": [
+        "spatial",
+        "network",
+        "device"
+      ],
+      "describe": "spatial+network+device",
+      "raise_at": 0.991194,
+      "clear_at": 0.911194,
+      "false_per_day": 2.867,
+      "rows": 2212068,
+      "validated": true
+    },
+    "8": {
+      "available": [
+        "proximity"
+      ],
+      "describe": "proximity",
+      "raise_at": 0.698827,
+      "clear_at": 0.618827,
+      "false_per_day": 2.765,
+      "rows": 2212068,
+      "validated": true
+    },
+    "9": {
+      "available": [
+        "spatial",
+        "proximity"
+      ],
+      "describe": "spatial+proximity",
+      "raise_at": 0.915143,
+      "clear_at": 0.835143,
+      "false_per_day": 2.953,
+      "rows": 2212068,
+      "validated": true
+    },
+    "10": {
+      "available": [
+        "network",
+        "proximity"
+      ],
+      "describe": "network+proximity",
+      "raise_at": 0.990984,
+      "clear_at": 0.910984,
+      "false_per_day": 2.515,
+      "rows": 2212068,
+      "validated": true
+    },
+    "11": {
+      "available": [
+        "spatial",
+        "network",
+        "proximity"
+      ],
+      "describe": "spatial+network+proximity",
+      "raise_at": 0.994661,
+      "clear_at": 0.914661,
+      "false_per_day": 2.515,
+      "rows": 2212068,
+      "validated": true
+    },
+    "12": {
+      "available": [
+        "device",
+        "proximity"
+      ],
+      "describe": "device+proximity",
+      "raise_at": 0.935064,
+      "clear_at": 0.855064,
+      "false_per_day": 2.695,
+      "rows": 2212068,
+      "validated": true
+    },
+    "13": {
+      "available": [
+        "spatial",
+        "device",
+        "proximity"
+      ],
+      "describe": "spatial+device+proximity",
+      "raise_at": 0.953383,
+      "clear_at": 0.873383,
+      "false_per_day": 2.843,
+      "rows": 2212068,
+      "validated": true
+    },
+    "14": {
+      "available": [
+        "network",
+        "device",
+        "proximity"
+      ],
+      "describe": "network+device+proximity",
+      "raise_at": 0.987002,
+      "clear_at": 0.907002,
+      "false_per_day": 2.609,
+      "rows": 2212068,
+      "validated": true
+    },
+    "15": {
+      "available": [
+        "spatial",
+        "network",
+        "device",
+        "proximity"
+      ],
+      "describe": "spatial+network+device+proximity",
+      "raise_at": 0.991578,
+      "clear_at": 0.911578,
+      "false_per_day": 2.797,
+      "rows": 2212068,
+      "validated": true
+    }
+  }
+}

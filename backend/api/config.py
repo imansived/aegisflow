@@ -36,6 +36,7 @@ class Settings:
     run_processor: bool = True
     fusion: str = "auto"  # "auto" | "noisy_or" | "learned"
     design_path: Path = Path("models/frozen_design.json")
+    thresholds_path: Path = Path("models/availability_thresholds.json")  # validated thresholds per availability pattern
 
     # Per-device ingestion limit (telemetry is ~0.2/s per device; this leaves room for bursts and
     # catches a flooding device) and a per-token limit on the read API.

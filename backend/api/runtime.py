@@ -15,6 +15,7 @@ from pathlib import Path
 import redis
 
 from backend.correlation.engine import FROZEN_CORRELATION, CorrelationConfig
+from backend.correlation.thresholds import ThresholdTable
 from backend.correlation.fusion import Fusion, LearnedFusion, NoisyOr
 from backend.database.store import EventStore
 from backend.detection.config import DetectionConfig
@@ -23,7 +24,7 @@ from backend.services.pipeline import Pipeline
 from backend.streaming import bus
 from backend.streaming.processor import Processor
 from backend.streaming.publisher import publish
-from contracts.site import zone_of
+from contracts.site import SITE_ORIGIN, zone_of
 from contracts.telemetry import Telemetry
 
 from .config import Settings
@@ -72,6 +73,9 @@ class Runtime:
         self.det_cfg = det_cfg
         self.design = load_design(settings.design_path)
         self.fusion, self.alert_cfg = choose_fusion(settings, self.design)
+        # Availability thresholds were calibrated for the LEARNED fusion only; for any other fusion a partly
+        # observed device takes the conservative fallback (no alert, reported as Degraded).
+        self.table = ThresholdTable.load(settings.thresholds_path) if self.fusion.name == "learned" else None
         # Severity bands follow the ALERT thresholds, so a red device and an alert mean the same thing:
         # High = at or above the alert level, Medium = above the clear level (elevated, close to alerting),
         # Low = above half of it. The spec's example bands (0.3/0.6/0.8) are not tuned to any fusion; with a
@@ -106,7 +110,7 @@ class Runtime:
     def _new_pipeline(self) -> Pipeline:
         return Pipeline(
             self.enrolled, self.fusion, self._store,
-            det_cfg=self.det_cfg, corr_cfg=self.corr_cfg, alert_cfg=self.alert_cfg,
+            det_cfg=self.det_cfg, corr_cfg=self.corr_cfg, alert_cfg=self.alert_cfg, table=self.table,
             on_alert=self._on_alert, on_processed=self._on_processed,
         )
 
@@ -170,18 +174,32 @@ class Runtime:
             self.hub.publish({"type": "alert", **ev})
 
     def _on_processed(self, t: Telemetry, f) -> None:
-        zone = zone_of((t.latitude, t.longitude))
+        prev = self.live.get(t.device_id)
+        lost = t.unavailable
+        stale = "spatial" in lost
+        if stale:  # no fix: keep the last known position, flagged as stale, rather than inventing one
+            lat, lon = (prev["latitude"], prev["longitude"]) if prev else SITE_ORIGIN
+        else:
+            lat, lon = t.latitude, t.longitude
+        zone = zone_of((lat, lon))
+        n_near = None if t.nearby_devices is None else len(t.nearby_devices)
+        anomalous = f.severity != "normal"
         snap = {
             "device_id": t.device_id, "ts": _iso(t.timestamp),
-            "latitude": t.latitude, "longitude": t.longitude,
-            "zone": zone.name if zone else None, "restricted": bool(zone and zone.kind.value == "restricted"),
+            "latitude": lat, "longitude": lon, "position_stale": stale,
+            "zone": zone.name if zone else None, "restricted": bool(zone and zone.kind.value == "restricted") and not stale,
+            # null = unavailable this tick (never a silent zero)
             "battery": t.battery, "cpu_usage": t.cpu_usage, "temperature": t.temperature,
-            "network_connections": t.network_connections, "nearby_devices": len(t.nearby_devices),
+            "network_connections": t.network_connections, "nearby_devices": n_near,
             "memory_usage": t.memory_usage, "bytes_sent": t.bytes_sent, "bytes_received": t.bytes_received,
             "score": round(f.score, 4), "severity": f.severity,
             "effective": {m.value: round(v, 3) for m, v in f.effective.items()},
             "contributions": {m.value: round(v, 3) for m, v in f.contributions.items()},
             "learning": f.learning,
+            # Observability: how much of this device was actually seen. A quiet score on a partly seen device is
+            # NOT "normal": the state says Degraded, with the missing signals named.
+            "unavailable": sorted(lost), "observability": f.observability, "alertable": f.alertable, "fallback": f.fallback,
+            "state": "anomalous" if anomalous else ("normal" if f.observability == "full" else "degraded"),
         }
         self.live[t.device_id] = snap
         if self.warming:
@@ -193,8 +211,9 @@ class Runtime:
             if self._store is not None:
                 self._store.record_score(t.device_id, _iso(t.timestamp), f.score, f.severity, snap["effective"])
         pushed_at, pushed_sev = self._last_push.get(t.device_id, (0.0, ""))
-        if now - pushed_at >= SCORE_PUSH_EVERY_S or f.severity != pushed_sev:
-            self._last_push[t.device_id] = (now, f.severity)
+        sev_key = f"{f.severity}/{f.observability}"
+        if now - pushed_at >= SCORE_PUSH_EVERY_S or sev_key != pushed_sev:
+            self._last_push[t.device_id] = (now, sev_key)
             self.hub.publish({"type": "score", **snap})
 
     # ---- lifecycle -------------------------------------------------------------------------------
@@ -248,12 +267,18 @@ class Runtime:
 
     def status(self) -> dict:
         p = self._processor
+        full = (self.table.lookup(15) if self.table else None) or self.alert_cfg  # the complete-signal operating point
         return {
             "uptime_s": round(time.time() - self.started_at, 1),
             "fusion": self.fusion.name,
             "correlation": {"half_life_s": self.corr_cfg.half_life_s, "score_type": self.corr_cfg.score_type},
             "severity_bands": {"low": self.corr_cfg.low, "medium": self.corr_cfg.medium, "high": self.corr_cfg.high},
-            "alert_thresholds": {"raise_at": self.alert_cfg.raise_at, "clear_at": self.alert_cfg.clear_at},
+            "alert_thresholds": {"raise_at": full.raise_at, "clear_at": full.clear_at},
+            "availability": {
+                "thresholds_loaded": self.table is not None,
+                "validated_patterns": sorted(self.table.entries) if self.table else [],
+                "devices_degraded": sum(1 for d in self.live.values() if d.get("observability") != "full"),
+            },
             "stream": bus.stats(self.redis, self.settings.stream, self.settings.group),
             "dead_letters": self.redis.xlen(self.settings.dead_letter),
             "processor": p.metrics.summary() if p else None,

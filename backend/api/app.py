@@ -41,6 +41,7 @@ class InjectIn(BaseModel):
     scenario: str = Field(max_length=32)
     magnitude: float = Field(default=0.8, ge=0.0, le=1.0)
     duration_s: float = Field(default=120.0, ge=10, le=900)
+    signals: list[str] | None = Field(default=None, max_length=4)  # for scenario signal_loss: which signals go unavailable
 
 
 class ClearIn(BaseModel):
@@ -220,7 +221,7 @@ def create_app(settings: Settings | None = None, det_cfg=None) -> FastAPI:
 
     @app.post("/demo/inject", status_code=201)
     def demo_inject(body: InjectIn, _: str = Depends(admin)) -> dict:
-        return demo_call(demo.inject, body.device_id, body.scenario, body.magnitude, body.duration_s)
+        return demo_call(demo.inject, body.device_id, body.scenario, body.magnitude, body.duration_s, body.signals)
 
     @app.post("/demo/clear")
     def demo_clear(body: ClearIn, _: str = Depends(admin)) -> dict:

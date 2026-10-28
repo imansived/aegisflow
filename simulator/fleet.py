@@ -6,9 +6,9 @@ from datetime import datetime, timedelta, timezone
 import numpy as np
 
 from contracts.geo import from_local_m
-from contracts.scenarios import Episode
+from contracts.scenarios import Episode, ScenarioType
 from contracts.site import SITE_ORIGIN
-from contracts.telemetry import Telemetry
+from contracts.telemetry import SIGNAL_FIELDS, Telemetry
 
 from .config import TAG_DEVICE, TAG_PROFILE, SimConfig, child_rng
 from .device import DeviceSim, Effect
@@ -32,10 +32,20 @@ class Fleet:
     def _effects(self, device_id: str, t: datetime) -> list[Effect]:
         out = []
         for ep in self.episodes_by_device[device_id]:
+            if ep.scenario is ScenarioType.SIGNAL_LOSS:
+                continue  # an observability loss changes what is REPORTED, not how the device behaves
             active = ep.active_modalities(t)  # honours staggered windows
             if active:
                 out.append(Effect(ep.episode_id, active, ep.magnitude))
         return out
+
+    def _lost(self, device_id: str, t: datetime) -> frozenset[str]:
+        """Signals this device reports as unavailable at time t (from active SIGNAL_LOSS episodes)."""
+        out: set[str] = set()
+        for ep in self.episodes_by_device[device_id]:
+            if ep.scenario is ScenarioType.SIGNAL_LOSS and ep.start <= t < ep.end:
+                out |= {m.value for m in ep.modalities}
+        return frozenset(out)
 
     def ticks(self, duration: timedelta) -> Iterator[list[Telemetry]]:
         cfg = self.cfg
@@ -56,24 +66,26 @@ class Fleet:
             for i, r in enumerate(readings):
                 lat, lon = from_local_m(r.reported_xy, SITE_ORIGIN)
                 neighbours = [self.ids[j] for j in np.flatnonzero(near[i])] + r.rogue_neighbours
-                out.append(
-                    Telemetry(
-                        device_id=self.ids[i],
-                        timestamp=t.astimezone(timezone.utc),
-                        latitude=round(lat, 7),  # ~1 cm; more digits are noise and bloat
-                        longitude=round(lon, 7),
-                        battery=r.battery,
-                        cpu_usage=r.cpu_usage,
-                        memory_usage=r.memory_usage,
-                        temperature=r.temperature,
-                        uptime_s=r.uptime_s,
-                        network_connections=r.network_connections,
-                        bytes_sent=r.bytes_sent,
-                        bytes_received=r.bytes_received,
-                        remote_endpoints=r.remote_endpoints,
-                        nearby_devices=neighbours,
-                    )
+                fields = dict(
+                    device_id=self.ids[i],
+                    timestamp=t.astimezone(timezone.utc),
+                    latitude=round(lat, 7),  # ~1 cm; more digits are noise and bloat
+                    longitude=round(lon, 7),
+                    battery=r.battery,
+                    cpu_usage=r.cpu_usage,
+                    memory_usage=r.memory_usage,
+                    temperature=r.temperature,
+                    uptime_s=r.uptime_s,
+                    network_connections=r.network_connections,
+                    bytes_sent=r.bytes_sent,
+                    bytes_received=r.bytes_received,
+                    remote_endpoints=r.remote_endpoints,
+                    nearby_devices=neighbours,
                 )
+                for group in self._lost(self.ids[i], t):  # explicit nulls, never zeros
+                    for name in SIGNAL_FIELDS[group]:
+                        fields[name] = None
+                out.append(Telemetry(**fields))
             yield out
 
     def run(self, duration: timedelta) -> Iterator[Telemetry]:

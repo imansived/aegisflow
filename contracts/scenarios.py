@@ -37,6 +37,10 @@ class ScenarioType(str, Enum):
     # then device), like the spec's demo. Tests whether a correlation window can link them.
     # Appended last so existing scenario codes keep their order.
     STAGED = "staged"
+    # The device cannot report some signals for a while (GPS lost, sensor off, scan failed). Not an anomaly in the
+    # behaviour of the device and not an attack: an observability loss. Episode.modalities names the lost signals.
+    # Appended last so existing scenario codes keep their order.
+    SIGNAL_LOSS = "signal_loss"
 
 
 class ScenarioSpec(BaseModel):
@@ -124,6 +128,14 @@ SCENARIOS: dict[ScenarioType, ScenarioSpec] = {
             magnitude_range=(0.05, 0.25),  # same as WEAK_CORRELATED, so the two are comparable
             duration_s_range=(180, 420),  # cascade only; pulses derive their length from their windows
             hypothesis="Only a correlation window can link the stages. TO BE VERIFIED (manual §5.6).",
+        ),
+        ScenarioSpec(
+            type=ScenarioType.SIGNAL_LOSS,
+            description="The device reports one or more signals as unavailable (null), not as zero.",
+            modalities=frozenset(),
+            is_malicious=False,
+            magnitude_range=(1.0, 1.0),
+            hypothesis="The device must be shown as Degraded, never as Normal; no alert for the unavailable signal.",
         ),
         ScenarioSpec(
             type=ScenarioType.HARD_NEGATIVE,

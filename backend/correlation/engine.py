@@ -16,6 +16,7 @@ from backend.detection.types import Scores
 from contracts.scenarios import Modality
 
 from .fusion import MODALITIES, Fusion
+from .thresholds import FULL, Operating, ThresholdTable, pattern_of
 
 
 @dataclass(frozen=True)
@@ -58,6 +59,15 @@ class Fused:
     evidence: dict[Modality, dict[str, float]] = field(default_factory=dict)
     learning: bool = False
     fusion: str = ""
+    # Observability (D106/D107). `unavailable` = signals the device reported as unavailable this tick. A fused score
+    # computed with signals missing is never "normal" evidence: `observability` says how much was actually seen, and
+    # `alertable` is False when there is no validated threshold for this combination (the conservative fallback).
+    unavailable: frozenset[Modality] = frozenset()
+    pattern: int = FULL
+    observability: str = "full"  # "full" | "degraded" | "blind"
+    alertable: bool = True
+    operating: Operating | None = None  # the validated thresholds that judged this tick, when a table is in use
+    fallback: str = ""  # why no threshold applied, when alertable is False
 
 
 class _DeviceState:
@@ -68,9 +78,10 @@ class _DeviceState:
 
 
 class CorrelationEngine:
-    def __init__(self, fusion: Fusion, cfg: CorrelationConfig | None = None):
+    def __init__(self, fusion: Fusion, cfg: CorrelationConfig | None = None, table: ThresholdTable | None = None):
         self.fusion = fusion
         self.cfg = cfg or CorrelationConfig()
+        self.table = table
         self._state: dict[str, _DeviceState] = {}
 
     def reset_device(self, device_id: str) -> None:
@@ -87,6 +98,10 @@ class CorrelationEngine:
         raw = {}
         for i, m in enumerate(MODALITIES):
             res = scores.results[m]
+            if not res.available:
+                raw[m] = 0.0  # placeholder; availability is carried separately (never read it as a normal score)
+                st.e[i] = st.e[i] * decay  # no new evidence: what was held simply fades
+                continue
             v = res.soft if self.cfg.score_type == "soft" else res.score
             raw[m] = v
             held = st.e[i] * decay
@@ -98,15 +113,39 @@ class CorrelationEngine:
 
         s = self.fusion.score(st.e)
         contrib = self.fusion.contributions(st.e) if s >= self.cfg.explain_above else {}
+
+        lost = scores.unavailable
+        pattern = pattern_of(lost)
+        operating: Operating | None = None
+        alertable, fallback = True, ""
+        if self.table is not None:
+            operating = self.table.lookup(pattern)
+            if operating is None:
+                alertable, fallback = False, self.table.fallback_reason(pattern)
+        elif lost:
+            # No calibrated table: never judge a partly observed device with the complete-signal threshold.
+            alertable, fallback = False, "no availability thresholds are loaded"
+        if not alertable:
+            sev = "normal"  # a placeholder: "cannot judge", reported through `observability`, not a clean bill of health
+        elif operating is not None:
+            sev = operating.severity(s)
+        else:
+            sev = severity(s, self.cfg)
         return Fused(
             device_id=scores.device_id,
             ts=scores.ts,
             score=s,
-            severity=severity(s, self.cfg),
+            severity=sev,
             effective={m: st.e[i] for i, m in enumerate(MODALITIES)},
             raw=raw,
             contributions=contrib,
             evidence={m: st.ev[i] for i, m in enumerate(MODALITIES) if st.e[i] > 0.0},
             learning=scores.learning,
             fusion=self.fusion.name,
+            unavailable=lost,
+            pattern=pattern,
+            observability="full" if not lost else "blind" if pattern == 0 else "degraded",
+            alertable=alertable,
+            operating=operating,
+            fallback=fallback,
         )
