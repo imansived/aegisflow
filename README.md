@@ -26,6 +26,14 @@ system held to the same 0.1% false-alarm budget; full method and limits in the m
 
 An honest, partial result, reported with its corrections and limits. It says nothing about real fleets.
 
+**Audit after the fact (manual §5.10, exploratory).** The results were then attacked. Counting alerts instead of rows, every
+system raises 2 to 7 false alarms per device per day at that budget; fusion still beats "any detector fires" under every
+stress test (unseen combinations, benign noise, noisy sensors, benign drift, lost telemetry, a missing signal), but its edge over
+the single best detector appears only when the anomaly lies outside that detector's view, and it reverses under sensor noise. The
+frozen thresholds do not survive noise or drift. Two public real datasets were used: TON_IoT host telemetry (device health plus
+network, mixed and session-confounded) and IoT-23 real IoT traffic (network only; the frozen network threshold gives 12 to 76
+false alerts per device-day on real traffic). Location and proximity have no real-data validation.
+
 ## Run it (Docker)
 
 ```powershell

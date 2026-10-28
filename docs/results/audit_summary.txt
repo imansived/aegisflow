@@ -1,0 +1,306 @@
+
+=== F1 test seeds 100-109 (spent; per-seed re-analysis)  (10 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.89+-0.05 [0.81,0.97]  recall_all 0.63  precision 0.28  F1 0.39  false alarms/device-day 5.6  benign look-alikes flagged 0.48
+  max               recall_h 0.47+-0.06 [0.37,0.55]  recall_all 0.71  precision 0.44  F1 0.54  false alarms/device-day 2.7  benign look-alikes flagged 0.98
+  weighted_sum      recall_h 0.65+-0.07 [0.57,0.74]  recall_all 0.78  precision 0.48  F1 0.60  false alarms/device-day 2.4  benign look-alikes flagged 0.98
+  noisy_or          recall_h 0.60+-0.07 [0.46,0.68]  recall_all 0.76  precision 0.48  F1 0.59  false alarms/device-day 2.4  benign look-alikes flagged 0.98
+  learned           recall_h 0.91+-0.04 [0.85,0.97]  recall_all 0.90  precision 0.36  F1 0.51  false alarms/device-day 5.2  benign look-alikes flagged 0.97
+  early_iforest     recall_h 0.92+-0.04 [0.87,1.00]  recall_all 0.75  precision 0.43  F1 0.54  false alarms/device-day 3.3  benign look-alikes flagged 0.48
+  early_supervised  recall_h 1.00+-0.01 [0.98,1.00]  recall_all 0.98  precision 0.31  F1 0.47  false alarms/device-day 7.2  benign look-alikes flagged 0.98
+    learned - network_only                     +0.019  CI [-0.002,+0.040]  7/10 seeds
+    learned - best_single(network_only)        +0.019  CI [-0.002,+0.040]  7/10 seeds
+    learned - max                              +0.433  CI [+0.391,+0.474]  10/10 seeds
+    noisy_or - max                             +0.128  CI [+0.095,+0.160]  10/10 seeds
+    learned - early_supervised                 -0.090  CI [-0.118,-0.061]  0/10 seeds
+    learned - early_iforest                    -0.011  CI [-0.038,+0.015]  3/10 seeds
+    F1: learned - network_only                 +0.125  CI [+0.103,+0.146]  10/10 seeds
+    F1: learned - max                          -0.032  CI [-0.053,-0.011]  1/10 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.02  max=0.95  noisy_or=0.95  learned=0.96  early_iforest=0.01  early_supervised=0.97
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=0.98  early_iforest=1.00  early_supervised=0.98
+    hardware                     network_only=0.00  max=0.83  noisy_or=0.77  learned=0.74  early_iforest=0.65  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=0.99  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.01  max=0.91  noisy_or=0.89  learned=1.00  early_iforest=0.35  early_supervised=1.00
+    spatial                      network_only=0.04  max=0.61  noisy_or=0.61  learned=0.67  early_iforest=0.05  early_supervised=0.82
+    staged                       network_only=0.86  max=0.43  noisy_or=0.46  learned=0.85  early_iforest=0.85  early_supervised=0.99
+    weak_correlated              network_only=0.92  max=0.53  noisy_or=0.75  learned=0.96  early_iforest=0.99  early_supervised=1.00
+
+=== control: fresh seeds, original generator  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.89+-0.02 [0.86,0.92]  recall_all 0.64  precision 0.27  F1 0.37  false alarms/device-day 5.6  benign look-alikes flagged 0.47
+  max               recall_h 0.37+-0.05 [0.32,0.46]  recall_all 0.70  precision 0.43  F1 0.53  false alarms/device-day 2.5  benign look-alikes flagged 0.99
+  weighted_sum      recall_h 0.63+-0.07 [0.51,0.70]  recall_all 0.79  precision 0.47  F1 0.59  false alarms/device-day 2.4  benign look-alikes flagged 0.99
+  noisy_or          recall_h 0.53+-0.08 [0.43,0.62]  recall_all 0.76  precision 0.47  F1 0.58  false alarms/device-day 2.2  benign look-alikes flagged 0.99
+  learned           recall_h 0.92+-0.05 [0.86,1.00]  recall_all 0.91  precision 0.34  F1 0.49  false alarms/device-day 5.2  benign look-alikes flagged 1.00
+  early_iforest     recall_h 0.90+-0.06 [0.83,1.00]  recall_all 0.77  precision 0.41  F1 0.53  false alarms/device-day 3.3  benign look-alikes flagged 0.50
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.98  precision 0.27  F1 0.43  false alarms/device-day 7.8  benign look-alikes flagged 0.99
+    learned - network_only                     +0.030  CI [-0.023,+0.082]  2/5 seeds
+    learned - best_single(network_only)        +0.030  CI [-0.023,+0.082]  2/5 seeds
+    learned - max                              +0.551  CI [+0.446,+0.656]  5/5 seeds
+    noisy_or - max                             +0.156  CI [+0.091,+0.221]  5/5 seeds
+    learned - early_supervised                 -0.076  CI [-0.139,-0.012]  0/5 seeds
+    learned - early_iforest                    +0.022  CI [-0.054,+0.097]  3/5 seeds
+    F1: learned - network_only                 +0.118  CI [+0.069,+0.166]  5/5 seeds
+    F1: learned - max                          -0.040  CI [-0.072,-0.009]  0/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.98  noisy_or=0.98  learned=1.00  early_iforest=0.06  early_supervised=1.00
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=0.97
+    hardware                     network_only=0.02  max=0.86  noisy_or=0.87  learned=0.75  early_iforest=0.65  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.03  max=0.95  noisy_or=0.94  learned=1.00  early_iforest=0.43  early_supervised=1.00
+    spatial                      network_only=0.03  max=0.49  noisy_or=0.53  learned=0.67  early_iforest=0.13  early_supervised=0.83
+    staged                       network_only=0.84  max=0.31  noisy_or=0.38  learned=0.85  early_iforest=0.84  early_supervised=1.00
+    weak_correlated              network_only=0.95  max=0.45  noisy_or=0.71  learned=1.00  early_iforest=0.99  early_supervised=1.00
+
+=== missing signal: spatial removed  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.89+-0.02 [0.86,0.92]  recall_all 0.64  precision 0.27  F1 0.37  false alarms/device-day 5.6  benign look-alikes flagged 0.47
+  max               recall_h 0.37+-0.05 [0.32,0.46]  recall_all 0.65  precision 0.43  F1 0.52  false alarms/device-day 2.5  benign look-alikes flagged 0.47
+  weighted_sum      recall_h 0.42+-0.06 [0.37,0.50]  recall_all 0.66  precision 0.46  F1 0.54  false alarms/device-day 2.2  benign look-alikes flagged 0.47
+  noisy_or          recall_h 0.40+-0.08 [0.33,0.52]  recall_all 0.66  precision 0.46  F1 0.54  false alarms/device-day 2.2  benign look-alikes flagged 0.47
+  learned           recall_h 0.84+-0.03 [0.78,0.86]  recall_all 0.81  precision 0.42  F1 0.55  false alarms/device-day 3.4  benign look-alikes flagged 0.47
+  early_iforest     recall_h 0.87+-0.04 [0.83,0.94]  recall_all 0.75  precision 0.42  F1 0.54  false alarms/device-day 3.0  benign look-alikes flagged 0.47
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.90  precision 0.63  F1 0.74  false alarms/device-day 1.4  benign look-alikes flagged 0.45
+    learned - network_only                     -0.057  CI [-0.081,-0.034]  0/5 seeds
+    learned - best_single(network_only)        -0.057  CI [-0.081,-0.034]  0/5 seeds
+    learned - max                              +0.464  CI [+0.376,+0.552]  5/5 seeds
+    noisy_or - max                             +0.028  CI [-0.028,+0.084]  3/5 seeds
+    learned - early_supervised                 -0.162  CI [-0.203,-0.122]  0/5 seeds
+    learned - early_iforest                    -0.034  CI [-0.082,+0.014]  0/5 seeds
+    F1: learned - network_only                 +0.179  CI [+0.157,+0.202]  5/5 seeds
+    F1: learned - max                          +0.033  CI [-0.032,+0.097]  4/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.00  noisy_or=0.00  learned=0.00  early_iforest=0.00  early_supervised=0.00
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=0.97
+    hardware                     network_only=0.02  max=0.86  noisy_or=0.86  learned=0.70  early_iforest=0.69  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.03  max=0.95  noisy_or=0.94  learned=1.00  early_iforest=0.41  early_supervised=1.00
+    spatial                      network_only=0.03  max=0.00  noisy_or=0.00  learned=0.03  early_iforest=0.00  early_supervised=0.00
+    staged                       network_only=0.84  max=0.31  noisy_or=0.31  learned=0.78  early_iforest=0.81  early_supervised=1.00
+    weak_correlated              network_only=0.95  max=0.45  noisy_or=0.51  learned=0.91  early_iforest=0.94  early_supervised=1.00
+
+=== missing signal: network removed  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.00+-0.00 [0.00,0.00]  recall_all 0.00  precision 0.00  F1 0.00  false alarms/device-day 0.0  benign look-alikes flagged 0.00
+  max               recall_h 0.05+-0.03 [0.03,0.09]  recall_all 0.45  precision 0.35  F1 0.40  false alarms/device-day 2.1  benign look-alikes flagged 0.95
+  weighted_sum      recall_h 0.13+-0.05 [0.05,0.19]  recall_all 0.49  precision 0.46  F1 0.47  false alarms/device-day 1.4  benign look-alikes flagged 0.93
+  noisy_or          recall_h 0.07+-0.05 [0.03,0.15]  recall_all 0.47  precision 0.41  F1 0.44  false alarms/device-day 1.7  benign look-alikes flagged 0.94
+  learned           recall_h 0.27+-0.11 [0.14,0.40]  recall_all 0.55  precision 0.51  F1 0.53  false alarms/device-day 1.2  benign look-alikes flagged 0.90
+  early_iforest     recall_h 0.21+-0.05 [0.14,0.27]  recall_all 0.37  precision 0.45  F1 0.40  false alarms/device-day 1.2  benign look-alikes flagged 0.34
+  early_supervised  recall_h 0.87+-0.02 [0.84,0.89]  recall_all 0.82  precision 0.33  F1 0.47  false alarms/device-day 4.8  benign look-alikes flagged 1.00
+    learned - network_only                     +0.274  CI [+0.142,+0.407]  5/5 seeds
+    learned - best_single(spatial_only)        -0.390  CI [-0.471,-0.308]  0/5 seeds
+    learned - max                              +0.226  CI [+0.082,+0.370]  5/5 seeds
+    noisy_or - max                             +0.026  CI [-0.007,+0.059]  3/5 seeds
+    learned - early_supervised                 -0.600  CI [-0.715,-0.484]  0/5 seeds
+    learned - early_iforest                    +0.067  CI [-0.035,+0.170]  3/5 seeds
+    F1: learned - network_only                 +0.530  CI [+0.489,+0.572]  5/5 seeds
+    F1: learned - max                          +0.135  CI [+0.090,+0.180]  5/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.98  noisy_or=0.98  learned=0.98  early_iforest=0.00  early_supervised=1.00
+    combined                     network_only=0.00  max=0.97  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=0.00  max=0.90  noisy_or=0.88  learned=0.79  early_iforest=0.73  early_supervised=1.00
+    hardware                     network_only=0.00  max=0.86  noisy_or=0.87  learned=0.79  early_iforest=0.62  early_supervised=1.00
+    network                      network_only=0.00  max=0.00  noisy_or=0.00  learned=0.00  early_iforest=0.00  early_supervised=0.00
+    proximity                    network_only=0.00  max=0.95  noisy_or=0.94  learned=1.00  early_iforest=0.28  early_supervised=1.00
+    spatial                      network_only=0.00  max=0.49  noisy_or=0.53  learned=0.61  early_iforest=0.04  early_supervised=0.85
+    staged                       network_only=0.00  max=0.04  noisy_or=0.06  learned=0.20  early_iforest=0.14  early_supervised=0.84
+    weak_correlated              network_only=0.00  max=0.04  noisy_or=0.07  learned=0.38  early_iforest=0.29  early_supervised=0.91
+
+=== missing signal: device removed  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.89+-0.02 [0.86,0.92]  recall_all 0.64  precision 0.27  F1 0.37  false alarms/device-day 5.6  benign look-alikes flagged 0.47
+  max               recall_h 0.37+-0.05 [0.32,0.46]  recall_all 0.60  precision 0.52  F1 0.56  false alarms/device-day 1.2  benign look-alikes flagged 0.99
+  weighted_sum      recall_h 0.53+-0.05 [0.48,0.59]  recall_all 0.65  precision 0.54  F1 0.59  false alarms/device-day 1.3  benign look-alikes flagged 0.99
+  noisy_or          recall_h 0.45+-0.09 [0.33,0.58]  recall_all 0.63  precision 0.54  F1 0.58  false alarms/device-day 1.2  benign look-alikes flagged 0.99
+  learned           recall_h 0.92+-0.05 [0.86,1.00]  recall_all 0.82  precision 0.31  F1 0.45  false alarms/device-day 5.2  benign look-alikes flagged 1.00
+  early_iforest     recall_h 0.84+-0.03 [0.81,0.88]  recall_all 0.63  precision 0.49  F1 0.55  false alarms/device-day 1.9  benign look-alikes flagged 0.47
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.87  precision 0.28  F1 0.42  false alarms/device-day 6.6  benign look-alikes flagged 1.00
+    learned - network_only                     +0.030  CI [-0.023,+0.082]  2/5 seeds
+    learned - best_single(network_only)        +0.030  CI [-0.023,+0.082]  2/5 seeds
+    learned - max                              +0.557  CI [+0.442,+0.672]  5/5 seeds
+    noisy_or - max                             +0.080  CI [+0.020,+0.140]  4/5 seeds
+    learned - early_supervised                 -0.076  CI [-0.139,-0.012]  0/5 seeds
+    learned - early_iforest                    +0.080  CI [+0.030,+0.130]  5/5 seeds
+    F1: learned - network_only                 +0.081  CI [+0.035,+0.127]  5/5 seeds
+    F1: learned - max                          -0.106  CI [-0.139,-0.074]  0/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.98  noisy_or=0.98  learned=1.00  early_iforest=0.00  early_supervised=1.00
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    hardware                     network_only=0.02  max=0.00  noisy_or=0.00  learned=0.02  early_iforest=0.00  early_supervised=0.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.03  max=0.95  noisy_or=0.94  learned=1.00  early_iforest=0.18  early_supervised=1.00
+    spatial                      network_only=0.03  max=0.49  noisy_or=0.49  learned=0.57  early_iforest=0.03  early_supervised=0.83
+    staged                       network_only=0.84  max=0.30  noisy_or=0.33  learned=0.85  early_iforest=0.75  early_supervised=1.00
+    weak_correlated              network_only=0.95  max=0.45  noisy_or=0.59  learned=1.00  early_iforest=0.97  early_supervised=1.00
+
+=== missing signal: proximity removed  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.89+-0.02 [0.86,0.92]  recall_all 0.64  precision 0.27  F1 0.37  false alarms/device-day 5.6  benign look-alikes flagged 0.47
+  max               recall_h 0.37+-0.05 [0.32,0.46]  recall_all 0.58  precision 0.39  F1 0.46  false alarms/device-day 2.5  benign look-alikes flagged 0.99
+  weighted_sum      recall_h 0.63+-0.07 [0.51,0.70]  recall_all 0.67  precision 0.43  F1 0.53  false alarms/device-day 2.3  benign look-alikes flagged 0.99
+  noisy_or          recall_h 0.53+-0.08 [0.43,0.62]  recall_all 0.64  precision 0.43  F1 0.51  false alarms/device-day 2.2  benign look-alikes flagged 0.99
+  learned           recall_h 0.92+-0.05 [0.86,1.00]  recall_all 0.79  precision 0.32  F1 0.45  false alarms/device-day 4.9  benign look-alikes flagged 1.00
+  early_iforest     recall_h 0.90+-0.06 [0.83,1.00]  recall_all 0.72  precision 0.48  F1 0.57  false alarms/device-day 2.3  benign look-alikes flagged 0.50
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.86  precision 0.25  F1 0.39  false alarms/device-day 7.7  benign look-alikes flagged 0.99
+    learned - network_only                     +0.024  CI [-0.025,+0.073]  2/5 seeds
+    learned - best_single(network_only)        +0.024  CI [-0.025,+0.073]  2/5 seeds
+    learned - max                              +0.545  CI [+0.444,+0.646]  5/5 seeds
+    noisy_or - max                             +0.156  CI [+0.091,+0.221]  5/5 seeds
+    learned - early_supervised                 -0.081  CI [-0.143,-0.019]  0/5 seeds
+    learned - early_iforest                    +0.016  CI [-0.047,+0.079]  3/5 seeds
+    F1: learned - network_only                 +0.077  CI [+0.031,+0.123]  5/5 seeds
+    F1: learned - max                          -0.013  CI [-0.037,+0.012]  0/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.98  noisy_or=0.98  learned=1.00  early_iforest=0.06  early_supervised=1.00
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=0.97
+    hardware                     network_only=0.02  max=0.86  noisy_or=0.87  learned=0.75  early_iforest=0.65  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.03  max=0.00  noisy_or=0.00  learned=0.02  early_iforest=0.00  early_supervised=0.03
+    spatial                      network_only=0.03  max=0.49  noisy_or=0.53  learned=0.67  early_iforest=0.13  early_supervised=0.83
+    staged                       network_only=0.84  max=0.31  noisy_or=0.38  learned=0.84  early_iforest=0.84  early_supervised=1.00
+    weak_correlated              network_only=0.95  max=0.45  noisy_or=0.71  learned=1.00  early_iforest=0.99  early_supervised=1.00
+
+=== unseen anomaly combinations  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.48+-0.04 [0.45,0.56]  recall_all 0.48  precision 0.23  F1 0.31  false alarms/device-day 5.3  benign look-alikes flagged 0.49
+  max               recall_h 0.82+-0.03 [0.78,0.87]  recall_all 0.82  precision 0.46  F1 0.59  false alarms/device-day 2.5  benign look-alikes flagged 1.00
+  weighted_sum      recall_h 0.91+-0.03 [0.88,0.96]  recall_all 0.91  precision 0.50  F1 0.65  false alarms/device-day 2.3  benign look-alikes flagged 1.00
+  noisy_or          recall_h 0.87+-0.04 [0.82,0.93]  recall_all 0.87  precision 0.50  F1 0.63  false alarms/device-day 2.2  benign look-alikes flagged 1.00
+  learned           recall_h 0.96+-0.02 [0.92,0.98]  recall_all 0.96  precision 0.37  F1 0.53  false alarms/device-day 4.9  benign look-alikes flagged 0.99
+  early_iforest     recall_h 0.95+-0.02 [0.92,0.97]  recall_all 0.95  precision 0.48  F1 0.64  false alarms/device-day 3.1  benign look-alikes flagged 0.48
+  early_supervised  recall_h 1.00+-0.00 [0.99,1.00]  recall_all 1.00  precision 0.31  F1 0.47  false alarms/device-day 6.8  benign look-alikes flagged 0.98
+    learned - network_only                     +0.482  CI [+0.425,+0.538]  5/5 seeds
+    learned - best_single(proximity_only)      +0.298  CI [+0.253,+0.344]  5/5 seeds
+    learned - max                              +0.143  CI [+0.093,+0.192]  5/5 seeds
+    noisy_or - max                             +0.055  CI [+0.040,+0.070]  5/5 seeds
+    learned - early_supervised                 -0.036  CI [-0.064,-0.008]  0/5 seeds
+    learned - early_iforest                    +0.011  CI [-0.002,+0.024]  4/5 seeds
+    F1: learned - network_only                 +0.225  CI [+0.193,+0.256]  5/5 seeds
+    F1: learned - max                          -0.057  CI [-0.090,-0.024]  0/5 seeds
+  recall by group (frozen):
+    all_four_weak                network_only=0.86  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    authorized_visit             network_only=0.04  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=0.03  early_supervised=1.00
+    cascade_unseen_order         network_only=0.89  max=0.70  noisy_or=0.83  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=0.97  early_iforest=1.00  early_supervised=0.96
+    pair_moderate                network_only=0.25  max=0.92  noisy_or=0.97  learned=0.97  early_iforest=0.96  early_supervised=1.00
+    pair_weak                    network_only=0.49  max=0.69  noisy_or=0.75  learned=0.92  early_iforest=0.90  early_supervised=0.99
+    triple_weak                  network_only=0.45  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+
+=== 6x benign noise, 4x benign look-alikes  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.86+-0.10 [0.73,1.00]  recall_all 0.63  precision 0.22  F1 0.32  false alarms/device-day 4.9  benign look-alikes flagged 0.53
+  max               recall_h 0.32+-0.03 [0.28,0.37]  recall_all 0.66  precision 0.12  F1 0.20  false alarms/device-day 10.2  benign look-alikes flagged 0.98
+  weighted_sum      recall_h 0.64+-0.04 [0.60,0.69]  recall_all 0.80  precision 0.17  F1 0.29  false alarms/device-day 7.7  benign look-alikes flagged 0.99
+  noisy_or          recall_h 0.57+-0.07 [0.50,0.67]  recall_all 0.76  precision 0.16  F1 0.27  false alarms/device-day 8.1  benign look-alikes flagged 0.99
+  learned           recall_h 0.89+-0.09 [0.77,1.00]  recall_all 0.91  precision 0.17  F1 0.29  false alarms/device-day 9.4  benign look-alikes flagged 0.91
+  early_iforest     recall_h 0.82+-0.08 [0.73,0.94]  recall_all 0.74  precision 0.13  F1 0.22  false alarms/device-day 11.3  benign look-alikes flagged 0.55
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.98  precision 0.08  F1 0.16  false alarms/device-day 24.5  benign look-alikes flagged 0.99
+    learned - network_only                     +0.026  CI [-0.049,+0.101]  4/5 seeds
+    learned - best_single(network_only)        +0.026  CI [-0.049,+0.101]  4/5 seeds
+    learned - max                              +0.567  CI [+0.432,+0.701]  5/5 seeds
+    noisy_or - max                             +0.245  CI [+0.157,+0.333]  5/5 seeds
+    learned - early_supervised                 -0.111  CI [-0.221,-0.001]  0/5 seeds
+    learned - early_iforest                    +0.067  CI [-0.079,+0.213]  3/5 seeds
+    F1: learned - network_only                 -0.033  CI [-0.064,-0.002]  1/5 seeds
+    F1: learned - max                          +0.083  CI [+0.060,+0.107]  5/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.97  noisy_or=0.97  learned=0.97  early_iforest=0.06  early_supervised=0.98
+    combined                     network_only=1.00  max=0.99  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=0.99  noisy_or=1.00  learned=0.86  early_iforest=1.00  early_supervised=1.00
+    hardware                     network_only=0.00  max=0.89  noisy_or=0.89  learned=0.76  early_iforest=0.76  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.02  max=0.85  noisy_or=0.86  learned=1.00  early_iforest=0.42  early_supervised=1.00
+    spatial                      network_only=0.03  max=0.61  noisy_or=0.63  learned=0.75  early_iforest=0.03  early_supervised=0.81
+    staged                       network_only=0.82  max=0.23  noisy_or=0.39  learned=0.81  early_iforest=0.67  early_supervised=1.00
+    weak_correlated              network_only=0.91  max=0.40  noisy_or=0.74  learned=0.96  early_iforest=0.97  early_supervised=1.00
+
+=== noisy sensors (GPS 10 m, jittery readings)  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.92+-0.02 [0.89,0.94]  recall_all 0.64  precision 0.19  F1 0.29  false alarms/device-day 10.0  benign look-alikes flagged 0.48
+  max               recall_h 0.49+-0.12 [0.37,0.67]  recall_all 0.75  precision 0.12  F1 0.20  false alarms/device-day 19.6  benign look-alikes flagged 0.98
+  weighted_sum      recall_h 0.75+-0.07 [0.68,0.88]  recall_all 0.86  precision 0.10  F1 0.18  false alarms/device-day 27.7  benign look-alikes flagged 0.98
+  noisy_or          recall_h 0.62+-0.09 [0.53,0.75]  recall_all 0.80  precision 0.13  F1 0.23  false alarms/device-day 18.1  benign look-alikes flagged 0.98
+  learned           recall_h 0.95+-0.04 [0.89,1.00]  recall_all 0.95  precision 0.03  F1 0.06  false alarms/device-day 111.5  benign look-alikes flagged 1.00
+  early_iforest     recall_h 0.99+-0.01 [0.97,1.00]  recall_all 0.92  precision 0.03  F1 0.06  false alarms/device-day 105.2  benign look-alikes flagged 0.60
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.99  precision 0.00  F1 0.01  false alarms/device-day 721.1  benign look-alikes flagged 0.99
+    learned - network_only                     +0.031  CI [-0.002,+0.065]  4/5 seeds
+    learned - best_single(network_only)        +0.031  CI [-0.002,+0.065]  4/5 seeds
+    learned - max                              +0.456  CI [+0.300,+0.613]  5/5 seeds
+    noisy_or - max                             +0.124  CI [+0.063,+0.185]  5/5 seeds
+    learned - early_supervised                 -0.052  CI [-0.100,-0.003]  0/5 seeds
+    learned - early_iforest                    -0.037  CI [-0.083,+0.010]  1/5 seeds
+    F1: learned - network_only                 -0.231  CI [-0.268,-0.193]  0/5 seeds
+    F1: learned - max                          -0.146  CI [-0.175,-0.116]  0/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.96  noisy_or=0.96  learned=1.00  early_iforest=0.22  early_supervised=1.00
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=0.98
+    hardware                     network_only=0.03  max=0.88  noisy_or=0.87  learned=0.92  early_iforest=0.99  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.01  max=0.89  noisy_or=0.97  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    spatial                      network_only=0.01  max=0.64  noisy_or=0.65  learned=0.80  early_iforest=0.32  early_supervised=0.93
+    staged                       network_only=0.90  max=0.46  noisy_or=0.60  learned=0.95  early_iforest=0.98  early_supervised=1.00
+    weak_correlated              network_only=0.95  max=0.53  noisy_or=0.65  learned=0.95  early_iforest=1.00  early_supervised=1.00
+
+=== benign drift on half the devices after hour 20  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.90+-0.07 [0.81,0.97]  recall_all 0.72  precision 0.29  F1 0.42  false alarms/device-day 5.9  benign look-alikes flagged 0.54
+  max               recall_h 0.53+-0.08 [0.43,0.62]  recall_all 0.77  precision 0.12  F1 0.20  false alarms/device-day 20.4  benign look-alikes flagged 0.97
+  weighted_sum      recall_h 0.71+-0.06 [0.65,0.78]  recall_all 0.84  precision 0.11  F1 0.20  false alarms/device-day 23.1  benign look-alikes flagged 0.97
+  noisy_or          recall_h 0.65+-0.05 [0.60,0.73]  recall_all 0.81  precision 0.12  F1 0.21  false alarms/device-day 21.5  benign look-alikes flagged 0.97
+  learned           recall_h 0.93+-0.04 [0.88,0.98]  recall_all 0.93  precision 0.23  F1 0.37  false alarms/device-day 10.6  benign look-alikes flagged 0.95
+  early_iforest     recall_h 0.93+-0.03 [0.90,0.97]  recall_all 0.83  precision 0.20  F1 0.32  false alarms/device-day 11.6  benign look-alikes flagged 0.54
+  early_supervised  recall_h 1.00+-0.01 [0.98,1.00]  recall_all 0.99  precision 0.01  F1 0.02  false alarms/device-day 289.6  benign look-alikes flagged 0.96
+    learned - network_only                     +0.035  CI [-0.011,+0.080]  4/5 seeds
+    learned - best_single(network_only)        +0.035  CI [-0.011,+0.080]  4/5 seeds
+    learned - max                              +0.398  CI [+0.288,+0.507]  5/5 seeds
+    noisy_or - max                             +0.114  CI [+0.053,+0.176]  5/5 seeds
+    learned - early_supervised                 -0.065  CI [-0.113,-0.018]  0/5 seeds
+    learned - early_iforest                    -0.003  CI [-0.024,+0.018]  1/5 seeds
+    F1: learned - network_only                 -0.049  CI [-0.073,-0.025]  0/5 seeds
+    F1: learned - max                          +0.163  CI [+0.127,+0.198]  5/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.16  max=0.95  noisy_or=0.95  learned=0.95  early_iforest=0.18  early_supervised=0.93
+    combined                     network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=1.00  noisy_or=1.00  learned=0.94  early_iforest=1.00  early_supervised=1.00
+    hardware                     network_only=0.16  max=0.88  noisy_or=0.88  learned=0.81  early_iforest=0.71  early_supervised=0.98
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.19  max=0.93  noisy_or=0.93  learned=0.96  early_iforest=0.51  early_supervised=0.98
+    spatial                      network_only=0.21  max=0.75  noisy_or=0.75  learned=0.80  early_iforest=0.25  early_supervised=0.94
+    staged                       network_only=0.88  max=0.51  noisy_or=0.60  learned=0.89  early_iforest=0.89  early_supervised=1.00
+    weak_correlated              network_only=0.92  max=0.54  noisy_or=0.71  learned=0.98  early_iforest=1.00  early_supervised=0.99
+
+=== lost telemetry (20% of ticks + 20 min/day blackout)  (5 seeds)
+ [frozen thresholds]
+  network_only      recall_h 0.84+-0.07 [0.75,0.91]  recall_all 0.63  precision 0.17  F1 0.27  false alarms/device-day 13.6  benign look-alikes flagged 0.46
+  max               recall_h 0.43+-0.06 [0.34,0.49]  recall_all 0.69  precision 0.41  F1 0.51  false alarms/device-day 3.8  benign look-alikes flagged 0.98
+  weighted_sum      recall_h 0.60+-0.01 [0.58,0.62]  recall_all 0.76  precision 0.45  F1 0.57  false alarms/device-day 3.3  benign look-alikes flagged 0.99
+  noisy_or          recall_h 0.54+-0.04 [0.49,0.58]  recall_all 0.73  precision 0.45  F1 0.55  false alarms/device-day 3.3  benign look-alikes flagged 0.99
+  learned           recall_h 0.89+-0.07 [0.78,0.95]  recall_all 0.89  precision 0.24  F1 0.38  false alarms/device-day 11.8  benign look-alikes flagged 0.98
+  early_iforest     recall_h 0.88+-0.08 [0.78,0.98]  recall_all 0.76  precision 0.43  F1 0.55  false alarms/device-day 4.2  benign look-alikes flagged 0.47
+  early_supervised  recall_h 1.00+-0.00 [1.00,1.00]  recall_all 0.99  precision 0.24  F1 0.39  false alarms/device-day 13.0  benign look-alikes flagged 0.97
+    learned - network_only                     +0.042  CI [+0.005,+0.080]  4/5 seeds
+    learned - best_single(network_only)        +0.042  CI [+0.005,+0.080]  4/5 seeds
+    learned - max                              +0.455  CI [+0.340,+0.570]  5/5 seeds
+    noisy_or - max                             +0.109  CI [+0.046,+0.172]  5/5 seeds
+    learned - early_supervised                 -0.115  CI [-0.207,-0.023]  0/5 seeds
+    learned - early_iforest                    +0.008  CI [-0.063,+0.079]  3/5 seeds
+    F1: learned - network_only                 +0.115  CI [+0.099,+0.130]  5/5 seeds
+    F1: learned - max                          -0.131  CI [-0.186,-0.075]  0/5 seeds
+  recall by group (frozen):
+    authorized_visit             network_only=0.00  max=0.97  noisy_or=0.97  learned=0.97  early_iforest=0.03  early_supervised=0.97
+    combined                     network_only=1.00  max=0.99  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    firmware_update              network_only=1.00  max=0.98  noisy_or=1.00  learned=0.98  early_iforest=1.00  early_supervised=0.96
+    hardware                     network_only=0.00  max=0.81  noisy_or=0.76  learned=0.70  early_iforest=0.68  early_supervised=1.00
+    network                      network_only=1.00  max=1.00  noisy_or=1.00  learned=1.00  early_iforest=1.00  early_supervised=1.00
+    proximity                    network_only=0.04  max=0.92  noisy_or=0.88  learned=0.97  early_iforest=0.37  early_supervised=1.00
+    spatial                      network_only=0.03  max=0.61  noisy_or=0.61  learned=0.71  early_iforest=0.04  early_supervised=0.86
+    staged                       network_only=0.80  max=0.38  noisy_or=0.44  learned=0.83  early_iforest=0.80  early_supervised=1.00
+    weak_correlated              network_only=0.91  max=0.51  noisy_or=0.69  learned=0.97  early_iforest=1.00  early_supervised=1.00
