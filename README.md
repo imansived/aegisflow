@@ -39,7 +39,13 @@ the network signal gone its recall on weak and staged attacks falls from 0.87 to
 quiet and is blind. Treating availability explicitly (a separate threshold per set of available signals, and optionally a separate
 learned fusion per set) cut the average loss from 0.34 to 0.22 across 12 missing-signal conditions at the same alert budget
 (+0.12, 10 of 10 fresh seeds). A post-hoc ablation shows nearly all of that comes from the per-set thresholds, the cheaper
-change. Not yet implemented in the product, which cannot yet represent an unavailable signal.
+change. Now implemented and independently validated (D107, manual §5.12): telemetry marks a signal group
+unavailable with an explicit null (never a zero); detectors score and learn nothing from it; the unchanged learned fusion is judged by a
+threshold validated for exactly the signals that remain, with a conservative fallback (no alert, reported as Degraded) for any combination
+without one; and the dashboard shows **Normal / Anomalous / Degraded**, never "Normal" for a device it cannot fully see. On 10 fresh seeds run
+through the real pipeline, the shipped version loses 0.10 less recall than the old behaviour across 12 missing-signal conditions
+(interval +0.086 to +0.118, 10 of 10 seeds), within 0.013 of the heavier per-pattern learned model, at the same alert budget. It still loses
+0.21 on average, and when both location and network are gone it is nearly blind.
 
 ## Run it (Docker)
 

@@ -1,0 +1,48 @@
+D107 FINAL: seeds [400, 401, 402, 403, 404, 405, 406, 407, 408, 409]; fitting arm B on validation seeds as D106 did
+threshold seeds: false onsets/device-day at the calibrated thresholds: {'A_budget': 2.8, 'A_F1': 5.16}
+  complete                   scored
+  single:spatial             scored
+  single:network             scored
+  single:device              scored
+  single:proximity           scored
+  pair:spatial+network       scored
+  pair:spatial+device        scored
+  pair:spatial+proximity     scored
+  pair:network+device        scored
+  pair:network+proximity     scored
+  pair:device+proximity      scored
+  intermittent               scored
+  correlated                 scored
+
+arm         complete recall_h  F1    FA/day   mean degradation (12 conditions)   worst-condition FA/day
+A_F1           0.88+-0.04   0.50   4.94     -0.314+-0.018                      4.79 (correlated)
+A_budget       0.83+-0.06   0.60   2.64     -0.311+-0.033                      3.15 (single:device)
+S              0.83+-0.06   0.60   2.64     -0.209+-0.033                      3.28 (intermittent)
+B              0.83+-0.06   0.60   2.64     -0.196+-0.037                      3.29 (intermittent)
+
+headline recall by condition  (false alerts per device-day)
+condition                             A_F1        A_budget               S               B
+complete                      0.88 ( 4.9)     0.83 ( 2.6)     0.83 ( 2.6)     0.83 ( 2.6) 
+single:spatial                0.78 ( 3.4)     0.71 ( 1.8)     0.75 ( 2.6)     0.76 ( 2.5) 
+single:network                0.31 ( 1.3)     0.23 ( 0.6)     0.44 ( 3.0)     0.54 ( 3.3) 
+single:device                 0.88 ( 4.7)     0.83 ( 3.1)     0.80 ( 2.4)     0.80 ( 2.4) 
+single:proximity              0.88 ( 4.7)     0.83 ( 2.5)     0.83 ( 2.6)     0.81 ( 2.8) 
+pair:spatial+network          0.03 ( 1.0)     0.01 ( 0.4)     0.08 ( 2.8)     0.08 ( 2.7) 
+pair:spatial+device           0.79 ( 3.5)     0.73 ( 2.4)     0.74 ( 2.5)     0.74 ( 2.5) 
+pair:spatial+proximity        0.78 ( 3.2)     0.71 ( 1.7)     0.76 ( 2.5)     0.74 ( 2.5) 
+pair:network+device           0.01 ( 0.0)     0.01 ( 0.0)     0.51 ( 3.0)     0.51 ( 3.0) 
+pair:network+proximity        0.30 ( 1.2)     0.23 ( 0.5)     0.45 ( 2.9)     0.53 ( 3.1) 
+pair:device+proximity         0.88 ( 4.6)     0.83 ( 3.0)     0.81 ( 2.4)     0.80 ( 2.4) 
+intermittent                  0.80 ( 3.6)     0.74 ( 2.1)     0.79 ( 3.3)     0.80 ( 3.3) 
+correlated                    0.36 ( 4.8)     0.31 ( 2.5)     0.44 ( 2.6)     0.44 ( 2.7) 
+
+CRITERIA
+  R1_benefit                 PASS  {"diff": {"diff": 0.10226920681499614, "lo": 0.08619683840042908, "hi": 0.1183415752295632, "n_seeds": 10, "seeds_better": 10}}
+  R2_not_worse_than_B        PASS  {"diff": {"diff": -0.012645173766817546, "lo": -0.018192531564974017, "hi": -0.007097815968661075, "n_seeds": 10, "seeds_better": 1}}
+  R3_guardrails              PASS  {"worst_false_alerts": [3.280723817455531, "intermittent"], "benign_flag_diff": 0.03506627108437077, "complete_recall_diff": 0.0}
+  R4_invariants              PASS  {"obs_violations": 0, "threshold_violations": 0, "hot_on_fallback": 0, "opened_on_fallback": 0, "fallback_failures": []}
+  R5_conformance             PASS  {"max_score_difference_float32": 1.7763568394002505e-15, "pattern_mismatches": 0, "alertable_mismatches": 0, "sustained_soft_not_identical": 0, "rows": 14601600, "runs": 26}
+  R6_network_missing_gain    PASS  {"diff": 0.20964946719776087}
+  ALL PASS: True
+  product alert manager (S): {'complete': (5.31, 0.83), 'single:spatial': (4.95, 0.77), 'single:network': (4.91, 0.57), 'single:device': (5.14, 0.75)}
+wrote data\audit\d107_final.json
