@@ -85,3 +85,11 @@ unscored** and will be rebuilt with the fix.
    one float32 step, not 1e-9.
 
 Nothing else changes: arms, conditions, seeds, thresholds table (not recalibrated), criteria R1–R6 and their cut-offs are as registered above.
+
+## Addendum 2 (still before any test seed was scored)
+
+The second dry run (seed 18) showed that the conformance check must account for the detectors' recovery window: a signal that returned within the last
+60 s is reported unavailable by design (Addendum 1), so the expected availability in R4/R5 is *lost now, or, for network and device, lost within the
+last 60 s*, computed from the condition's definition alone. Stored detector outputs are now float64, because float32 storage of the inputs shifted the
+steep logistic score by up to 2e-3 and made a 1e-9 comparison meaningless; R5 therefore keeps its original 1e-9 tolerance (Addendum 1's float32
+restatement is withdrawn). No criterion cut-off changed.

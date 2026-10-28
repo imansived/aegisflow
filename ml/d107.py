@@ -123,10 +123,10 @@ def build_run(seed: int, cond: str, root: Path | None = None) -> dict:
     buf = timedelta(seconds=POST_EPISODE_BUFFER_S)
     cap = DEVICES * n_post
     A = {k: np.empty(cap, dt) for k, dt in (("ts", np.float64), ("dev", np.int16), ("avail", np.int8), ("label", np.int8), ("ignore", bool),
-                                            ("episode", np.int32), ("scenario", np.int8), ("learning", bool), ("p_score", np.float32),
-                                            ("p_alertable", bool), ("p_hot", bool), ("p_obs", np.int8), ("p_thr", np.float32), ("p_pattern", np.int8))}
-    soft = np.empty((cap, 4), np.float32)
-    hard = np.empty((cap, 4), np.float32)
+                                            ("episode", np.int32), ("scenario", np.int8), ("learning", bool), ("p_score", np.float64),
+                                            ("p_alertable", bool), ("p_hot", bool), ("p_obs", np.int8), ("p_thr", np.float64), ("p_pattern", np.int8))}
+    soft = np.empty((cap, 4), np.float64)  # float64: the conformance check compares the product's scores to a recomputation
+    hard = np.empty((cap, 4), np.float64)
     n = 0
     for t in Fleet(cfg, plan).run(dur):
         ts = t.timestamp.timestamp()

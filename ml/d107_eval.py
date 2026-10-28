@@ -112,6 +112,29 @@ def evaluate_condition(c, E, pat, lf, table: dict, arms: dict, eps) -> dict:
     return res
 
 
+RECOVERING = {"network": 1, "device": 2}  # signals whose smoothing window must refill after an outage (60 s)
+
+
+def expected_pattern(masker: Masker, dev: np.ndarray, ts: np.ndarray, recover_s: float = 60.0) -> np.ndarray:
+    """Availability the product SHOULD report, from the condition's definition alone: lost now, or (network, device) lost within
+    the last `recover_s` seconds. Computed independently of the engine's own bookkeeping."""
+    exp = np.zeros(len(ts), np.int16)
+    order = np.argsort(dev, kind="stable")
+    for d in np.unique(dev):
+        rows = order[np.searchsorted(dev[order], d):np.searchsorted(dev[order], d, side="right")]
+        last = {m: -1e18 for m in MODS}
+        for r in rows[np.argsort(ts[rows])]:
+            lost_now = masker.lost(f"D-{int(d) + 1:03d}", float(ts[r]))
+            bits = 0
+            for i, m in enumerate(MODS):
+                if m in lost_now:
+                    last[m] = float(ts[r])
+                gone = m in lost_now or (m in RECOVERING and float(ts[r]) < last[m] + recover_s)
+                bits |= 0 if gone else 1 << i
+            exp[r] = bits
+    return exp
+
+
 def conformance(root: Path, seeds: list[int], lf, table_json: dict, table: ThresholdTable) -> dict:
     """R4 and R5 on the end-to-end runs."""
     out = {"max_score_difference_float32": 0.0, "pattern_mismatches": 0, "alertable_mismatches": 0, "rows": 0, "obs_violations": 0,
@@ -128,13 +151,12 @@ def conformance(root: Path, seeds: list[int], lf, table_json: dict, table: Thres
             out["runs"] += 1
             out["rows"] += n
             E = hold_offline(z["ts"], z["dev"], z["soft"].astype(np.float64), 1.0)
-            off = lf.score_batch(E).astype(np.float32)
+            off = lf.score_batch(E)
             out["max_score_difference_float32"] = max(out["max_score_difference_float32"], float(np.abs(off - z["p_score"]).max()))
             # expected availability from the CONDITION'S DEFINITION (independent of the engine's own bookkeeping)
             t_warm = float(z["t_warm"])
             masker = Masker(cond, sd, plan, int((39 * 3600) // 5), t_warm, 5)
-            names = [f"D-{d + 1:03d}" for d in z["dev"]]
-            exp = np.fromiter((sum(1 << i for i, m in enumerate(MODS) if m not in masker.lost(nm, ts)) for nm, ts in zip(names, z["ts"])), np.int16, n)
+            exp = expected_pattern(masker, z["dev"], z["ts"])
             out["pattern_mismatches"] += int((exp != z["p_pattern"]).sum())
             ent_ok = np.array([bool(table_json["patterns"].get(str(p), {}).get("validated")) for p in range(16)])
             out["alertable_mismatches"] += int((ent_ok[exp] != z["p_alertable"]).sum())
@@ -226,7 +248,7 @@ def main() -> None:
                                        and conf["opened_on_fallback"] == 0 and not conf["fallback_failures_when_pattern_removed"])},
         "R5_conformance": {"max_score_difference_float32": conf["max_score_difference_float32"], "pattern_mismatches": conf["pattern_mismatches"],
                            "alertable_mismatches": conf["alertable_mismatches"], "sustained_soft_not_identical": conf["sustained_soft_not_identical"], "rows": conf["rows"], "runs": conf["runs"],
-                           "pass": bool(conf["max_score_difference_float32"] <= 1.2e-7 and conf["pattern_mismatches"] == 0 and conf["alertable_mismatches"] == 0
+                           "pass": bool(conf["max_score_difference_float32"] <= 1e-9 and conf["pattern_mismatches"] == 0 and conf["alertable_mismatches"] == 0
                                         and conf["sustained_soft_not_identical"] == 0)},
         "R6_network_missing_gain": {"diff": r6, "pass": bool(r6 >= 0.20)},
     }
