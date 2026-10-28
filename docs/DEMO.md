@@ -62,15 +62,24 @@ Click **Restore normal**.
 and the alert closes. The slowest signal is battery drain, which is judged over a 5-minute window, so full recovery takes about
 **16 seconds** at 20× speed (about five simulated minutes).
 
+## Step 8: lose a signal (a blind spot is not a healthy device)
+
+In **Scenarios**, under *Observability loss*, click **Lose network signal** for the selected device, then **Watch it on the map**.
+
+*What you see:* the device is not an anomaly and no alert opens, but it is never shown as Normal. Its marker turns hollow and dashed,
+the top bar counts a **Degraded** device, the live feed lists it under **Blind spots** ("a quiet score here does not mean healthy"),
+the correlation timeline shows *no data* for the network lane with the gap hatched, and the Device Network table names the missing
+signal. Alerts for this device are judged by the threshold validated for exactly the signals that remain (manual §5.11); a combination
+with no validated threshold raises no alert and says so. **Restore normal** ends the outage; the feed notes that it is fully observed again.
+
 ## Other things worth showing
 
-- **Analytics:** risk by device, alerts by severity and by leading signal, processing latency (typically a few milliseconds).
+- **Statistics:** risk by device, alerts by severity and by leading signal, processing latency (typically a few milliseconds).
   **Show data as tables** switches every chart to a table.
 - **Evidence:** the final test's pre-registered comparisons with their intervals, including the ones that did *not* come out
   in the project's favour.
 - **Viewer role:** sign out and in with the viewer token. Everything is visible; every control is gone, and the server would
   refuse the request anyway.
-- **Light theme:** the **Theme** button.
 
 ## If something looks wrong
 
