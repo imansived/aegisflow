@@ -34,6 +34,13 @@ frozen thresholds do not survive noise or drift. Two public real datasets were u
 network, mixed and session-confounded) and IoT-23 real IoT traffic (network only; the frozen network threshold gives 12 to 76
 false alerts per device-day on real traffic). Location and proximity have no real-data validation.
 
+**Missing signals (D106, pre-registered, manual §5.11).** When one signal disappears the current system reads it as "normal": with
+the network signal gone its recall on weak and staged attacks falls from 0.87 to 0.18 while its alert rate drops, which looks
+quiet and is blind. Treating availability explicitly (a separate threshold per set of available signals, and optionally a separate
+learned fusion per set) cut the average loss from 0.34 to 0.22 across 12 missing-signal conditions at the same alert budget
+(+0.12, 10 of 10 fresh seeds). A post-hoc ablation shows nearly all of that comes from the per-set thresholds, the cheaper
+change. Not yet implemented in the product, which cannot yet represent an unavailable signal.
+
 ## Run it (Docker)
 
 ```powershell
