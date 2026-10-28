@@ -15,7 +15,7 @@ export function filterItems(items: PaletteItem[], query: string): PaletteItem[] 
 
 export function buildItems(devices: Record<string, Snapshot>, onDevice: (id: string) => void, onView: (v: View) => void): PaletteItem[] {
   const devs = Object.values(devices).sort((a, b) => sevRank(b.severity) - sevRank(a.severity) || b.score - a.score)
-    .map((d): PaletteItem => ({ id: d.device_id, label: d.device_id, hint: `${SEVERITY_LABEL[d.severity]} · ${d.zone ?? 'in transit'} · score ${d.score.toFixed(2)}`, run: () => onDevice(d.device_id) }))
+    .map((d): PaletteItem => ({ id: d.device_id, label: d.device_id, hint: `${d.severity === 'normal' && d.observability && d.observability !== 'full' ? 'Degraded' : SEVERITY_LABEL[d.severity]} · ${d.zone ?? 'in transit'} · score ${d.score.toFixed(2)}`, run: () => onDevice(d.device_id) }))
   return [
     ...devs,
     { id: 'go-overview', label: 'Go to Overview', hint: 'map, live anomalies, correlation', run: () => onView('overview') },

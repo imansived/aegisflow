@@ -5,7 +5,8 @@ import { HBars, IntervalPlot, LineChart } from '../components/Charts'
 import { CommandPalette, buildItems, filterItems } from '../components/CommandPalette'
 import { HoloFloor } from '../components/HoloFloor'
 import { CorrelationPanel, AnomalyFeed, correlationSentence, focusDevice } from '../components/Panels'
-import { linePath } from '../components/MiniCharts'
+import { linePath, spans } from '../components/MiniCharts'
+import { StateBadge } from '../components/Glyph'
 import { SideNav } from '../components/SideNav'
 import Anomalies from '../pages/Anomalies'
 import Network from '../pages/Network'
@@ -291,6 +292,71 @@ describe('Scenarios', () => {
     await waitFor(() => expect(api.demoInject).toHaveBeenCalledWith(expect.objectContaining({ device_id: 'D-001', scenario: 'combined' })))
     expect(onSelect).toHaveBeenCalledWith('D-001')
     await waitFor(() => expect(screen.getByRole('alert').textContent).toBe('the demo is not live yet'))
+  })
+})
+
+describe('degraded observability', () => {
+  const degraded = (id: string, lost: Modality[], over: Partial<Snapshot> = {}) =>
+    snap(id, 'normal', 0.05, { unavailable: lost, observability: 'degraded', state: 'degraded', ...over })
+
+  it('never calls a partly observed device Normal', () => {
+    const { container } = render(<StateBadge snap={degraded('D-001', ['network'])} />)
+    expect(container.textContent).toContain('Degraded')
+    expect(container.textContent).not.toContain('Normal')
+    cleanup()
+    render(<StateBadge snap={snap('D-002', 'normal', 0.05)} />)
+    expect(screen.getByText('Normal')).toBeTruthy()
+    cleanup()
+    render(<StateBadge snap={snap('D-003', 'high', 0.99, { observability: 'degraded', unavailable: ['network'] })} />)
+    expect(screen.getByText('High')).toBeTruthy() // an anomaly still shows as an anomaly
+  })
+
+  it('names the missing signals on the map and says the position is stale', () => {
+    const devices = { 'D-001': degraded('D-001', ['spatial', 'network'], { position_stale: true }) }
+    render(<HoloFloor site={SITE} devices={devices} selected={null} onSelect={() => {}} trail={[]} />)
+    expect(screen.getByRole('button', { name: /D-001, Degraded, location and network unavailable, score 0.05.*last known position/ })).toBeTruthy()
+  })
+
+  it('does not call a device with signals missing ordinary: the sentence says what cannot be seen', () => {
+    const s = correlationSentence(degraded('D-001', ['network', 'proximity']))
+    expect(s).toMatch(/Not fully observed: network and proximity unavailable/)
+    expect(s).toMatch(/says nothing about the ones that cannot/)
+    expect(s).not.toMatch(/All four signals are within/)
+    expect(correlationSentence(degraded('D-001', ['spatial', 'network', 'device', 'proximity']))).toMatch(/cannot be judged/)
+  })
+
+  it('lists blind spots in the live feed and the correlation panel', () => {
+    const d = degraded('D-004', ['network'], { fallback: 'no validated threshold for the available signals (spatial+device+proximity)' })
+    render(<AnomalyFeed alerts={[]} feed={[]} devices={{ 'D-004': d }} selected={null} onSelect={() => {}} onOpenAll={() => {}} />)
+    expect(screen.getByText('Blind spots')).toBeTruthy()
+    expect(screen.getByText(/A quiet score here does not mean healthy/)).toBeTruthy()
+    cleanup()
+    render(<CorrelationPanel snap={d} history={{}} alerts={[]} status={STATUS} />)
+    expect(screen.getByLabelText('Unavailable signals').textContent).toMatch(/unavailable: not observed, not normal/)
+    expect(screen.getByLabelText('Unavailable signals').textContent).toMatch(/no alert can be raised/)
+  })
+
+  it('shows unavailable readings as a dash in the device table and ranks blind spots above normal devices', () => {
+    const devices = { 'D-001': snap('D-001', 'normal', 0.1), 'D-002': degraded('D-002', ['network', 'device'], { battery: null, cpu_usage: null, network_connections: null }) }
+    render(<Network devices={devices} selected={null} onOpen={() => {}} />)
+    const firstRow = screen.getAllByRole('row')[1]
+    expect(firstRow.textContent).toContain('D-002')
+    expect(firstRow.textContent).toContain('Degraded')
+    expect(firstRow.querySelectorAll('.na')).toHaveLength(3)
+  })
+
+  it('spans finds the runs where a signal was unavailable', () => {
+    expect(spans([false, true, true, false, true])).toEqual([[1, 3], [4, 4]])
+    expect(spans(undefined)).toEqual([])
+  })
+
+  it('can start a signal loss from Scenarios and reports it as Degraded, not an attack', async () => {
+    const api = { demoInject: vi.fn().mockResolvedValue({}), demoClear: vi.fn(), demoStart: vi.fn(), demoStop: vi.fn() } as unknown as Api
+    render(<Scenarios api={api} isAdmin demo={{ state: 'live', error: null, devices: 10, speed: 20, warmup_progress: 1, sim_time: null, active_episodes: [] }}
+      selected="D-003" targets={['D-001', 'D-003']} onSelect={() => {}} onChanged={() => {}} onWatch={() => {}} />)
+    fireEvent.click(screen.getByRole('button', { name: /Lose network signal/ }))
+    await waitFor(() => expect(api.demoInject).toHaveBeenCalledWith({ device_id: 'D-003', scenario: 'signal_loss', magnitude: 1, duration_s: 240, signals: ['network'] }))
+    expect(await screen.findByText(/should show as Degraded, not Normal/)).toBeTruthy()
   })
 })
 

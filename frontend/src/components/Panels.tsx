@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { MODALITY_LABEL, SEVERITY_LABEL, siteDayTime, siteTime } from '../format'
+import { MODALITY_LABEL, SEVERITY_LABEL, isDegraded, lostSignals, lostText, siteDayTime, siteTime } from '../format'
 import type { FeedItem, Point } from '../live'
 import { MODALITIES, type Alert, type Snapshot, type Status } from '../types'
-import { SeverityBadge } from './Glyph'
+import { DegradedBadge, SeverityBadge, StateBadge } from './Glyph'
 import { CorrelationLanes, MultiLine } from './MiniCharts'
 import { ACTIVE_LEVEL, SIGNAL_COLOR, SignalRing, activeSignals } from './SignalRing'
 
@@ -14,20 +14,30 @@ export function focusDevice(devices: Record<string, Snapshot>, selected: string 
 
 /** Plain-language account of how the signals combine right now. Pure, so it can be tested. */
 export function correlationSentence(snap: Snapshot): string {
-  const active = MODALITIES.filter((m) => snap.effective[m] >= ACTIVE_LEVEL).sort((a, b) => snap.effective[b] - snap.effective[a])
-  const strongest = Math.max(...MODALITIES.map((m) => snap.effective[m]))
-  if (active.length === 0) return 'All four signals are within their normal range.'
+  const lost = lostSignals(snap)
+  const seen = MODALITIES.filter((m) => !lost.includes(m))
+  const active = seen.filter((m) => snap.effective[m] >= ACTIVE_LEVEL).sort((a, b) => snap.effective[b] - snap.effective[a])
+  const strongest = Math.max(0, ...seen.map((m) => snap.effective[m]))
+  // A missing signal is never reported as a normal one: say what cannot be seen.
+  const blind = lost.length ? `Not fully observed: ${lostText(snap)} unavailable. ` : ''
+  if (seen.length === 0) return 'No signal is available: this device cannot be judged.'
+  if (active.length === 0) {
+    return lost.length
+      ? `${blind}The ${seen.length} signal${seen.length === 1 ? '' : 's'} that can be seen look ordinary; that says nothing about the ones that cannot.`
+      : 'All four signals are within their normal range.'
+  }
   const list = active.map((m) => `${MODALITY_LABEL[m]} ${snap.effective[m].toFixed(2)}`).join(', ')
-  if (active.length === 1) return `One signal is active: ${list}.`
-  return `${active.length} signals are active at once: ${list}. The strongest alone is ${strongest.toFixed(2)}; combined they score ${snap.score.toFixed(2)}.`
+  if (active.length === 1) return `${blind}One signal is active: ${list}.`
+  return `${blind}${active.length} signals are active at once: ${list}. The strongest alone is ${strongest.toFixed(2)}; combined they score ${snap.score.toFixed(2)}.`
 }
 
 // ---------------------------------------------------------------------------------------- live anomaly feed
 
-export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll }: {
-  alerts: Alert[]; feed: FeedItem[]; selected: string | null; onSelect: (id: string) => void; onOpenAll: () => void
+export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll, devices = {} }: {
+  alerts: Alert[]; feed: FeedItem[]; selected: string | null; onSelect: (id: string) => void; onOpenAll: () => void; devices?: Record<string, Snapshot>
 }) {
   const open = alerts.filter((a) => a.status !== 'closed')
+  const blind = Object.values(devices).filter(isDegraded).sort((a, b) => a.device_id.localeCompare(b.device_id))
   return (
     <section className="panel feed" aria-label="Live anomalies">
       <header className="panel-head">
@@ -51,6 +61,22 @@ export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll }: {
             ))}
           </ul>
         )}
+        {blind.length > 0 && (
+          <>
+            <h3>Blind spots</h3>
+            <ul className="alert-cards" aria-label="Devices that are not fully observed">
+              {blind.map((d) => (
+                <li key={d.device_id}>
+                  <button className="acard degraded" aria-pressed={selected === d.device_id} onClick={() => onSelect(d.device_id)}>
+                    <span className="acard-top"><b>{d.device_id}</b><StateBadge snap={d} /></span>
+                    <span className="acard-why">{lostText(d)} unavailable. {d.severity === 'normal' ? 'A quiet score here does not mean healthy.' : 'Alerts for this device rest on fewer signals.'}</span>
+                    {d.fallback && <span className="meta">{d.fallback}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
         <h3>Activity</h3>
         {feed.length === 0 ? (
           <div className="empty">Listening. Changes in risk appear here as they happen.</div>
@@ -59,7 +85,7 @@ export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll }: {
             {feed.slice(0, 40).map((f) => (
               <li key={f.id}>
                 <button className={`sev-${f.severity}`} onClick={() => onSelect(f.device_id)} aria-pressed={selected === f.device_id}>
-                  <SeverityBadge severity={f.severity} label={false} />
+                  {f.kind === 'observability' ? <DegradedBadge label={false} /> : <SeverityBadge severity={f.severity} label={false} />}
                   <span className="a-body"><b>{f.device_id}</b> {f.text}</span>
                   <span className="meta">{siteTime(f.ts)}</span>
                 </button>
@@ -94,7 +120,9 @@ export function TrafficPanel({ snap, history }: { snap: Snapshot | null; history
         <MultiLine times={times} ariaLabel={`Open connections of ${snap?.device_id}`} height={150}
           series={[{ key: 'conns', label: 'Open connections', color: 'var(--sig-network)', values: p.map((q) => q.conns) }]} />
       )}
-      {snap && <p className="mini-foot">{snap.network_connections} open connections now</p>}
+      {snap && (snap.network_connections === null
+        ? <p className="mini-foot lost">Network signal unavailable: no traffic is being reported. This is a blind spot, not silence.</p>
+        : <p className="mini-foot">{snap.network_connections} open connections now</p>)}
     </section>
   )
 }
@@ -109,7 +137,9 @@ export function HealthPanel({ snap, history }: { snap: Snapshot | null; history:
           { key: 'cpu', label: 'CPU', color: 'var(--sig-device)', values: p.map((q) => q.cpu) },
           { key: 'battery', label: 'Battery', color: 'var(--accent)', values: p.map((q) => q.battery) },
         ]} />
-      {snap && <p className="mini-foot">{snap.temperature.toFixed(0)} °C{snap.memory_usage !== undefined ? ` · memory ${snap.memory_usage.toFixed(0)}%` : ''}</p>}
+      {snap && (snap.temperature === null
+        ? <p className="mini-foot lost">Device-health signal unavailable. This is a blind spot, not a healthy device.</p>
+        : <p className="mini-foot">{snap.temperature.toFixed(0)} °C{snap.memory_usage != null ? ` · memory ${snap.memory_usage.toFixed(0)}%` : ''}</p>)}
     </section>
   )
 }
@@ -132,17 +162,18 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
     <section className="panel correlation" aria-label="Cross-modal correlation">
       <header className="panel-head">
         <h2>Cross-modal correlation</h2>
-        <span className="sub"><b className="who">{snap.device_id}</b> · {snap.zone ?? 'in transit'} · <SeverityBadge severity={snap.severity} /></span>
+        <span className="sub"><b className="who">{snap.device_id}</b> · {snap.zone ?? 'in transit'} · <StateBadge snap={snap} />{isDegraded(snap) && snap.severity !== 'normal' && <> · <DegradedBadge lost={lostText(snap)} /></>}</span>
       </header>
       <div className="corr-body">
         <div className="corr-ring">
-          <SignalRing effective={snap.effective} score={snap.score} severity={snap.severity} size={132} />
+          <SignalRing effective={snap.effective} score={snap.score} severity={snap.severity} size={132} lost={lostSignals(snap)} />
           <p className="corr-note">{correlationSentence(snap)}</p>
         </div>
         <div className="corr-main">
           <CorrelationLanes
             times={p.map((q) => q.t)}
-            lanes={MODALITIES.map((m) => ({ key: m, label: MODALITY_LABEL[m], color: SIGNAL_COLOR[m], values: p.map((q) => q.effective[m]), now: snap.effective[m] }))}
+            lanes={MODALITIES.map((m) => ({ key: m, label: MODALITY_LABEL[m], color: SIGNAL_COLOR[m], values: p.map((q) => ((q.missing >> MODALITIES.indexOf(m)) & 1 ? NaN : q.effective[m])), now: snap.effective[m],
+              lost: lostSignals(snap).includes(m), gaps: p.map((q) => ((q.missing >> MODALITIES.indexOf(m)) & 1) === 1) }))}
             fused={p.map((q) => q.score)} fusedNow={snap.score} activeLevel={ACTIVE_LEVEL} alertLevel={status?.alert_thresholds.raise_at} />
         </div>
         <div className="corr-why" aria-label="Why it was flagged">
@@ -162,7 +193,15 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
               {MODALITIES.filter((m) => snap.effective[m] >= ACTIVE_LEVEL).map((m) => (
                 <li key={m}><span className={`sigchip m-${m}`}><i />{MODALITY_LABEL[m]}</span><span className="reason">{snap.effective[m].toFixed(2)} of 1.00</span>{snap.contributions[m] !== undefined && <span className="meta">+{snap.contributions[m]!.toFixed(2)}</span>}</li>
               ))}
-              {n === 0 && <li className="reason">Nothing unusual.</li>}
+              {n === 0 && <li className="reason">{isDegraded(snap) ? 'Nothing unusual among the signals that can be seen.' : 'Nothing unusual.'}</li>}
+            </ul>
+          )}
+          {lostSignals(snap).length > 0 && (
+            <ul className="blind-list" aria-label="Unavailable signals">
+              {lostSignals(snap).map((m) => (
+                <li key={m}><span className={`sigchip lost m-${m}`}><i />{MODALITY_LABEL[m]}</span><span className="reason">unavailable: not observed, not normal</span></li>
+              ))}
+              {snap.fallback && <li><span className="reason">{snap.fallback}: no alert can be raised for this combination.</span></li>}
             </ul>
           )}
           <p className="fine">The fused score ranks how unusual this is across all signals. It is not a probability that an attack occurred.</p>

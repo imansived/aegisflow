@@ -12,11 +12,13 @@ export interface Snapshot {
   longitude: number
   zone: string | null
   restricted: boolean
-  battery: number
-  cpu_usage: number
-  temperature: number
-  network_connections: number
-  nearby_devices: number
+  position_stale?: boolean // no fix this tick: the position is the last known one
+  // null = the device reported this signal as unavailable (never a zero)
+  battery: number | null
+  cpu_usage: number | null
+  temperature: number | null
+  network_connections: number | null
+  nearby_devices: number | null
   memory_usage?: number // added later: older servers do not send these three
   bytes_sent?: number
   bytes_received?: number
@@ -25,6 +27,12 @@ export interface Snapshot {
   effective: Record<Modality, number>
   contributions: Partial<Record<Modality, number>>
   learning: boolean
+  // Observability (D106/D107). Older servers do not send these; treat absence as fully observed.
+  unavailable?: Modality[]
+  observability?: 'full' | 'degraded' | 'blind'
+  state?: 'normal' | 'anomalous' | 'degraded'
+  alertable?: boolean
+  fallback?: string
 }
 
 export interface Factor {
@@ -46,6 +54,7 @@ export interface Alert {
   explanation: string
   status?: 'open' | 'closed'
   event?: 'opened' | 'escalated' | 'updated' | 'closed'
+  unavailable?: Modality[] // signals that were unavailable when the alert was at its worst
 }
 
 export interface DeviceInfo {
@@ -78,6 +87,7 @@ export interface Status {
   processor: { processed: number; failed: number; p50_ms?: number; p95_ms?: number; p99_ms?: number } | null
   devices_live: number
   websocket_clients: number
+  availability?: { thresholds_loaded: boolean; validated_patterns: number[]; devices_degraded: number }
 }
 
 export interface DemoEpisode {

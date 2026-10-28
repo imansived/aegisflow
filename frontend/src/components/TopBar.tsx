@@ -9,6 +9,7 @@ export function TopBar({ live, status, role, onLogout, onPalette }: {
   const open = live.alerts.filter((a) => a.status !== 'closed').length
   const top = devices.reduce((m, d) => Math.max(m, d.score), 0)
   const latest = devices.reduce<string | null>((m, d) => (m === null || d.ts > m ? d.ts : m), null)
+  const degraded = devices.filter((d) => d.observability && d.observability !== 'full').length
   const conn = live.connection
   const demo = status?.demo.state
   const fleet = demo === 'live' ? ['ok', 'Fleet live'] : demo === 'registering' || demo === 'warming' ? ['warn', 'Calibrating'] : demo === 'error' ? ['bad', 'Fleet error'] : ['idle', 'Fleet offline']
@@ -21,6 +22,7 @@ export function TopBar({ live, status, role, onLogout, onPalette }: {
       <dl className="kpis" aria-label="Summary">
         <div><dt>Connected devices</dt><dd>{devices.length}</dd></div>
         <div className={open ? 'alert' : ''}><dt>Open alerts</dt><dd>{open}</dd></div>
+        {degraded > 0 && <div className="degraded"><dt>Degraded</dt><dd>{degraded}</dd></div>}
         <div><dt>Peak risk</dt><dd>{devices.length ? top.toFixed(2) : '—'}</dd></div>
         <div><dt>Site time</dt><dd>{latest ? siteDayTime(latest) : '—'}</dd></div>
       </dl>

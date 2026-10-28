@@ -222,3 +222,14 @@ def test_a_signal_loss_episode_nulls_exactly_that_signal_for_exactly_that_time()
         else:
             assert t.unavailable == frozenset()  # other devices are untouched
     assert seen[30] == frozenset() and seen[60] == {"network"} and seen[115] == {"network"} and seen[120] == frozenset()
+
+
+def test_losing_gps_does_not_stretch_the_proximity_persistence_clock():
+    """Regression: dt was measured from the last GPS fix, so a long GPS outage made every unenrolled neighbour look
+    'persistent' for the whole outage. The clock is time since the previous event of any kind."""
+    eng = DetectionEngine(["D-001"])
+    eng.process(tele(0))
+    for i in range(1, 40):  # 195 s without a GPS fix, with one stranger nearby the whole time
+        eng.process(tele(i * 5, lost=("spatial",), nearby_devices=["D-777"]))
+    persist = eng.detectors[3]._state["D-001"].persist_s
+    assert persist == pytest.approx(39 * 5, abs=1e-6)  # 195 s of real time, not a sum of ever-growing gaps

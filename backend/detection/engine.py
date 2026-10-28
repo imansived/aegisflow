@@ -31,22 +31,22 @@ class DetectionEngine:
             DeviceDetector(self.cfg),
             ProximityDetector(self.cfg, self.enrolled),
         ]
-        self._prev: dict[str, tuple[float, float, float]] = {}  # device -> (time, lat, lon)
+        self._prev: dict[str, tuple[float, float, float]] = {}  # device -> (time, lat, lon) of its last GPS fix
+        self._last_event: dict[str, float] = {}  # device -> time of its last event of any kind
 
     def process(self, t: Telemetry) -> Scores:
         now_s = t.timestamp.timestamp()
         lost = t.unavailable  # signal groups the device reported as unavailable this tick
-        prev = self._prev.get(t.device_id)
-        dt_s = speed = None
-        if prev is not None:
-            dt = now_s - prev[0]
-            if 0 < dt <= MAX_GAP_S:
-                dt_s = dt
-                if "spatial" not in lost:
-                    speed = haversine_m((prev[1], prev[2]), (t.latitude, t.longitude)) / dt
-            elif dt > MAX_GAP_S:
-                dt_s = dt
-        if "spatial" not in lost:  # no fix this tick: keep the last known position and its time
+        # Time since the device's previous event (any event, with or without a GPS fix): the proximity detector's
+        # persistence clock depends on it, so losing the GPS signal must not stretch it.
+        last_t = self._last_event.get(t.device_id)
+        self._last_event[t.device_id] = now_s
+        dt_s = now_s - last_t if last_t is not None and now_s > last_t else None
+        # Speed needs two fixes: only measured when this tick has a fix and the last fix was recent.
+        prev, speed = self._prev.get(t.device_id), None
+        if "spatial" not in lost:
+            if prev is not None and 0 < now_s - prev[0] <= MAX_GAP_S:
+                speed = haversine_m((prev[1], prev[2]), (t.latitude, t.longitude)) / (now_s - prev[0])
             self._prev[t.device_id] = (now_s, t.latitude, t.longitude)
 
         ctx = Context(
@@ -74,6 +74,7 @@ class DetectionEngine:
     def reset_device(self, device_id: str) -> None:
         """A device's clock jumped backwards: clear its time-based state, keep what it has learned."""
         self._prev.pop(device_id, None)
+        self._last_event.pop(device_id, None)
         for det in self.detectors:
             det.reset_windows(device_id)
 

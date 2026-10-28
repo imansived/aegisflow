@@ -58,7 +58,7 @@ export class Api {
   demoStatus = () => this.req<DemoStatus>('GET', '/demo/status')
   demoStart = (body: { devices: number; warmup_hours: number; speed: number }) => this.req<DemoStatus>('POST', '/demo/start', body)
   demoStop = () => this.req<DemoStatus>('POST', '/demo/stop', {})
-  demoInject = (body: { device_id: string; scenario: string; magnitude: number; duration_s: number }) =>
+  demoInject = (body: { device_id: string; scenario: string; magnitude: number; duration_s: number; signals?: string[] }) =>
     this.req<{ episode_id: string }>('POST', '/demo/inject', body)
   demoClear = (device_id: string) => this.req<{ cleared: number }>('POST', '/demo/clear', { device_id })
 }

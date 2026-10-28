@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { SEVERITY_LABEL, sevRank } from '../format'
+import { MODALITY_LABEL, SEVERITY_LABEL, isDegraded, lostText, sevRank } from '../format'
 import { makeIso, path, type Pt } from '../iso'
 import type { Point } from '../live'
 import { MODALITIES, type Severity, type Site, type Snapshot } from '../types'
@@ -61,10 +61,12 @@ export function HoloFloor({ site, devices, selected, onSelect, trail }: {
         const head = iso.at(d.latitude, d.longitude, lift)
         const isSel = selected === d.device_id
         const color = SEV_COLOR[d.severity]
-        const name = `${d.device_id}, ${SEVERITY_LABEL[d.severity]}, score ${d.score.toFixed(2)}${d.zone ? `, in ${d.zone}` : ''}`
-        const showLabel = isSel || hover === d.device_id || d.severity !== 'normal'
+        const degraded = isDegraded(d)
+        const status = d.severity === 'normal' && degraded ? `Degraded, ${lostText(d)} unavailable` : degraded ? `${SEVERITY_LABEL[d.severity]}, partly observed: ${lostText(d)} unavailable` : SEVERITY_LABEL[d.severity]
+        const name = `${d.device_id}, ${status}, score ${d.score.toFixed(2)}${d.zone ? `, in ${d.zone}` : ''}${d.position_stale ? ', last known position' : ''}`
+        const showLabel = isSel || hover === d.device_id || d.severity !== 'normal' || degraded
         return (
-          <g key={d.device_id} className={`beacon sev-${d.severity} ${isSel ? 'sel' : ''}`} style={{ ['--c' as string]: color }} tabIndex={0} role="button"
+          <g key={d.device_id} className={`beacon sev-${d.severity} ${isSel ? 'sel' : ''} ${degraded ? 'degraded' : ''} ${d.position_stale ? 'stale' : ''}`} style={{ ['--c' as string]: color }} tabIndex={0} role="button"
             aria-label={name} aria-pressed={isSel} onClick={() => onSelect(d.device_id)} onPointerEnter={() => setHover(d.device_id)} onPointerLeave={() => setHover(null)}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(d.device_id) } }}>
             <title>{name}</title>
@@ -84,19 +86,21 @@ export function HoloFloor({ site, devices, selected, onSelect, trail }: {
 }
 
 function Spires({ iso, d }: { iso: ReturnType<typeof makeIso>; d: Snapshot }) {
-  const tips: { m: (typeof MODALITIES)[number]; foot: Pt; tip: Pt; v: number }[] = MODALITIES.map((m, i) => {
+  const tips: { m: (typeof MODALITIES)[number]; foot: Pt; tip: Pt; v: number; lost: boolean }[] = MODALITIES.map((m, i) => {
     const a = (i / 4) * Math.PI * 2 + Math.PI / 4
     const du = SPIRE_RADIUS * Math.cos(a)
     const dv = SPIRE_RADIUS * Math.sin(a)
-    const v = Math.min(1, Math.max(0, d.effective[m]))
-    return { m, v, foot: iso.near(d.latitude, d.longitude, du, dv, 0), tip: iso.near(d.latitude, d.longitude, du, dv, 1.5 + v * SPIRE_MAX) }
+    const lost = (d.unavailable ?? []).includes(m)
+    const v = lost ? 0 : Math.min(1, Math.max(0, d.effective[m]))
+    return { m, v, lost, foot: iso.near(d.latitude, d.longitude, du, dv, 0), tip: iso.near(d.latitude, d.longitude, du, dv, 1.5 + v * SPIRE_MAX) }
   })
   const active = tips.filter((t) => t.v >= ACTIVE_LEVEL)
   const locked = activeSignals(d.effective) >= 2
   return (
     <g className={`spires ${locked ? 'locked' : ''}`} aria-hidden="true">
       {tips.map((t) => (
-        <g key={t.m} style={{ ['--c' as string]: SIGNAL_COLOR[t.m] }} className={t.v >= ACTIVE_LEVEL ? 'spire on' : 'spire'}>
+        <g key={t.m} style={{ ['--c' as string]: SIGNAL_COLOR[t.m] }} className={t.lost ? 'spire lost' : t.v >= ACTIVE_LEVEL ? 'spire on' : 'spire'}>
+          {t.lost && <title>{MODALITY_LABEL[t.m]} unavailable</title>}
           <line className="spire-base" x1={t.foot.x} y1={t.foot.y} x2={t.tip.x} y2={t.tip.y} />
           <circle className="spire-cap" cx={t.tip.x} cy={t.tip.y} r={1.25} filter="url(#glow)" />
         </g>

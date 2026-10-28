@@ -342,3 +342,26 @@ table.data tr.sel td { background: var(--accent-soft); }
 }
 
 @media (min-width: 821px) { body { overflow: hidden; } }
+
+/* ---- degraded observability (D107): a hollow, dashed look and the word "Degraded", unlike any severity ---- */
+:root { --degraded: #b8c4dc; }
+.sev-degraded { --c: var(--degraded); color: var(--degraded); }
+.kpis .degraded dd { color: var(--degraded); }
+.beacon.degraded .foot { stroke-dasharray: 1.2 1; fill: transparent; stroke: var(--degraded); }
+.beacon.degraded .head { fill: var(--bg); stroke: var(--degraded); stroke-width: 0.5; stroke-dasharray: 0.9 0.7; }
+.beacon.degraded .stem { stroke-dasharray: 0.8 0.8; stroke: var(--degraded); }
+.beacon.degraded.sev-high .head, .beacon.degraded.sev-medium .head, .beacon.degraded.sev-low .head { fill: var(--c); stroke: var(--degraded); }
+.beacon.stale .foot { opacity: 0.5; }
+.spire.lost .spire-base { stroke: var(--degraded); stroke-dasharray: 0.9 0.9; opacity: 0.6; }
+.spire.lost .spire-cap { fill: none; stroke: var(--degraded); stroke-width: 0.35; stroke-dasharray: 0.6 0.5; opacity: 0.8; }
+.acard.degraded::before { background: var(--degraded); }
+.acard.degraded { border-style: dashed; }
+.mini-foot.lost { color: var(--degraded); }
+.blind-list { margin-top: 10px; border-top: 1px dashed var(--line-strong); padding-top: 8px; }
+.sigchip.lost i { background: transparent; border: 1.5px dashed var(--c); }
+.lane-now.lost { fill: var(--degraded); }
+.gap { opacity: 0.9; }
+.arc-track.lost { stroke: var(--degraded); opacity: 0.5; }
+.sigbars i.lost { background: transparent; border: 1px dashed var(--degraded); opacity: 0.8; }
+.na { color: var(--degraded); }
+.scn.loss { border-style: dashed; }

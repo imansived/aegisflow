@@ -17,6 +17,29 @@ export function SeverityBadge({ severity, label = true }: { severity: Severity; 
   )
 }
 
+/** Degraded observability: part of this device cannot be seen. A hollow, dashed shape and the word, never colour alone,
+ *  and deliberately unlike every severity glyph: a quiet dashboard must not read as a healthy device. */
+export function DegradedBadge({ lost, label = true }: { lost?: string; label?: boolean }) {
+  const text = lost ? `Degraded: ${lost} unavailable` : 'Degraded'
+  return (
+    <span className="sev sev-degraded" title={text}>
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <circle cx="6" cy="6" r="4.2" fill="none" stroke="currentColor" strokeWidth="1.4" strokeDasharray="2 1.6" />
+        <path d="M3.4 8.6 8.6 3.4" stroke="currentColor" strokeWidth="1.4" />
+      </svg>
+      {label ? 'Degraded' : <span className="sr">{text}</span>}
+    </span>
+  )
+}
+
+/** The one badge for a device: Anomalous (a severity glyph) beats Degraded beats Normal. */
+export function StateBadge({ snap, label = true }: { snap: { severity: Severity; observability?: string; unavailable?: Modality[] }; label?: boolean }) {
+  if (snap.severity === 'normal' && snap.observability && snap.observability !== 'full') {
+    return <DegradedBadge lost={(snap.unavailable ?? []).join(' and ')} label={label} />
+  }
+  return <SeverityBadge severity={snap.severity} label={label} />
+}
+
 export function ModalityMark({ modality, withLabel = true }: { modality: Modality; withLabel?: boolean }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>

@@ -1,4 +1,4 @@
-import type { Modality, Severity } from './types'
+import type { Modality, Severity, Snapshot } from './types'
 
 export const SEVERITY_ORDER: Severity[] = ['normal', 'low', 'medium', 'high']
 export const sevRank = (s: Severity): number => SEVERITY_ORDER.indexOf(s)
@@ -10,6 +10,14 @@ export const MODALITY_LABEL: Record<Modality, string> = {
   device: 'Device health',
   proximity: 'Proximity',
 }
+
+/** Signals this device reported as unavailable. An unavailable signal is NOT a normal one (manual §5.11). */
+export const lostSignals = (s: Pick<Snapshot, 'unavailable'>): Modality[] => s.unavailable ?? []
+export const isDegraded = (s: Pick<Snapshot, 'observability'>): boolean => !!s.observability && s.observability !== 'full'
+/** What to show for a device: Anomalous wins, then Degraded (partly observed), else Normal. */
+export const deviceState = (s: Snapshot): 'anomalous' | 'degraded' | 'normal' =>
+  s.severity !== 'normal' ? 'anomalous' : isDegraded(s) ? 'degraded' : 'normal'
+export const lostText = (s: Pick<Snapshot, 'unavailable'>): string => lostSignals(s).map((m) => MODALITY_LABEL[m].toLowerCase()).join(' and ')
 
 const siteClock = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Asia/Kolkata', // the simulated site's local time (contracts/site.py SITE_TZ)

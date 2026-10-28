@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Api, ApiError } from './api'
 import { BootOverlay } from './components/BootOverlay'
 import { CommandPalette, buildItems } from './components/CommandPalette'
-import { SeverityBadge } from './components/Glyph'
+import { StateBadge } from './components/Glyph'
 import { HoloFloor } from './components/HoloFloor'
 import { Login } from './components/Login'
 import { AnomalyFeed, CorrelationPanel, HealthPanel, TrafficPanel, focusDevice } from './components/Panels'
@@ -91,7 +91,7 @@ export default function App() {
             <HoloFloor site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
             {focus && (
               <div className="focus-chip" aria-live="polite">
-                <b>{focus.device_id}</b><span>{focus.zone ?? 'in transit'}</span><SeverityBadge severity={focus.severity} /><b className="score">{focus.score.toFixed(2)}</b>
+                <b>{focus.device_id}</b><span>{focus.zone ?? 'in transit'}</span><StateBadge snap={focus} /><b className="score">{focus.score.toFixed(2)}</b>
                 {!selected && <span className="sub">riskiest device</span>}
               </div>
             )}
@@ -102,7 +102,7 @@ export default function App() {
             )}
             <BootOverlay demo={demo} />
           </section>
-          <AnomalyFeed alerts={live.alerts} feed={live.feed} selected={selected} onSelect={setSelected} onOpenAll={() => setView('anomalies')} />
+          <AnomalyFeed alerts={live.alerts} feed={live.feed} devices={live.devices} selected={selected} onSelect={setSelected} onOpenAll={() => setView('anomalies')} />
           <div className="bottom">
             <TrafficPanel snap={focus} history={live.history} />
             <HealthPanel snap={focus} history={live.history} />

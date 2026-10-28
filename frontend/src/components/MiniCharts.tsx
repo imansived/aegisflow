@@ -20,6 +20,18 @@ const nearest = (times: number[], x: number, xs: (t: number) => number): number 
   return best
 }
 
+/** Consecutive runs of `true`, as [first index, one past the last]: where a signal was unavailable. */
+export function spans(flags?: boolean[]): [number, number][] {
+  const out: [number, number][] = []
+  let a = -1
+  ;(flags ?? []).forEach((f, i) => {
+    if (f && a < 0) a = i
+    if (!f && a >= 0) { out.push([a, i]); a = -1 }
+  })
+  if (a >= 0) out.push([a, (flags ?? []).length - 1])
+  return out
+}
+
 export interface Series { key: string; label: string; color: string; values: number[] }
 
 /** Several series on ONE shared axis (never dual-axis). Legend above, values at the line ends, crosshair tooltip. */
@@ -72,7 +84,7 @@ export function MultiLine({ times, series, height = 120, ariaLabel, unit = '', m
   )
 }
 
-export interface Lane { key: string; label: string; color: string; values: number[]; now: number; extra?: string }
+export interface Lane { key: string; label: string; color: string; values: number[]; now: number; extra?: string; lost?: boolean; gaps?: boolean[] }
 
 /** The correlation timeline: one thin lane per signal (each on its own 0..1 scale), a faint line at the level where a
  *  signal counts as active, and the fused score underneath with the alert level. When several lanes lift together and
@@ -95,6 +107,7 @@ export function CorrelationLanes({ times, lanes, fused, fusedNow, activeLevel, a
     <div className="chart corr" ref={ref}>
       <svg width={W} height={height} viewBox={`0 0 ${W} ${height}`} role="img" aria-label="Correlation timeline: each signal and the fused score over time"
         onMouseMove={(e) => setHover(nearest(times, e.nativeEvent.offsetX, x))} onMouseLeave={() => setHover(null)}>
+        <defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" strokeWidth="1.2" opacity="0.6" /></pattern></defs>
         {lanes.map((l, i) => {
           const top = laneTop(i)
           const ys = l.values.map((v) => lane(i, v, laneH, top))
@@ -102,12 +115,13 @@ export function CorrelationLanes({ times, lanes, fused, fusedNow, activeLevel, a
           return (
             <g key={l.key}>
               <rect className="lane-bg" x={L} y={top} width={W - L - R} height={laneH - 3} rx="4" />
+              {spans(l.gaps).map(([a, b], k) => <rect key={k} className="gap" x={xsAll[a]} y={top} width={Math.max(2, xsAll[Math.min(b, xsAll.length - 1)] - xsAll[a])} height={laneH - 3} fill="url(#hatch)" />)}
               <line className="active-line" x1={L} x2={W - R} y1={lane(i, activeLevel, laneH, top)} y2={lane(i, activeLevel, laneH, top)} />
               {d && <path d={`${d}L${xsAll[xsAll.length - 1].toFixed(1)} ${top + laneH - 2}L${xsAll[0].toFixed(1)} ${top + laneH - 2}Z`} fill={l.color} opacity="0.13" stroke="none" />}
               <path d={d} fill="none" stroke={l.color} strokeWidth="1.6" strokeLinejoin="round" />
               <rect x={0} y={top + laneH / 2 - 8} width="9" height="9" rx="2.5" fill={l.color} />
               <text className="lane-label" x={16} y={top + laneH / 2 + 1}>{l.label}</text>
-              <text className="lane-now" x={L - 8} y={top + laneH / 2 + 1} textAnchor="end" fill={l.now >= activeLevel ? l.color : undefined}>{l.now.toFixed(2)}</text>
+              <text className={`lane-now${l.lost ? ' lost' : ''}`} x={L - 8} y={top + laneH / 2 + 1} textAnchor="end" fill={!l.lost && l.now >= activeLevel ? l.color : undefined}>{l.lost ? 'no data' : l.now.toFixed(2)}</text>
             </g>
           )
         })}

@@ -1,11 +1,11 @@
 import { useEffect, useReducer, type Dispatch } from 'react'
-import { SEVERITY_LABEL, sevRank } from './format'
-import type { Alert, HistoryPoint, Modality, Severity, Snapshot, WsMessage } from './types'
+import { MODALITY_LABEL, SEVERITY_LABEL, sevRank } from './format'
+import { MODALITIES, type Alert, type HistoryPoint, type Modality, type Severity, type Snapshot, type WsMessage } from './types'
 
 export interface FeedItem {
   id: string
   ts: string
-  kind: 'alert' | 'severity'
+  kind: 'alert' | 'severity' | 'observability'
   device_id: string
   severity: Severity
   text: string
@@ -25,6 +25,7 @@ export interface Point {
   conns: number
   sent: number
   recv: number
+  missing: number // bitmask of signals reported unavailable at this point (bit = MODALITIES order); 0 = all seen
 }
 
 export interface LiveState {
@@ -51,9 +52,12 @@ export type Action =
   | { type: 'alerts_loaded'; alerts: Alert[] }
   | { type: 'history_loaded'; device_id: string; points: HistoryPoint[] }
 
+export const missingMask = (s: Snapshot): number => (s.unavailable ?? []).reduce((m, x) => m | (1 << MODALITIES.indexOf(x)), 0)
+
 const toPoint = (s: Snapshot): Point => ({
   t: Date.parse(s.ts), score: s.score, severity: s.severity, lat: s.latitude, lon: s.longitude, effective: s.effective,
-  battery: s.battery, cpu: s.cpu_usage, temp: s.temperature, conns: s.network_connections, sent: s.bytes_sent ?? NaN, recv: s.bytes_received ?? NaN,
+  battery: s.battery ?? NaN, cpu: s.cpu_usage ?? NaN, temp: s.temperature ?? NaN, conns: s.network_connections ?? NaN,
+  sent: s.bytes_sent ?? NaN, recv: s.bytes_received ?? NaN, missing: missingMask(s),
 })
 
 function upsertAlerts(existing: Alert[], incoming: Alert[]): Alert[] {
@@ -107,6 +111,19 @@ export function reducer(state: LiveState, action: Action): LiveState {
           text: `${up ? 'Rose' : 'Fell'} from ${SEVERITY_LABEL[prev.severity]} to ${SEVERITY_LABEL[s.severity]} (score ${s.score.toFixed(2)})`,
         })
       }
+      const gone = (s.unavailable ?? []).filter((m) => !(prev?.unavailable ?? []).includes(m))
+      const back = (prev?.unavailable ?? []).filter((m) => !(s.unavailable ?? []).includes(m))
+      if (prev && gone.length) {
+        feed = pushFeed(feed, {
+          id: `${s.device_id}@${s.ts}:lost`, ts: s.ts, kind: 'observability', device_id: s.device_id, severity: 'normal',
+          text: `Lost the ${gone.map((m) => MODALITY_LABEL[m].toLowerCase()).join(' and ')} signal: now only partly observed (a quiet score is not evidence of normal behaviour)`,
+        })
+      } else if (prev && back.length) {
+        feed = pushFeed(feed, {
+          id: `${s.device_id}@${s.ts}:back`, ts: s.ts, kind: 'observability', device_id: s.device_id, severity: 'normal',
+          text: `${back.map((m) => MODALITY_LABEL[m]).join(' and ')} signal restored${(s.unavailable ?? []).length ? '' : ': fully observed again'}`,
+        })
+      }
       const pts = state.history[s.device_id] ?? []
       const last = pts[pts.length - 1]
       const p = toPoint(s)
@@ -137,7 +154,7 @@ export function reducer(state: LiveState, action: Action): LiveState {
     case 'history_loaded': {
       const existing = state.history[action.device_id] ?? []
       const all: Point[] = action.points.map((h) => ({
-        t: Date.parse(h.ts), score: h.score, severity: h.severity, lat: NaN, lon: NaN, effective: h.effective, battery: NaN, cpu: NaN, temp: NaN, conns: NaN, sent: NaN, recv: NaN,
+        t: Date.parse(h.ts), score: h.score, severity: h.severity, lat: NaN, lon: NaN, effective: h.effective, battery: NaN, cpu: NaN, temp: NaN, conns: NaN, sent: NaN, recv: NaN, missing: 0,
       }))
       // Only the recent past, relative to the live data. The server returns a device's newest stored points
       // across ALL runs; a demo run starts a week later in simulated time, so without this window an old

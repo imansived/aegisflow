@@ -14,6 +14,14 @@ const MODULES: { id: string; label: string; hint: string; signals: Modality[] }[
   { id: 'staged', label: 'Slow burn: weak, staggered', hint: 'Mild deviations one after another, so they overlap only partly.', signals: ALL },
 ]
 
+const LOSSES: { id: string; signals: Modality[]; label: string; hint: string }[] = [
+  { id: 'network', signals: ['network'], label: 'Lose network signal', hint: 'Traffic counters stop reporting. No anomaly, but the device is partly blind.' },
+  { id: 'spatial', signals: ['spatial'], label: 'Lose location signal', hint: 'The GPS fix is lost; the last known position is shown as stale.' },
+  { id: 'device', signals: ['device'], label: 'Lose device-health signal', hint: 'Battery, CPU and temperature stop reporting.' },
+  { id: 'proximity', signals: ['proximity'], label: 'Lose proximity signal', hint: 'The device cannot scan for neighbours.' },
+  { id: 'network+device', signals: ['network', 'device'], label: 'Lose network and device health', hint: 'Two signals at once: the point where weak attacks become hard to see.' },
+]
+
 /** Scenarios: start a simulated fleet and inject threats into it. Admin only (the server enforces it).
  *  Scenario buttons always work: they act on the chosen device, or on the first device if none is chosen yet. */
 export default function Scenarios({ api, isAdmin, demo, selected, targets, onSelect, onChanged, onWatch }: {
@@ -36,6 +44,11 @@ export default function Scenarios({ api, isAdmin, demo, selected, targets, onSel
     if (!target) return
     if (!selected) onSelect(target)
     return run(() => api.demoInject({ device_id: target, scenario: m.id, magnitude: strength, duration_s: 240 }), { text: `${m.label.split(':')[0]} started on ${target}.`, device: target })
+  }
+  const lose = (l: (typeof LOSSES)[number]) => {
+    if (!target) return
+    if (!selected) onSelect(target)
+    return run(() => api.demoInject({ device_id: target, scenario: 'signal_loss', magnitude: 1, duration_s: 240, signals: l.signals }), { text: `${l.label} started on ${target}. It should show as Degraded, not Normal.`, device: target })
   }
   const state = demo?.state ?? 'idle'
   const live = state === 'live'
@@ -77,6 +90,16 @@ export default function Scenarios({ api, isAdmin, demo, selected, targets, onSel
                 <b>{m.label}</b>
                 <span>{m.hint}</span>
                 <span className="scn-sig">{m.signals.length === ALL.length ? <em>All four signals</em> : m.signals.map((s) => <span key={s} className={`sigchip m-${s}`}><i />{MODALITY_LABEL[s]}</span>)}</span>
+              </button>
+            ))}
+          </div>
+          <h3 className="h3" style={{ marginTop: 18 }}>Observability loss <span className="sub">not an attack: the device cannot report a signal</span></h3>
+          <div className="scn-grid">
+            {LOSSES.map((l) => (
+              <button key={l.id} className="scn loss" disabled={busy || !target} onClick={() => lose(l)}>
+                <b>{l.label}</b>
+                <span>{l.hint}</span>
+                <span className="scn-sig">{l.signals.map((s) => <span key={s} className={`sigchip lost m-${s}`}><i />{MODALITY_LABEL[s]}</span>)}</span>
               </button>
             ))}
           </div>
