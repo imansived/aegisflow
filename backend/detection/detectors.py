@@ -40,10 +40,20 @@ class Detector(ABC):
     def __init__(self, cfg: DetectionConfig):
         self.cfg = cfg
         self._baselines: dict[str, BaselineSet] = defaultdict(lambda: BaselineSet(cfg))
+        self._recover_until: dict[str, float] = {}
 
     @abstractmethod
     def step(self, ctx: Context) -> tuple[DetectorResult, dict[str, float]]:
         """Return (result, raw features) for this event."""
+
+    def note_gap(self, device_id: str, now_s: float) -> None:
+        """This signal was unavailable at now_s. Its smoothing window is thin until it refills, and a thin window is a
+        noisy average: judging it produced a 12x rise in false alerts after every short outage (D107 dry run). So the
+        detector withholds judgment (reports itself unavailable, learns nothing) until one smoothing window has passed."""
+        self._recover_until[device_id] = now_s + self.cfg.smooth_window_s
+
+    def recovering(self, device_id: str, now_s: float) -> bool:
+        return now_s < self._recover_until.get(device_id, float("-inf"))
 
     def reset_windows(self, device_id: str) -> None:
         """Forget a device's TIME-based state (windows, run counters) after its clock jumped backwards.
@@ -198,6 +208,8 @@ class NetworkDetector(Detector):
         while rec and ctx.now_s - rec[0][0] > cfg.smooth_window_s:
             rec.popleft()
         n = len(rec)
+        if self.recovering(dev, ctx.now_s):  # the window above is still refilling after an outage: do not judge or learn
+            return DetectorResult(self.modality, 0.0, False, {}, 0.0, available=False), {}
         items: list[Item] = [
             ("log_sent", sum(r[1] for r in rec) / n, cfg.bytes_min_std, "high"),
             ("log_recv", sum(r[2] for r in rec) / n, cfg.bytes_min_std, "high"),
@@ -264,6 +276,8 @@ class DeviceDetector(Detector):
         rec.append((ctx.now_s, t.cpu_usage, t.temperature))
         while rec and ctx.now_s - rec[0][0] > cfg.smooth_window_s:
             rec.popleft()
+        if self.recovering(dev, ctx.now_s):  # smoothing window still refilling after an outage: do not judge or learn
+            return DetectorResult(self.modality, 0.0, False, {}, 0.0, available=False), {}
         cpu_m = sum(r[1] for r in rec) / len(rec)
         temp_m = sum(r[2] for r in rec) / len(rec)
 

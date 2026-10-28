@@ -64,3 +64,24 @@ is retuned on these seeds. A change made after seeing the results needs new seed
 Masks are mine, not measured failure statistics; one generator and fleet size; the sustained equivalence argument is verified on two seeds, not
 ten; the alert budget of 3 false onsets per device-day is still too high for production; the dashboard is checked by an automated browser run,
 not by a user study; the frozen model's reliance on the network signal (§5.10) inflates how much losing it hurts.
+
+---
+
+## Addendum 1 (before any test seed was scored)
+
+A pipeline check on **validation seed 18** (all 13 conditions end to end; `python -m ml.d107 build-dry`, evaluated with `ml.d107_eval --dry`) found two
+defects, both fixed before any D107 test seed was scored. The test data first built from seeds 400–409 (with the defective detector) was **discarded
+unscored** and will be rebuilt with the fix.
+
+1. **Detector windows after an outage.** With telemetry gaps (the intermittent condition), every arm raised about 20 false alert onsets per
+   device-day instead of about 3. The cause was the network detector (and, mildly, the device detector): after a gap their one-minute smoothing window
+   holds one or two samples, so a single noisy tick looks extreme (7.4% of network scores above 0.3 right after a return, against 0.3% in steady state).
+   Fix: a detector whose signal was unavailable reports itself **unavailable (and learns nothing) until one smoothing window has refilled**, so the
+   observable state is "degraded: that signal", validated by the same per-pattern thresholds. Complete-signal behaviour is **bit-identical** to the
+   pre-availability engine (21,600 events, 6 devices, no mismatch), so no frozen result changes. The shipped commit is now the one containing this fix
+   (recorded in the results); the criteria below are unchanged.
+2. **Evaluator.** The dry evaluator scored raw soft scores instead of the frozen 1 s decayed peak the correlation engine applies; corrected. R5 is also
+   restated at the resolution the product rows are stored (float32): the product's fused score must equal the offline recomputation within 1.2e-7,
+   one float32 step, not 1e-9.
+
+Nothing else changes: arms, conditions, seeds, thresholds table (not recalibrated), criteria R1–R6 and their cut-offs are as registered above.

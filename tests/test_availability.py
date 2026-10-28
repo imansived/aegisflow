@@ -233,3 +233,21 @@ def test_losing_gps_does_not_stretch_the_proximity_persistence_clock():
         eng.process(tele(i * 5, lost=("spatial",), nearby_devices=["D-777"]))
     persist = eng.detectors[3]._state["D-001"].persist_s
     assert persist == pytest.approx(39 * 5, abs=1e-6)  # 195 s of real time, not a sum of ever-growing gaps
+
+
+def test_a_detector_withholds_judgment_while_its_window_refills_after_an_outage():
+    """Regression (D107 dry run): after a short outage the smoothing window held one or two samples, so a single noisy
+    tick looked extreme and false alerts rose 12-fold. The detector now reports itself unavailable for one smoothing
+    window after the signal returns, and learns nothing from the thin window."""
+    eng = DetectionEngine(["D-001"])
+    for i in range(80):
+        eng.process(tele(i * 5))
+    eng.process(tele(400, lost=("network",)))
+    window = eng.cfg.smooth_window_s
+    out = {}
+    for k in range(1, 20):
+        s = eng.process(tele(400 + k * 5))
+        out[k * 5] = s.results[Modality.NETWORK].available
+    assert not any(v for t, v in out.items() if t <= window - 5)  # still refilling
+    assert out[int(window) + 5] and out[95]  # judging again once the window has refilled
+    assert all(eng.process(tele(520 + i * 5)).results[Modality.SPATIAL].available for i in range(3))  # other signals unaffected

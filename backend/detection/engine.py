@@ -62,6 +62,7 @@ class DetectionEngine:
             if det.modality.value in lost:
                 # Nothing was observed: no score, no baseline update, no features. Never a zero reading.
                 results[det.modality] = DetectorResult(det.modality, 0.0, False, {}, 0.0, available=False)
+                det.note_gap(t.device_id, now_s)
                 continue
             res, feats = det.step(ctx)
             results[res.modality] = res
