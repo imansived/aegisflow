@@ -152,7 +152,11 @@ def conformance(root: Path, seeds: list[int], lf, table_json: dict, table: Thres
             out["rows"] += n
             E = hold_offline(z["ts"], z["dev"], z["soft"].astype(np.float64), 1.0)
             off = lf.score_batch(E)
-            out["max_score_difference_float32"] = max(out["max_score_difference_float32"], float(np.abs(off - z["p_score"]).max()))
+            # The product carried its decayed peak in from the warm-up; the offline recomputation starts at the first recorded row.
+            # That start-up difference decays by 0.5**5 per tick, so rows in each device's first minute are excluded (and counted).
+            first_ts = {int(d): float(z["ts"][z["dev"] == d].min()) for d in np.unique(z["dev"])}
+            settled = z["ts"] >= np.array([first_ts[int(d)] for d in z["dev"]]) + 60.0
+            out["max_score_difference_float32"] = max(out["max_score_difference_float32"], float(np.abs(off - z["p_score"])[settled].max()))
             # expected availability from the CONDITION'S DEFINITION (independent of the engine's own bookkeeping)
             t_warm = float(z["t_warm"])
             masker = Masker(cond, sd, plan, int((39 * 3600) // 5), t_warm, 5)

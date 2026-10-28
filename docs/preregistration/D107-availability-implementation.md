@@ -93,3 +93,9 @@ The second dry run (seed 18) showed that the conformance check must account for 
 last 60 s*, computed from the condition's definition alone. Stored detector outputs are now float64, because float32 storage of the inputs shifted the
 steep logistic score by up to 2e-3 and made a 1e-9 comparison meaningless; R5 therefore keeps its original 1e-9 tolerance (Addendum 1's float32
 restatement is withdrawn). No criterion cut-off changed.
+
+## Addendum 3 (still before any test seed was scored)
+
+The conformance comparison (R5) excludes each device's **first minute** of recorded rows: the product carries its decayed peak in from the warm-up, the
+offline recomputation starts at the first recorded row, and that start-up difference shrinks by 0.5**5 per tick. Excluding 60 s leaves everything else
+compared at the registered 1e-9 tolerance (dry run on seed 18, all 13 conditions, 7.3 million rows: largest difference 2e-15). Nothing else changes.
