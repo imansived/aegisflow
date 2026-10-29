@@ -1,0 +1,64 @@
+{
+  "version": "r6audit",
+  "created": "2026-10-29T15:15:31.465726+00:00",
+  "frozen_at_commit": "845939a",
+  "git_tag": "audit-r6",
+  "statement": "R6 stage-1 audit. Optimistic gate on the test split: FAILED (26 eligible test episodes of 30 required). Per the protocol, a failed optimistic gate stops the detection part: no capture was downloaded or opened.",
+  "gate_stage1": {
+    "required": {
+      "episodes": 30,
+      "sessions": 8,
+      "tools": 2,
+      "stratum_claim": 10
+    },
+    "measured_test_split": {
+      "episodes": 26,
+      "sessions": 18,
+      "tools": 5,
+      "by_stratum": {
+        "S1": 12,
+        "S2": 14
+      },
+      "by_tool": {
+        "ArpSpoof": 5,
+        "Ssdp": 1,
+        "TcpSynDevice": 16,
+        "TcpSynReflection": 3,
+        "UdpDevice": 1
+      },
+      "devices": 8
+    },
+    "passed": false
+  },
+  "split_rule": "sha256('R6/<yy-mm-dd>') first 8 bytes big-endian mod 3: 0 validation, 1-2 test",
+  "files": {
+    "docs/preregistration/R6-matched-testbed-detection.md": {
+      "sha256": "a35d1b4148b533a1e1f049d71bc4cc86c64e4fe134d1b9b48cb547353cea32dc",
+      "role": "R6 protocol (committed before the audit ran)",
+      "last_commit": "195ee4e"
+    },
+    "docs/results/r6_audit.json": {
+      "sha256": "bb3df277f03a6313d220329f82a62d0c16f699babd633321f1c7556c152f6774",
+      "role": "Stage-1 metadata audit: calendar, eligibility, strata, split, exposure, optimistic gate",
+      "last_commit": "845939a"
+    },
+    "docs/results/r5_inventory_erratum.md": {
+      "sha256": "da7930aebe85663b0eeacbb66512bac7cb730a0669d3c9237cff33719354c055",
+      "role": "Erratum to the R5 inventory (HEAD helper fault)",
+      "last_commit": "195ee4e"
+    },
+    "ml/r6_audit.py": {
+      "sha256": "472b68ef55701b99a60541824c4138746098a16bc9e77807b91fe7bd91dc590d",
+      "role": "The audit script (schedule, device table, listings and HTTP HEAD only)",
+      "last_commit": "195ee4e"
+    }
+  },
+  "data": {
+    "R6 schedule and listing files (public, UNSW IoT analytics)": {
+      "r5/docs/annotations.zip": "1990c33d5430c4939336d79b08e9ba6a90a8c97621069cb748c3c0282d1eaafd",
+      "r5/docs/attackinfo.xlsx": "dccfd77698f9be527515192147f8d72ac168200229f0591eaf46086858b1fc41",
+      "r5/docs/unsw_attack_data.html": "3beaaac05c21b5a6902454b82b9e363a258da4be7cbe99825dacb2e6a94de342",
+      "r5/docs/unsw_iottraces.html": "4f47759998d149a99858db178facaadc9149a29aaab0972afa07ce88f4c9f731"
+    }
+  }
+}
