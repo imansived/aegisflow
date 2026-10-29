@@ -1,0 +1,66 @@
+{
+  "version": "r7audit",
+  "created": "2026-10-29T15:29:30.199570+00:00",
+  "frozen_at_commit": "465b9f5",
+  "git_tag": "audit-r7",
+  "statement": "R7 stage-1 audit. Optimistic gate on the test split: PASSED (47 eligible test episodes of 30 required). The split is R6's, unchanged. No capture has been downloaded or opened.",
+  "gate_stage1": {
+    "required": {
+      "episodes": 30,
+      "sessions": 8,
+      "tools": 2,
+      "stratum_claim": 10
+    },
+    "measured_test_split": {
+      "episodes": 47,
+      "sessions": 20,
+      "tools": 6,
+      "by_stratum": {
+        "S0": 21,
+        "S1": 12,
+        "S2": 14
+      },
+      "by_tool": {
+        "ArpSpoof": 5,
+        "PingOfDeath": 3,
+        "Ssdp": 2,
+        "TcpSynDevice": 16,
+        "TcpSynReflection": 17,
+        "UdpDevice": 4
+      },
+      "devices": 9
+    },
+    "passed": true
+  },
+  "split_rule": "sha256('R6/<yy-mm-dd>') first 8 bytes big-endian mod 3: 0 validation, 1-2 test",
+  "files": {
+    "docs/preregistration/R6-matched-testbed-detection.md": {
+      "sha256": "a35d1b4148b533a1e1f049d71bc4cc86c64e4fe134d1b9b48cb547353cea32dc",
+      "role": "R6 protocol (unchanged; R7 builds on it)",
+      "last_commit": "195ee4e"
+    },
+    "docs/preregistration/R7-separated-baseline-gap.md": {
+      "sha256": "67eb1cccd17b5b36030ce6e49e7327a9ca4b38046160be828f88fa4de8f233cc",
+      "role": "R7 protocol (committed before the audit ran)",
+      "last_commit": "afa75fc"
+    },
+    "docs/results/r7_audit.json": {
+      "sha256": "ba54cf617c4ee7c271261501022f18630a75fa3c5fd5996cafe8a7dd664707ca",
+      "role": "R7 stage-1 metadata audit: calendar, eligibility, strata, split, exposure, optimistic gate",
+      "last_commit": "465b9f5"
+    },
+    "ml/r7_audit.py": {
+      "sha256": "393efc8ee6fca84b4906ae8d5213e9c13748a6fae18214ac07d04702807c747f",
+      "role": "The R7 audit script (R6's, three changes)",
+      "last_commit": "afa75fc"
+    }
+  },
+  "data": {
+    "R6/R7 schedule and listing files (public, UNSW IoT analytics)": {
+      "r5/docs/annotations.zip": "1990c33d5430c4939336d79b08e9ba6a90a8c97621069cb748c3c0282d1eaafd",
+      "r5/docs/attackinfo.xlsx": "dccfd77698f9be527515192147f8d72ac168200229f0591eaf46086858b1fc41",
+      "r5/docs/unsw_attack_data.html": "3beaaac05c21b5a6902454b82b9e363a258da4be7cbe99825dacb2e6a94de342",
+      "r5/docs/unsw_iottraces.html": "4f47759998d149a99858db178facaadc9149a29aaab0972afa07ce88f4c9f731"
+    }
+  }
+}
