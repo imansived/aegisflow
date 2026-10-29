@@ -1,0 +1,50 @@
+{
+ "note": "Hashes of the R5 test benign files, recorded before any detector was run on them",
+ "files": {
+  "16-09-26": {
+   "file": "data/real/unsw/16-09-26.csv.zip",
+   "sha256": "2dc88e854661ccecc107b17e68e5ebcb4c1fce46fb7390a9a2bc76367794e0d4",
+   "bytes": 3015792
+  },
+  "16-09-27": {
+   "file": "data/real/unsw/16-09-27.csv.zip",
+   "sha256": "0fca46bf5019662d6c034428389ff78e6af01b43d3b70554a7c4b2eb5802ce84",
+   "bytes": 2779831
+  },
+  "16-09-28": {
+   "file": "data/real/unsw/16-09-28.csv.zip",
+   "sha256": "05a73851b38a701b16825c5f181c9a74d0674c55cb97a6d241b39623266c8144",
+   "bytes": 10256614
+  },
+  "16-09-29": {
+   "file": "data/real/unsw/16-09-29.csv.zip",
+   "sha256": "cb1c8b3c92738a24dde23fad7568ed086bec760b3d1c6e1c4176a87c0d7b2749",
+   "bytes": 4305183
+  },
+  "16-09-30": {
+   "file": "data/real/unsw/16-09-30.csv.zip",
+   "sha256": "f99f2c3cbfca7b8cc7b94f64f8fd5504569fbd7f13f1f94021afc52547f84d8d",
+   "bytes": 4500841
+  },
+  "16-10-01": {
+   "file": "data/real/unsw/16-10-01.csv.zip",
+   "sha256": "319534e50277e60f7190199d3037b8fa2146f5bc4f7fe56c95afc26798e92da0",
+   "bytes": 4229129
+  },
+  "16-10-02": {
+   "file": "data/real/unsw/16-10-02.csv.zip",
+   "sha256": "f2b3b6a9b546e2af7b5ec02b49c7afbceeb1a9db8b500076f4705461136b324a",
+   "bytes": 3500958
+  },
+  "16-10-03": {
+   "file": "data/real/unsw/16-10-03.csv.zip",
+   "sha256": "294c84a6808dac642510f69ef5d19a872fbabee95914427c843e183b59db296b",
+   "bytes": 3871466
+  },
+  "16-10-04": {
+   "file": "data/real/unsw/16-10-04.csv.zip",
+   "sha256": "8db1098188bbe00930c66fa457085eea7fa28724dddedb05c3fd7590a1b14c2d",
+   "bytes": 9230559
+  }
+ }
+}
