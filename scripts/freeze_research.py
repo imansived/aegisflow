@@ -77,6 +77,8 @@ R1 = {
 def main(version: str) -> None:
     if version == "r1":
         return main_r1()
+    if version == "r2":
+        return main_r2()
     return main_v(version)
 
 
@@ -99,6 +101,29 @@ def main_r1() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json", len(files), "files", len(caps), "capture hashes")
+
+
+def main_r2() -> None:
+    out_dir = ROOT / "docs" / "research" / "r2"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r2/manifest.json exists: a manifest is immutable.")
+    rels = {"docs/preregistration/R2-sparse-network-detector.md": "R2 protocol (committed before any candidate code or test data)",
+            "docs/results/r2_validation.json": "R2 validation result: per-arm thresholds and the candidate choice, committed before the test data was opened",
+            "docs/results/r2_test.json": "R2 test result (single run, guard data/results/R2_TEST_USED)",
+            "ml/r2_adapters.py": "R2 code", "ml/r2_detectors.py": "R2 code", "ml/r2_eval.py": "R2 code"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    data = {}
+    for pat in ("data/real/unsw/16-10-1[234].*", "data/real/iot23_test/*.raw"):
+        for q in sorted(ROOT.glob(pat)):
+            if q.is_file():
+                data[q.relative_to(ROOT / "data").as_posix()] = sha256(q)
+    manifest = {"version": "r2", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "sparse-r2",
+                "statement": "Offline evaluation of two candidate sparse-network detectors beside the unchanged research-v1 system. Nothing in backend/, models/ or contracts/ is changed.",
+                "system_under_test": {"tag": "research-v1", "commit": git("rev-parse", "--short", "research-v1")},
+                "files": files, "data": {"R2 validation and test data (public: UNSW IoT testbed, Stratosphere IoT-23)": data}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json", len(files), "files", len(data), "data hashes")
 
 
 def main_v(version: str) -> None:

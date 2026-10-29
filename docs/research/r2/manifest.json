@@ -1,0 +1,60 @@
+{
+  "version": "r2",
+  "created": "2026-10-29T12:38:45.631495+00:00",
+  "frozen_at_commit": "be17cba",
+  "git_tag": "sparse-r2",
+  "statement": "Offline evaluation of two candidate sparse-network detectors beside the unchanged research-v1 system. Nothing in backend/, models/ or contracts/ is changed.",
+  "system_under_test": {
+    "tag": "research-v1",
+    "commit": "891b4ef"
+  },
+  "files": {
+    "docs/preregistration/R2-sparse-network-detector.md": {
+      "sha256": "34cc6f3729d356da490aa98713965d82122a485c7a79c15578d678d732165ba5",
+      "role": "R2 protocol (committed before any candidate code or test data)",
+      "last_commit": "50e96ee"
+    },
+    "docs/results/r2_validation.json": {
+      "sha256": "69f829bb963e51c39c2a6667c343545646031ea235557d178d817619367b3c7f",
+      "role": "R2 validation result: per-arm thresholds and the candidate choice, committed before the test data was opened",
+      "last_commit": "d45708c"
+    },
+    "docs/results/r2_test.json": {
+      "sha256": "e3c2dd5083165e44989a08a0bb668cb74b9573dd5e7fad2493c7e423dd33a8ca",
+      "role": "R2 test result (single run, guard data/results/R2_TEST_USED)",
+      "last_commit": ""
+    },
+    "ml/r2_adapters.py": {
+      "sha256": "1cf8e4e6e200400861d08e0b363bf08a276d790e08045db867c275baf551151a",
+      "role": "R2 code",
+      "last_commit": "be17cba"
+    },
+    "ml/r2_detectors.py": {
+      "sha256": "add58f0a9ba5511b3a5ead25b095abb4f8be62aee58bae8be3549d8fc957561f",
+      "role": "R2 code",
+      "last_commit": "d45708c"
+    },
+    "ml/r2_eval.py": {
+      "sha256": "e50854b388b0cde2fccc6f3dd436743eb639f766b79b218d21feda7e16eab464",
+      "role": "R2 code",
+      "last_commit": "be17cba"
+    }
+  },
+  "data": {
+    "R2 validation and test data (public: UNSW IoT testbed, Stratosphere IoT-23)": {
+      "real/unsw/16-10-12.csv.zip": "f182d0ef9ef9949d67ca50102d9e9ec4c315d256138845278948c53a0658e58c",
+      "real/unsw/16-10-12.prefix.tar.gz": "406b727560f06886fe0dbfe76e984acf9747855ffe5dac26be8c26e41015291b",
+      "real/unsw/16-10-13.tar.gz": "89ed1093098b9ff10f7782d300bc7c9889420cc523ff77e1c41fb86f99e10bf5",
+      "real/unsw/16-10-14.tar.gz": "3358462ddf3a93e8c9fc68bd9e39b8e1bfd19e4e2a2ccf146557440516c67a09",
+      "real/iot23_test/CTU-IoT-Malware-Capture-17-1.raw": "4d0b7dd3986b94fec057858e0faedd3e645a892bc8a5eb0eed6e5d52e673490d",
+      "real/iot23_test/CTU-IoT-Malware-Capture-33-1.raw": "10d1a7d7426c2a57a800ca2b2dc7a2a3fabc38216259582dbbf8a29a34e117a8",
+      "real/iot23_test/CTU-IoT-Malware-Capture-35-1.raw": "df9a13379a39267715fe5a9cbb29a2c09ff4b03d4e2281cec48acf8b726e5f34",
+      "real/iot23_test/CTU-IoT-Malware-Capture-36-1.raw": "757b3a302ac7d7b56e506c30b7b149cd65bd13ceaf2fe1b1d9f35ac3af7e2d28",
+      "real/iot23_test/CTU-IoT-Malware-Capture-39-1.raw": "45d26900469f62a0060d4b3fe5a08f7ac86d28c808bb7e69315d4d5e17e5f02e",
+      "real/iot23_test/CTU-IoT-Malware-Capture-44-1.raw": "12cd99bcda78140dd5f31cf3d786642f150e42e0ebc3599190f35314e406f71f",
+      "real/iot23_test/CTU-IoT-Malware-Capture-52-1.raw": "34980d055399dc22aed1adfef9a3bfce321d3b1b4b008233287ac533108fe304",
+      "real/iot23_test/CTU-IoT-Malware-Capture-60-1.raw": "f4aa8f246459d485a5e5dd467b4d723b20bbfab8bb061361c5ce04cd43e4339a",
+      "real/iot23_test/CTU-IoT-Malware-Capture-7-1.raw": "d962f7ba6f373baae2764950b43f685a833ba73bd7f02dcacb1ed3d5fca24a95"
+    }
+  }
+}

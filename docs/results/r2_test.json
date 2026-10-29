@@ -1,0 +1,221 @@
+{
+ "split": "test",
+ "thresholds": {
+  "R1-recal": 0.98,
+  "A": 0.84,
+  "B": 0.75
+ },
+ "chosen_candidate": "A",
+ "eligibility": {
+  "7-1": "first malicious tick at 105 (< 720)",
+  "17-1": "first malicious tick at 4 (< 720)",
+  "33-1": "first malicious tick at 35 (< 720)",
+  "35-1": "first malicious tick at 0 (< 720)",
+  "36-1": "first malicious tick at 0 (< 720)",
+  "39-1": "first malicious tick at 0 (< 720)",
+  "44-1": "first malicious tick at 0 (< 720)",
+  "52-1": "first malicious tick at 0 (< 720)",
+  "60-1": "first malicious tick at 34 (< 720)"
+ },
+ "arms": {
+  "R1-recal": {
+   "false_alarms": {
+    "arm": "R1-recal",
+    "threshold": 0.98,
+    "benign_device_days": 28.415798611111118,
+    "onsets": 332,
+    "rate": 11.683641362456084,
+    "ci95": [
+     0.6686502966280329,
+     31.285668026418424
+    ],
+    "alerts_per_device_day": 1.4780510157323963,
+    "alert_duration_s": {
+     "mean": 1038.452380952381,
+     "median": 67.5
+    },
+    "per_device_day_rate": {
+     "16-10-13/SmartThings": 285.836227034535,
+     "16-10-13/Amazon Echo": 1.090977965780668,
+     "16-10-13/Netatmo Welcome": 3.272933897342004,
+     "16-10-13/Samsung SmartCam": 36.00227287076204,
+     "16-10-13/Dropcam": 0.0,
+     "16-10-13/Insteon camera (wired)": 0.0,
+     "16-10-13/Belkin Wemo switch": 1.090977965780668,
+     "16-10-13/Belkin Wemo motion": 0.0,
+     "16-10-13/NEST Protect": 1.090977965780668,
+     "16-10-13/Netatmo weather": 0.0,
+     "16-10-13/Withings scale": 1.090977965780668,
+     "16-10-13/Withings Aura": 0.0,
+     "16-10-13/LiFX bulb": 1.090977965780668,
+     "16-10-13/Triby speaker": 1.090977965780668,
+     "16-10-13/HP printer": 0.0,
+     "16-10-14/SmartThings": 0.0,
+     "16-10-14/Amazon Echo": 0.0,
+     "16-10-14/Netatmo Welcome": 1.090909090909091,
+     "16-10-14/Samsung SmartCam": 1.090909090909091,
+     "16-10-14/Dropcam": 1.090909090909091,
+     "16-10-14/Insteon camera (wired)": 0.0,
+     "16-10-14/Belkin Wemo switch": 1.090909090909091,
+     "16-10-14/Belkin Wemo motion": 1.090909090909091,
+     "16-10-14/NEST Protect": 1.090909090909091,
+     "16-10-14/Netatmo weather": 0.0,
+     "16-10-14/Withings scale": 0.0,
+     "16-10-14/Withings Aura": 1.090909090909091,
+     "16-10-14/LiFX bulb": 0.0,
+     "16-10-14/Triby speaker": 1.090909090909091,
+     "16-10-14/PIX-STAR photo frame": 21.81818181818182,
+     "16-10-14/HP printer": 0.0
+    }
+   },
+   "detection": {
+    "arm": "R1-recal",
+    "threshold": 0.98,
+    "episodes": 0,
+    "detected": 0,
+    "recall": null,
+    "median_delay_s": null,
+    "auroc_mean_over_captures": null,
+    "per_capture": []
+   }
+  },
+  "A": {
+   "false_alarms": {
+    "arm": "A",
+    "threshold": 0.84,
+    "benign_device_days": 28.415798611111118,
+    "onsets": 67,
+    "rate": 2.3578432870016797,
+    "ci95": [
+     0.6686462113713846,
+     4.539709860135943
+    ],
+    "alerts_per_device_day": 1.7243928516877955,
+    "alert_duration_s": {
+     "mean": 879.5918367346939,
+     "median": 55.0
+    },
+    "per_device_day_rate": {
+     "16-10-13/SmartThings": 1.090977965780668,
+     "16-10-13/Amazon Echo": 2.181955931561336,
+     "16-10-13/Netatmo Welcome": 3.272933897342004,
+     "16-10-13/Samsung SmartCam": 25.09249321295536,
+     "16-10-13/Dropcam": 0.0,
+     "16-10-13/Insteon camera (wired)": 0.0,
+     "16-10-13/Belkin Wemo switch": 0.0,
+     "16-10-13/Belkin Wemo motion": 0.0,
+     "16-10-13/NEST Protect": 0.0,
+     "16-10-13/Netatmo weather": 0.0,
+     "16-10-13/Withings scale": 0.0,
+     "16-10-13/Withings Aura": 0.0,
+     "16-10-13/LiFX bulb": 0.0,
+     "16-10-13/Triby speaker": 0.0,
+     "16-10-13/HP printer": 4.363911863122672,
+     "16-10-14/SmartThings": 0.0,
+     "16-10-14/Amazon Echo": 0.0,
+     "16-10-14/Netatmo Welcome": 0.0,
+     "16-10-14/Samsung SmartCam": 5.454545454545455,
+     "16-10-14/Dropcam": 1.090909090909091,
+     "16-10-14/Insteon camera (wired)": 0.0,
+     "16-10-14/Belkin Wemo switch": 1.090909090909091,
+     "16-10-14/Belkin Wemo motion": 1.090909090909091,
+     "16-10-14/NEST Protect": 0.0,
+     "16-10-14/Netatmo weather": 0.0,
+     "16-10-14/Withings scale": 0.0,
+     "16-10-14/Withings Aura": 0.0,
+     "16-10-14/LiFX bulb": 0.0,
+     "16-10-14/Triby speaker": 0.0,
+     "16-10-14/PIX-STAR photo frame": 18.545454545454547,
+     "16-10-14/HP printer": 9.818181818181818
+    }
+   },
+   "detection": {
+    "arm": "A",
+    "threshold": 0.84,
+    "episodes": 0,
+    "detected": 0,
+    "recall": null,
+    "median_delay_s": null,
+    "auroc_mean_over_captures": null,
+    "per_capture": []
+   }
+  },
+  "B": {
+   "false_alarms": {
+    "arm": "B",
+    "threshold": 0.75,
+    "benign_device_days": 28.415798611111118,
+    "onsets": 55,
+    "rate": 1.9355429967924236,
+    "ci95": [
+     0.5278753627615702,
+     3.9063017495300376
+    ],
+    "alerts_per_device_day": 1.3020925614785395,
+    "alert_duration_s": {
+     "mean": 1158.5135135135135,
+     "median": 70.0
+    },
+    "per_device_day_rate": {
+     "16-10-13/SmartThings": 1.090977965780668,
+     "16-10-13/Amazon Echo": 3.272933897342004,
+     "16-10-13/Netatmo Welcome": 3.272933897342004,
+     "16-10-13/Samsung SmartCam": 25.09249321295536,
+     "16-10-13/Dropcam": 0.0,
+     "16-10-13/Insteon camera (wired)": 0.0,
+     "16-10-13/Belkin Wemo switch": 0.0,
+     "16-10-13/Belkin Wemo motion": 0.0,
+     "16-10-13/NEST Protect": 1.090977965780668,
+     "16-10-13/Netatmo weather": 0.0,
+     "16-10-13/Withings scale": 1.090977965780668,
+     "16-10-13/Withings Aura": 0.0,
+     "16-10-13/LiFX bulb": 0.0,
+     "16-10-13/Triby speaker": 0.0,
+     "16-10-13/HP printer": 0.0,
+     "16-10-14/SmartThings": 0.0,
+     "16-10-14/Amazon Echo": 1.090909090909091,
+     "16-10-14/Netatmo Welcome": 0.0,
+     "16-10-14/Samsung SmartCam": 5.454545454545455,
+     "16-10-14/Dropcam": 1.090909090909091,
+     "16-10-14/Insteon camera (wired)": 0.0,
+     "16-10-14/Belkin Wemo switch": 1.090909090909091,
+     "16-10-14/Belkin Wemo motion": 1.090909090909091,
+     "16-10-14/NEST Protect": 1.090909090909091,
+     "16-10-14/Netatmo weather": 0.0,
+     "16-10-14/Withings scale": 0.0,
+     "16-10-14/Withings Aura": 0.0,
+     "16-10-14/LiFX bulb": 0.0,
+     "16-10-14/Triby speaker": 0.0,
+     "16-10-14/PIX-STAR photo frame": 14.181818181818182,
+     "16-10-14/HP printer": 0.0
+    }
+   },
+   "detection": {
+    "arm": "B",
+    "threshold": 0.75,
+    "episodes": 0,
+    "detected": 0,
+    "recall": null,
+    "median_delay_s": null,
+    "auroc_mean_over_captures": null,
+    "per_capture": []
+   }
+  }
+ },
+ "benign_traces": 31,
+ "attack_captures": [],
+ "R1-shipped_false_onsets_per_device_day": 56.693813960592635,
+ "paired_chosen_minus_R1-recal": {
+  "point": -9.325798075454404,
+  "ci95": [
+   -28.18848839921635,
+   0.6334504353138841
+  ]
+ },
+ "claims": {
+  "1_false_alarm_budget": "INCONCLUSIVE",
+  "2_detection_not_worse_than_R1-recal": "INCONCLUSIVE",
+  "3_better_than_recalibration": "NOT SHOWN",
+  "R1-recal_passes_claim_1": false
+ }
+}

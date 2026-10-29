@@ -69,6 +69,32 @@ Two further design gaps surfaced: availability cannot tell a signal a device **n
 construction), and the explanation sentence omits partial observation. **`research-v1` is left as it is.** Candidate changes for a new version, each needing its own
 protocol and fresh evaluation: a zero-inflated or windowed-rate network detector; a per-device declared signal set; partial-observation wording in alert text.
 
+## Sparse-network detectors (R2): did modelling the zeros fix the false alarms?
+
+Protocol: [`preregistration/R2-sparse-network-detector.md`](preregistration/R2-sparse-network-detector.md), committed before any candidate existed. Two offline
+candidates (A zero-inflated, B windowed-rate) ran beside the unchanged v1 detector, with a control (**R1-recal**: the v1 detector, threshold re-set to the 3.0/day
+budget on validation benign traffic) so that "wrong distribution model" could be told from "wrong threshold". Thresholds and the candidate choice were fixed on
+validation (UNSW IoT testbed day 16-10-12 as benign); the test (UNSW days 16-10-13 and 16-10-14, 28.4 benign device-days after burn-in from 31 device-day traces) was opened once.
+
+| Arm | Validation benign /device-day | **Test benign /device-day [95% CI]** | Test alerts: mean / median duration |
+|---|---|---|---|
+| R1-shipped (v1, shipped threshold) | 71.0 | **56.7** | n/a |
+| R1-recal (v1, re-calibrated) | 2.88 | **11.7 [0.7, 31.3]** | 1038 s / 68 s |
+| **A zero-inflated (chosen on validation)** | 2.88 | **2.36 [0.67, 4.54]** | 880 s / 55 s |
+| B windowed-rate (not chosen) | 2.88 | 1.94 [0.53, 3.91] | 1159 s / 70 s |
+
+Pre-registered claims, as scored:
+1. **False-alarm budget (chosen A): INCONCLUSIVE.** The point estimate (2.36) is under 3.0, but the upper bound (4.54) is above the 3.75 limit: 28 device-days are not enough exposure. B's interval (upper 3.91) misses the same way.
+2. **Detection not worse than R1-recal: INCONCLUSIVE, no test episodes exist.** None of the nine never-opened IoT-23 captures met the label-only eligibility rule (at least 60 minutes of benign flows before the first malicious flow): all are malicious from the first minutes (first malicious tick 0 to 105, rule 720). So **detection was not measured on test data.** On validation (19 episodes, thresholds at the 3.0/day budget) all arms detected about the same small number: R1-recal 6, A 5, B 5, with AUROC 0.68, 0.67, 0.70.
+3. **Better than recalibration: NOT SHOWN.** A minus R1-recal is -9.3/device-day, but its paired interval [-28.2, +0.6] includes zero.
+
+What this supports, and what it does not:
+- The v1 threshold set for the simulator is badly wrong for real devices (57 false onsets per device-day), and recalibration alone did **not** transfer: R1-recal went from 2.88 on validation to 11.7 on test, with a very wide interval. Nobody should read "just re-tune the threshold" as solved.
+- Both candidates landed near the budget on held-out days (2.36 and 1.94), consistent with, but not proof of, the windowed or zero-inflated models generalising better. The exposure is too small to claim it, and the improvement over R1-recal is not statistically shown.
+- At the budget, detection is weak for every arm (about 5 of 19 validation episodes). Lower false alarms were not bought by missing *more* attacks than the control, but the whole family catches few. There is no test-set detection evidence at all.
+- Unmet by design: all UNSW traffic was assumed benign; the packet-metadata adapter is not a Zeek flow; candidates have no learn-gate and use one time bucket. The unseen IoT-23 captures are infected from the start, so they cannot test "attack after a benign baseline".
+- `research-v1` is unchanged. Adopting A or B would be a `research-v2` with its own availability calibration and a detection test on data that has a benign baseline before the attack.
+
 ## Failure cases (what it cannot do)
 
 | Situation | Result | Source |
