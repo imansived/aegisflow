@@ -85,6 +85,8 @@ def main(version: str) -> None:
         return main_r5inv()
     if version == "r5":
         return main_r5()
+    if version == "r6audit":
+        return main_r6audit()
     return main_v(version)
 
 
@@ -185,6 +187,25 @@ def main_r5() -> None:
     manifest = {"version": "r5", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "fa-r5",
                 "statement": "R5 false-alarm results. The feasibility gate failed, so no detection result exists; detection of attacks is unmeasured.",
                 "files": files, "data": {"UNSW IoT testbed benign days (validation and test)": data}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json")
+
+
+def main_r6audit() -> None:
+    out_dir = ROOT / "docs" / "research" / "r6audit"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r6audit/manifest.json exists: a manifest is immutable.")
+    aud = json.loads((ROOT / "docs" / "results" / "r6_audit.json").read_text())
+    rels = {"docs/preregistration/R6-matched-testbed-detection.md": "R6 protocol (committed before the audit ran)", "docs/results/r6_audit.json": "Stage-1 metadata audit: calendar, eligibility, strata, split, exposure, optimistic gate",
+            "docs/results/r5_inventory_erratum.md": "Erratum to the R5 inventory (HEAD helper fault)", "ml/r6_audit.py": "The audit script (schedule, device table, listings and HTTP HEAD only)"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    docs = {f"r5/docs/{q.name}": sha256(q) for q in sorted((ROOT / "data" / "r5" / "docs").glob("*")) if q.name in ("annotations.zip", "attackinfo.xlsx", "unsw_attack_data.html", "unsw_iottraces.html")}
+    g = aud["gate_stage1"]
+    manifest = {"version": "r6audit", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "audit-r6",
+                "statement": "R6 stage-1 audit. Optimistic gate on the test split: " + ("PASSED" if g["passed"] else "FAILED") + " (" + str(g["measured_test_split"]["episodes"]) + " eligible test episodes of "
+                             + str(g["required"]["episodes"]) + " required). Per the protocol, a failed optimistic gate stops the detection part: no capture was downloaded or opened.",
+                "gate_stage1": g, "split_rule": aud["split_rule"], "files": files, "data": {"R6 schedule and listing files (public, UNSW IoT analytics)": docs}}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json")

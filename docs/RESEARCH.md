@@ -134,6 +134,13 @@ Neither the rules nor the gate were loosened; the detection part (recall, delay,
 - Alerts under A last a median of 40 s (mean 155 s); under B 75 s (mean 329 s); R1-recal's few alerts last a median of 655 s.
 - **Not supported:** that A or B catches attacks; that thresholds transfer across years or devices. The benign days are the 2016 testbed (23 devices) while the attacked devices are the 2018 testbed (10 devices). All UNSW traffic is assumed benign. The synthetic-overlay (S3) and matched 2018 check (S4) were not run: both are detection analyses and were held back when the gate failed.
 
+## Matched-testbed detection (R6): stopped at the stage-1 gate
+
+Protocol: [`preregistration/R6-matched-testbed-detection.md`](preregistration/R6-matched-testbed-detection.md); audit frozen as `docs/research/r6audit` (tag `audit-r6`). R6 asked the R5 detection question in the 2018 testbed with a stitched, verified-continuous baseline, thresholds set on validation days of the same devices, and false alarms measured in the same streams as detection.
+
+**Result: the detection part was not run.** The metadata-only audit (schedule, device table, file listings, HTTP HEAD for size; no capture opened) found 36 eligible episodes in total and **26 in the test split against 30 required**, even on the optimistic assumption that adjacent daily files are contiguous. The protocol says that a failed optimistic gate stops the experiment, so nothing was downloaded (68 GB) or scored, and the rules were not relaxed. 198 of 234 episodes fail the 6-hour clean-before-onset rule (attacks are scheduled in runs); the 24-hour chain rule excluded none on the optimistic count. The test split (hash of the day label, mod 3) has 106.8 benign device-days (75.0 benign-list, 31.8 attack-free), enough for claim F, but the joint claim "detects attacks at an acceptable false-alarm rate" requires detection, so it cannot be made.
+**Detection of attacks remains unmeasured.** Two correction notes: the R5 inventory recorded `404` for every file-availability check because of a faulty HTTP HEAD helper (files exist; the gate and results were unaffected; `results/r5_inventory_erratum.md`).
+
 ## Failure cases (what it cannot do)
 
 | Situation | Result | Source |
