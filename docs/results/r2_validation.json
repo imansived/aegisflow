@@ -1,0 +1,287 @@
+{
+ "split": "validation",
+ "benign_traces": 14,
+ "arms": {
+  "R1-recal": {
+   "false_alarms": {
+    "arm": "R1-recal",
+    "threshold": 0.98,
+    "benign_device_days": 7.280324074074073,
+    "onsets": 21,
+    "rate": 2.8844869797462724,
+    "ci95": [
+     0.5494260913802423,
+     6.593113096562908
+    ],
+    "alerts_per_device_day": 1.5109217512956665,
+    "alert_duration_s": {
+     "mean": 88.63636363636364,
+     "median": 50.0
+    },
+    "per_device_day_rate": {
+     "16-10-12/SmartThings": 0.0,
+     "16-10-12/Amazon Echo": 1.9229913198308481,
+     "16-10-12/Netatmo Welcome": 5.768973959492545,
+     "16-10-12/Samsung SmartCam": 24.998887157801025,
+     "16-10-12/Dropcam": 1.9229913198308481,
+     "16-10-12/Insteon camera (wired)": 0.0,
+     "16-10-12/Belkin Wemo switch": 1.9229913198308481,
+     "16-10-12/Belkin Wemo motion": 0.0,
+     "16-10-12/Netatmo weather": 0.0,
+     "16-10-12/Withings scale": 1.9229913198308481,
+     "16-10-12/Withings Aura": 0.0,
+     "16-10-12/LiFX bulb": 0.0,
+     "16-10-12/Triby speaker": 0.0,
+     "16-10-12/HP printer": 1.9229913198308481
+    }
+   },
+   "detection": {
+    "arm": "R1-recal",
+    "threshold": 0.98,
+    "episodes": 19,
+    "detected": 6,
+    "recall": 0.3157894736842105,
+    "median_delay_s": 575.0,
+    "auroc_mean_over_captures": 0.6825921782794817,
+    "per_capture": [
+     {
+      "capture": "CTU-IoT-Malware-Capture-3-1",
+      "episodes": 2,
+      "detected": 0,
+      "auroc": 0.7548738559505859
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-1-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 0.5106758754912988
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-9-1.head",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 0.9957192716568423
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-49-1.head",
+      "episodes": 0,
+      "detected": 0,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-8-1",
+      "episodes": 1,
+      "detected": 0,
+      "auroc": 0.3960358234195472
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-20-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-21-1",
+      "episodes": 3,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-34-1",
+      "episodes": 10,
+      "detected": 2,
+      "auroc": 0.7556560648791345
+     }
+    ]
+   }
+  },
+  "A": {
+   "false_alarms": {
+    "arm": "A",
+    "threshold": 0.84,
+    "benign_device_days": 7.280324074074073,
+    "onsets": 21,
+    "rate": 2.8844869797462724,
+    "ci95": [
+     0.27471304569012117,
+     6.730469619407969
+    ],
+    "alerts_per_device_day": 2.0603478426759088,
+    "alert_duration_s": {
+     "mean": 67.33333333333333,
+     "median": 50.0
+    },
+    "per_device_day_rate": {
+     "16-10-12/SmartThings": 0.0,
+     "16-10-12/Amazon Echo": 1.9229913198308481,
+     "16-10-12/Netatmo Welcome": 1.9229913198308481,
+     "16-10-12/Samsung SmartCam": 24.998887157801025,
+     "16-10-12/Dropcam": 1.9229913198308481,
+     "16-10-12/Insteon camera (wired)": 0.0,
+     "16-10-12/Belkin Wemo switch": 0.0,
+     "16-10-12/Belkin Wemo motion": 0.0,
+     "16-10-12/Netatmo weather": 0.0,
+     "16-10-12/Withings scale": 0.0,
+     "16-10-12/Withings Aura": 0.0,
+     "16-10-12/LiFX bulb": 0.0,
+     "16-10-12/Triby speaker": 0.0,
+     "16-10-12/HP printer": 9.61495659915424
+    }
+   },
+   "detection": {
+    "arm": "A",
+    "threshold": 0.84,
+    "episodes": 19,
+    "detected": 5,
+    "recall": 0.2631578947368421,
+    "median_delay_s": 35.0,
+    "auroc_mean_over_captures": 0.6694915940859032,
+    "per_capture": [
+     {
+      "capture": "CTU-IoT-Malware-Capture-3-1",
+      "episodes": 2,
+      "detected": 0,
+      "auroc": 0.7581786752438122
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-1-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 0.5182917967318361
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-9-1.head",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 0.9984407219311732
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-49-1.head",
+      "episodes": 0,
+      "detected": 0,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-8-1",
+      "episodes": 1,
+      "detected": 0,
+      "auroc": 0.4387580875624127
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-20-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-21-1",
+      "episodes": 3,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-34-1",
+      "episodes": 10,
+      "detected": 1,
+      "auroc": 0.6337886889602811
+     }
+    ]
+   }
+  },
+  "B": {
+   "false_alarms": {
+    "arm": "B",
+    "threshold": 0.75,
+    "benign_device_days": 7.280324074074073,
+    "onsets": 21,
+    "rate": 2.8844869797462724,
+    "ci95": [
+     0.27471304569012117,
+     6.867826142253029
+    ],
+    "alerts_per_device_day": 1.2362087056055453,
+    "alert_duration_s": {
+     "mean": 151.66666666666666,
+     "median": 65.0
+    },
+    "per_device_day_rate": {
+     "16-10-12/SmartThings": 0.0,
+     "16-10-12/Amazon Echo": 1.9229913198308481,
+     "16-10-12/Netatmo Welcome": 9.61495659915424,
+     "16-10-12/Samsung SmartCam": 24.998887157801025,
+     "16-10-12/Dropcam": 0.0,
+     "16-10-12/Insteon camera (wired)": 0.0,
+     "16-10-12/Belkin Wemo switch": 0.0,
+     "16-10-12/Belkin Wemo motion": 0.0,
+     "16-10-12/Netatmo weather": 0.0,
+     "16-10-12/Withings scale": 1.9229913198308481,
+     "16-10-12/Withings Aura": 0.0,
+     "16-10-12/LiFX bulb": 0.0,
+     "16-10-12/Triby speaker": 0.0,
+     "16-10-12/HP printer": 1.9229913198308481
+    }
+   },
+   "detection": {
+    "arm": "B",
+    "threshold": 0.75,
+    "episodes": 19,
+    "detected": 5,
+    "recall": 0.2631578947368421,
+    "median_delay_s": 75.0,
+    "auroc_mean_over_captures": 0.6961438509986771,
+    "per_capture": [
+     {
+      "capture": "CTU-IoT-Malware-Capture-3-1",
+      "episodes": 2,
+      "detected": 0,
+      "auroc": 0.6463289128926654
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-1-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 0.5870578310816789
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-9-1.head",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": 1.0
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-49-1.head",
+      "episodes": 0,
+      "detected": 0,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-8-1",
+      "episodes": 1,
+      "detected": 0,
+      "auroc": 0.4320880895424941
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-20-1",
+      "episodes": 1,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-21-1",
+      "episodes": 3,
+      "detected": 1,
+      "auroc": null
+     },
+     {
+      "capture": "CTU-IoT-Malware-Capture-34-1",
+      "episodes": 10,
+      "detected": 1,
+      "auroc": 0.8152444214765473
+     }
+    ]
+   }
+  }
+ },
+ "R1-shipped_false_onsets_per_device_day_on_validation_benign": 71.01332231089633,
+ "chosen_candidate": "A"
+}
