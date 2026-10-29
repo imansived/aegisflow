@@ -1,0 +1,1465 @@
+{
+ "protocol": "docs/preregistration/R6 + R7",
+ "stage": 2,
+ "reads": "capture timestamps and Ethernet addresses only",
+ "files": {
+  "attack_18-06-01": {
+   "packets": 4726991,
+   "first_utc": "2018-06-01T03:20:11.879205+00:00",
+   "last_utc": "2018-06-01T23:56:13.018012+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-01"
+  },
+  "attack_18-06-02": {
+   "packets": 5504769,
+   "first_utc": "2018-06-02T00:00:11.311615+00:00",
+   "last_utc": "2018-06-03T00:00:00.856463+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-02"
+  },
+  "attack_18-06-03": {
+   "packets": 5485463,
+   "first_utc": "2018-06-03T00:00:01.926052+00:00",
+   "last_utc": "2018-06-04T00:00:00.449174+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-03"
+  },
+  "attack_18-06-04": {
+   "packets": 4879687,
+   "first_utc": "2018-06-03T23:59:59.458689+00:00",
+   "last_utc": "2018-06-04T23:59:59.936746+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-04"
+  },
+  "attack_18-06-05": {
+   "packets": 4437485,
+   "first_utc": "2018-06-04T23:59:59.463922+00:00",
+   "last_utc": "2018-06-06T00:00:00.236311+00:00",
+   "capture_gaps_over_5min": 1,
+   "devices_present": 7,
+   "label": "18-06-05"
+  },
+  "attack_18-06-06": {
+   "packets": 4937190,
+   "first_utc": "2018-06-06T00:00:01.366065+00:00",
+   "last_utc": "2018-06-07T00:00:00.630975+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-06"
+  },
+  "attack_18-06-07": {
+   "packets": 3636947,
+   "first_utc": "2018-06-06T23:59:59.681556+00:00",
+   "last_utc": "2018-06-07T23:59:59.933167+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-07"
+  },
+  "attack_18-06-08": {
+   "packets": 2074596,
+   "first_utc": "2018-06-08T00:00:01.447934+00:00",
+   "last_utc": "2018-06-08T23:56:11.901051+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-08"
+  },
+  "attack_18-10-20": {
+   "packets": 1733567,
+   "first_utc": "2018-10-19T13:00:12.001079+00:00",
+   "last_utc": "2018-10-20T13:00:00.431214+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-20"
+  },
+  "attack_18-10-21": {
+   "packets": 540699,
+   "first_utc": "2018-10-20T12:59:59.418602+00:00",
+   "last_utc": "2018-10-20T19:52:25.935223+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-21"
+  },
+  "attack_18-10-22": {
+   "packets": 2340536,
+   "first_utc": "2018-10-21T13:00:12.379465+00:00",
+   "last_utc": "2018-10-22T13:00:00.960392+00:00",
+   "capture_gaps_over_5min": 2,
+   "devices_present": 8,
+   "label": "18-10-22"
+  },
+  "attack_18-10-23": {
+   "packets": 3881025,
+   "first_utc": "2018-10-22T13:00:01.611051+00:00",
+   "last_utc": "2018-10-23T12:59:58.819493+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-23"
+  },
+  "attack_18-10-24": {
+   "packets": 607504,
+   "first_utc": "2018-10-23T12:59:59.443078+00:00",
+   "last_utc": "2018-10-23T18:14:37.733993+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-24"
+  },
+  "attack_18-10-25": {
+   "packets": 2381723,
+   "first_utc": "2018-10-24T13:00:01.544106+00:00",
+   "last_utc": "2018-10-25T12:59:59.315532+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-25"
+  },
+  "attack_18-10-26": {
+   "packets": 2289596,
+   "first_utc": "2018-10-25T13:00:00.782853+00:00",
+   "last_utc": "2018-10-26T12:56:14.664551+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-26"
+  },
+  "benign_18-05-28": {
+   "packets": 5413239,
+   "first_utc": "2018-05-28T00:00:01.090390+00:00",
+   "last_utc": "2018-05-29T00:00:00.567891+00:00",
+   "capture_gaps_over_5min": 2,
+   "devices_present": 8,
+   "label": "18-05-28"
+  },
+  "benign_18-05-29": {
+   "packets": 4775591,
+   "first_utc": "2018-05-29T00:00:01.436135+00:00",
+   "last_utc": "2018-05-29T23:59:59.726940+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-05-29"
+  },
+  "benign_18-05-30": {
+   "packets": 4684752,
+   "first_utc": "2018-05-29T23:59:59.322450+00:00",
+   "last_utc": "2018-05-30T23:59:59.159800+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-05-30"
+  },
+  "benign_18-05-31": {
+   "packets": 2942043,
+   "first_utc": "2018-05-31T00:00:00.892619+00:00",
+   "last_utc": "2018-05-31T13:23:25.760274+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-05-31"
+  },
+  "benign_18-06-09": {
+   "packets": 2181412,
+   "first_utc": "2018-06-09T00:00:12.118988+00:00",
+   "last_utc": "2018-06-09T23:59:59.899829+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-09"
+  },
+  "benign_18-06-10": {
+   "packets": 2136429,
+   "first_utc": "2018-06-10T00:00:01.087163+00:00",
+   "last_utc": "2018-06-10T23:59:59.759432+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-10"
+  },
+  "benign_18-06-11": {
+   "packets": 2098696,
+   "first_utc": "2018-06-11T00:00:00.677748+00:00",
+   "last_utc": "2018-06-11T23:59:59.203250+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-11"
+  },
+  "benign_18-06-12": {
+   "packets": 2299052,
+   "first_utc": "2018-06-11T23:59:59.461704+00:00",
+   "last_utc": "2018-06-12T23:59:58.853865+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-12"
+  },
+  "benign_18-06-13": {
+   "packets": 2282378,
+   "first_utc": "2018-06-12T23:59:59.230837+00:00",
+   "last_utc": "2018-06-13T23:59:59.940329+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-13"
+  },
+  "benign_18-06-14": {
+   "packets": 3106106,
+   "first_utc": "2018-06-14T00:00:01.020495+00:00",
+   "last_utc": "2018-06-14T23:59:59.157850+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-06-14"
+  },
+  "benign_18-06-15": {
+   "packets": 2247647,
+   "first_utc": "2018-06-15T00:00:00.601067+00:00",
+   "last_utc": "2018-06-15T23:56:13.097688+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 7,
+   "label": "18-06-15"
+  },
+  "benign_18-06-16": {
+   "packets": 2127853,
+   "first_utc": "2018-06-16T00:00:11.780331+00:00",
+   "last_utc": "2018-06-17T00:00:00.698747+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-16"
+  },
+  "benign_18-06-17": {
+   "packets": 2147648,
+   "first_utc": "2018-06-17T00:00:02.586959+00:00",
+   "last_utc": "2018-06-17T23:59:58.475642+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 6,
+   "label": "18-06-17"
+  },
+  "benign_18-10-10": {
+   "packets": 4082069,
+   "first_utc": "2018-10-09T13:00:01.472755+00:00",
+   "last_utc": "2018-10-10T12:59:59.593222+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-10"
+  },
+  "benign_18-10-11": {
+   "packets": 3732304,
+   "first_utc": "2018-10-10T12:59:59.030520+00:00",
+   "last_utc": "2018-10-11T13:00:00.238918+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-11"
+  },
+  "benign_18-10-12": {
+   "packets": 4434330,
+   "first_utc": "2018-10-11T13:00:01.229665+00:00",
+   "last_utc": "2018-10-12T12:56:12.799542+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-12"
+  },
+  "benign_18-10-13": {
+   "packets": 3778146,
+   "first_utc": "2018-10-12T13:00:11.360389+00:00",
+   "last_utc": "2018-10-13T12:59:59.975353+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-13"
+  },
+  "benign_18-10-14": {
+   "packets": 4564069,
+   "first_utc": "2018-10-13T13:00:00.786120+00:00",
+   "last_utc": "2018-10-14T12:59:59.750680+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-14"
+  },
+  "benign_18-10-15": {
+   "packets": 5215518,
+   "first_utc": "2018-10-14T12:59:59.667061+00:00",
+   "last_utc": "2018-10-15T12:59:59.789177+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-15"
+  },
+  "benign_18-10-16": {
+   "packets": 4845398,
+   "first_utc": "2018-10-15T12:59:59.444311+00:00",
+   "last_utc": "2018-10-16T13:00:00.003017+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-16"
+  },
+  "benign_18-10-17": {
+   "packets": 3160761,
+   "first_utc": "2018-10-16T13:00:00.818310+00:00",
+   "last_utc": "2018-10-17T13:00:00.580203+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-17"
+  },
+  "benign_18-10-18": {
+   "packets": 3111097,
+   "first_utc": "2018-10-17T13:00:01.524364+00:00",
+   "last_utc": "2018-10-18T12:59:59.155267+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-18"
+  },
+  "benign_18-10-19": {
+   "packets": 3054441,
+   "first_utc": "2018-10-18T12:59:59.333021+00:00",
+   "last_utc": "2018-10-19T12:56:13.325917+00:00",
+   "capture_gaps_over_5min": 0,
+   "devices_present": 8,
+   "label": "18-10-19"
+  }
+ },
+ "chains": [
+  {
+   "start": 1527465601.09039,
+   "end": 1527486186.896827,
+   "hours": 5.7,
+   "files": [
+    "benign_18-05-28"
+   ]
+  },
+  {
+   "start": 1527486611.6539428,
+   "end": 1527516626.627389,
+   "hours": 8.3,
+   "files": [
+    "benign_18-05-28"
+   ]
+  },
+  {
+   "start": 1527517211.610327,
+   "end": 1527773005.760274,
+   "hours": 71.1,
+   "files": [
+    "benign_18-05-28",
+    "benign_18-05-29",
+    "benign_18-05-30",
+    "benign_18-05-31"
+   ]
+  },
+  {
+   "start": 1527823211.879205,
+   "end": 1528199614.630326,
+   "hours": 104.6,
+   "files": [
+    "attack_18-06-01",
+    "attack_18-06-02",
+    "attack_18-06-03",
+    "attack_18-06-04",
+    "attack_18-06-05"
+   ]
+  },
+  {
+   "start": 1528211411.656718,
+   "end": 1529279998.475642,
+   "hours": 296.8,
+   "files": [
+    "attack_18-06-05",
+    "attack_18-06-06",
+    "attack_18-06-07",
+    "attack_18-06-08",
+    "benign_18-06-09",
+    "benign_18-06-10",
+    "benign_18-06-11",
+    "benign_18-06-12",
+    "benign_18-06-13",
+    "benign_18-06-14",
+    "benign_18-06-15",
+    "benign_18-06-16",
+    "benign_18-06-17"
+   ]
+  },
+  {
+   "start": 1539090001.472755,
+   "end": 1540065145.9352229,
+   "hours": 270.9,
+   "files": [
+    "attack_18-10-20",
+    "attack_18-10-21",
+    "benign_18-10-10",
+    "benign_18-10-11",
+    "benign_18-10-12",
+    "benign_18-10-13",
+    "benign_18-10-14",
+    "benign_18-10-15",
+    "benign_18-10-16",
+    "benign_18-10-17",
+    "benign_18-10-18",
+    "benign_18-10-19"
+   ]
+  },
+  {
+   "start": 1540126812.3794649,
+   "end": 1540133896.59794,
+   "hours": 2.0,
+   "files": [
+    "attack_18-10-22"
+   ]
+  },
+  {
+   "start": 1540134611.490228,
+   "end": 1540180846.9353929,
+   "hours": 12.8,
+   "files": [
+    "attack_18-10-22"
+   ]
+  },
+  {
+   "start": 1540181411.259456,
+   "end": 1540318477.7339928,
+   "hours": 38.1,
+   "files": [
+    "attack_18-10-22",
+    "attack_18-10-23",
+    "attack_18-10-24"
+   ]
+  },
+  {
+   "start": 1540386001.544106,
+   "end": 1540558574.664551,
+   "hours": 47.9,
+   "files": [
+    "attack_18-10-25",
+    "attack_18-10-26"
+   ]
+  }
+ ],
+ "stage1_eligible": 63,
+ "stage2_eligible": 15,
+ "removed": 48,
+ "removal_reasons": {
+  "E2a verified chain 3.4": 1,
+  "E2a verified chain 10.5": 1,
+  "E2a verified chain 14.9": 2,
+  "E2a verified chain 18.5": 1,
+  "E2a verified chain 3.7": 1,
+  "device silent over 2": 12,
+  "E2a verified chain 19.3": 1,
+  "onset not inside any": 2,
+  "E2a verified chain 9.3": 1,
+  "E2a verified chain 16.4": 1,
+  "E2a verified chain 18.9": 1,
+  "E2a verified chain 4.7": 1,
+  "E2a verified chain 11.8": 1,
+  "E2a verified chain 16.2": 1,
+  "E2a verified chain 19.9": 1,
+  "E2a verified chain 5.1": 1,
+  "E2a verified chain 17.9": 1,
+  "E2a verified chain 6.1": 1,
+  "E2a verified chain 13.2": 1,
+  "E2a verified chain 17.5": 1,
+  "E2a verified chain 21.2": 1,
+  "E2a verified chain 11.7": 1,
+  "E2a verified chain 12.0": 1,
+  "E2a verified chain 13.3": 1,
+  "E2a verified chain 17.4": 1,
+  "E2a verified chain 19.8": 1,
+  "E2a verified chain 21.7": 1,
+  "E2a verified chain 2.0": 1,
+  "E2a verified chain 9.2": 1,
+  "E2a verified chain 13.5": 1,
+  "E2a verified chain 17.2": 1,
+  "E2a verified chain 25.0": 1,
+  "E2a verified chain 2.2": 1,
+  "E2a verified chain 21.8": 1,
+  "E2a verified chain 0.7": 1,
+  "E2a verified chain 7.8": 1,
+  "E2a verified chain 12.2": 1,
+  "E2a verified chain 15.8": 1,
+  "E2a verified chain 23.7": 1,
+  "E2a verified chain 0.6": 1,
+  "E2a verified chain 23.4": 1,
+  "E2a verified chain 10.7": 1,
+  "E2a verified chain 24.4": 1,
+  "E2a verified chain 18.4": 1,
+  "E2a verified chain 21.3": 1
+ },
+ "eligible_by_split": {
+  "validation": {
+   "episodes": 5,
+   "sessions": 5,
+   "tools": 3,
+   "devices": 5,
+   "by_stratum": {
+    "S0": 2,
+    "S1": 0,
+    "S2": 3
+   },
+   "by_tool": {
+    "Smurf": 2,
+    "Snmp": 1,
+    "Ssdp": 2
+   }
+  },
+  "test": {
+   "episodes": 10,
+   "sessions": 6,
+   "tools": 5,
+   "devices": 6,
+   "by_stratum": {
+    "S0": 7,
+    "S1": 0,
+    "S2": 3
+   },
+   "by_tool": {
+    "PingOfDeath": 3,
+    "Ssdp": 1,
+    "TcpSynDevice": 3,
+    "TcpSynReflection": 1,
+    "UdpDevice": 2
+   }
+  }
+ },
+ "gate_stage2": {
+  "required": {
+   "episodes": 30,
+   "sessions": 8,
+   "tools": 2
+  },
+  "measured_test_split": {
+   "episodes": 10,
+   "sessions": 6,
+   "tools": 5,
+   "devices": 6,
+   "by_stratum": {
+    "S0": 7,
+    "S1": 0,
+    "S2": 3
+   },
+   "by_tool": {
+    "PingOfDeath": 3,
+    "Ssdp": 1,
+    "TcpSynDevice": 3,
+    "TcpSynReflection": 1,
+    "UdpDevice": 2
+   }
+  },
+  "passed": false
+ },
+ "episodes": [
+  {
+   "device": "00166cab6b88",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527835334,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 3.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 3.4 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527860996,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 10.5,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 10.5 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527876695,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 14.9,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 14.9 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527889925,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 18.5,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 18.5 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527917995,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 26.3,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527935202,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 31.1,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1527943358,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 33.4,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp1L2D2W",
+   "onset_epoch": 1528001914,
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-06-03",
+   "verified_chain_hours": 49.6,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528224632,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 3.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 3.7 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528280869,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 19.3,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 19.3 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1540348890,
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-10-24",
+   "verified_chain_hours": null,
+   "eligible_stage2": false,
+   "reasons": [
+    "onset not inside any verified chain (capture gap or no file)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1540378530,
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-10-24",
+   "verified_chain_hours": null,
+   "eligible_stage2": false,
+   "reasons": [
+    "onset not inside any verified chain (capture gap or no file)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540214943,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 9.3,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 9.3 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1540240592,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 16.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 16.4 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1540249401,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 18.9,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 18.9 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1540305374,
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-10-24",
+   "verified_chain_hours": 34.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527840167,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 4.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 4.7 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527865835,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 11.8,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 11.8 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527881496,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 16.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 16.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527894761,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 19.9,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 19.9 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527922797,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 27.7,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1527956962,
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-06-03",
+   "verified_chain_hours": 37.2,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528229672,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 5.1,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 5.1 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528275905,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 17.9,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 17.9 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527844998,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 6.1,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 6.1 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527870675,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 13.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 13.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527886297,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 17.5,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 17.5 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527899600,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 21.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 21.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527927598,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 29.0,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528253682,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 11.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 11.7 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528265025,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 14.9,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 14.9 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "74c63b29d71d",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540224603,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 12.0,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 12.0 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540229442,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 13.3,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 13.3 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1540244228,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 17.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 17.4 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1540252626,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 19.8,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 19.8 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1540259613,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 21.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 21.7 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1540279892,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 27.4,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1540300287,
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-10-24",
+   "verified_chain_hours": 33.0,
+   "eligible_stage2": false,
+   "reasons": [
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527830498,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 2.0,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 2.0 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527856158,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 9.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 9.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527871894,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 13.5,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 13.5 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527885081,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 17.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 17.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527913194,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 25.0,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 25.0 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527923756,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 27.9,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528219424,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 2.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 2.2 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528289721,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 21.8,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 21.8 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527825643,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 0.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 0.7 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527851321,
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-01",
+   "verified_chain_hours": 7.8,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 7.8 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527867093,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 12.2,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 12.2 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527880245,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 15.8,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 15.8 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527908393,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 23.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 23.7 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527918925,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 26.6,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1527936456,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 31.5,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1527945065,
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-06-02",
+   "verified_chain_hours": 33.8,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2W",
+   "onset_epoch": 1528007499,
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-06-03",
+   "verified_chain_hours": 51.2,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528213598,
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-06-06",
+   "verified_chain_hours": 0.6,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 0.6 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528295532,
+   "capture_id": "R6/18-06-07",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-06-07",
+   "verified_chain_hours": 23.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 23.4 h (24 h plus 2 h burn-in required)",
+    "device silent over 2 h in the 24 h before onset"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540219772,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 10.7,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 10.7 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1540269173,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S2",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 24.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 24.4 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2L",
+   "onset_epoch": 1540285311,
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "sydney_date": "2018-10-23",
+   "verified_chain_hours": 28.9,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1540309095,
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-10-24",
+   "verified_chain_hours": 35.5,
+   "eligible_stage2": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1540452323,
+   "capture_id": "R6/18-10-25",
+   "split": "test",
+   "stratum": "S1",
+   "sydney_date": "2018-10-25",
+   "verified_chain_hours": 18.4,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 18.4 h (24 h plus 2 h burn-in required)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1540462848,
+   "capture_id": "R6/18-10-25",
+   "split": "test",
+   "stratum": "S0",
+   "sydney_date": "2018-10-25",
+   "verified_chain_hours": 21.3,
+   "eligible_stage2": false,
+   "reasons": [
+    "E2a verified chain 21.3 h (24 h plus 2 h burn-in required)"
+   ]
+  }
+ ]
+}

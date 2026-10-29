@@ -89,6 +89,8 @@ def main(version: str) -> None:
         return main_r6audit()
     if version == "r7audit":
         return main_r7audit()
+    if version == "r7stage2":
+        return main_r7stage2()
     return main_v(version)
 
 
@@ -230,6 +232,25 @@ def main_r7audit() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json")
+
+
+def main_r7stage2() -> None:
+    out_dir = ROOT / "docs" / "research" / "r7stage2"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r7stage2/manifest.json exists: a manifest is immutable.")
+    res = json.loads((ROOT / "docs" / "results" / "r7_stage2.json").read_text())
+    rels = {"docs/preregistration/R7-separated-baseline-gap.md": "R7 protocol", "docs/preregistration/R6-matched-testbed-detection.md": "R6 protocol (stage-2 rules)",
+            "docs/results/r7_audit.json": "R7 stage-1 audit", "docs/results/r7_stage2.json": "R7 stage-2 result: verified chains, per-episode status, gate", "ml/r7_stage2.py": "Stage-2 tool (timestamps and Ethernet addresses only)"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    scans = {f"r7/stage2/{q.name}": sha256(q) for q in sorted((ROOT / "data" / "r7" / "stage2").glob("*.json"))}
+    g = res["gate_stage2"]
+    manifest = {"version": "r7stage2", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "stage2-r7",
+                "statement": "R7 stage-2 continuity verification. Gate on the test split: " + ("PASSED" if g["passed"] else "FAILED") + " (" + str(g["measured_test_split"]["episodes"]) + " eligible test episodes of "
+                             + str(g["required"]["episodes"]) + " required). Per the protocol the detection part is not run and the rules are not revised. No attack score exists.",
+                "gate_stage2": g, "files": files, "data": {"Per-file scan results (timestamps and Ethernet addresses only)": scans}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json", len(scans), "scan hashes")
 
 
 def main_v(version: str) -> None:
