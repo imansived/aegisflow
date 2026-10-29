@@ -36,6 +36,9 @@ def mac_int(mac: str) -> int:
     return int(mac.replace(":", ""), 16)
 
 
+IOT_MAC_INTS = {int(m.replace(":", ""), 16) for m in IOT_MACS}
+
+
 def _ip_int(ip: str) -> int:
     a, b, c, d = (int(x) for x in ip.split("."))
     return (a << 24) | (b << 16) | (c << 8) | d
@@ -71,10 +74,13 @@ def _frame(cols: dict, buf: bytes, orig: int, sec: int) -> bool:
     sport = dport = 0
     if proto in (6, 17) and len(buf) >= 14 + ihl + 4:
         sport, dport = struct.unpack("!HH", buf[14 + ihl:18 + ihl])
+    dst, src = int.from_bytes(buf[0:6], "big"), int.from_bytes(buf[6:12], "big")
+    if dst not in IOT_MAC_INTS and src not in IOT_MAC_INTS:  # packets of non-IoT hosts never reach a device trace; dropping them only saves memory
+        return False
     cols["t"].append(sec)
     cols["size"].append(orig)
-    cols["dst"].append(int.from_bytes(buf[0:6], "big"))
-    cols["src"].append(int.from_bytes(buf[6:12], "big"))
+    cols["dst"].append(dst)
+    cols["src"].append(src)
     cols["ipsrc"].append(int.from_bytes(buf[26:30], "big"))
     cols["ipdst"].append(int.from_bytes(buf[30:34], "big"))
     cols["proto"].append(proto)

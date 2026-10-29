@@ -229,5 +229,91 @@ def stage_validate() -> None:
     Path("data/audit/r2_validation.json").write_text(json.dumps(out, indent=1, default=float))
 
 
+
+TEST_IOT = ["7-1", "17-1", "33-1", "35-1", "36-1", "39-1", "44-1", "52-1", "60-1"]
+TEST_DAYS = ["16-10-13", "16-10-14"]
+
+
+def cut_head(raw: Path) -> Path:
+    """First 100 MB of a conn.log.labeled, cut at a line boundary (protocol section 3)."""
+    out = raw.with_name(raw.stem + ".head.conn.log.labeled")
+    data = raw.read_bytes()
+    out.write_bytes(data[:data.rfind(bytes([10])) + 1])
+    return out
+
+
+def eligible(t: dict) -> tuple[bool, str]:
+    """Decided from labels alone, before any detector runs: >= 60 min (720 ticks) before the first malicious tick and >= 20 malicious ticks from there on."""
+    mal = np.flatnonzero(t["mal"].astype(bool))
+    if not len(mal):
+        return False, "no malicious ticks"
+    if mal[0] < 720:
+        return False, f"first malicious tick at {mal[0]} (< 720)"
+    if len(mal) < 20:
+        return False, f"only {len(mal)} malicious ticks"
+    return True, "eligible"
+
+
+def paired_difference(a_sc: list[np.ndarray], b_sc: list[np.ndarray], thr_a: float, thr_b: float, B: int = 10_000) -> dict:
+    ca = np.array([onsets(s, thr_a) for s in a_sc], float)
+    cb = np.array([onsets(s, thr_b) for s in b_sc], float)
+    ex = np.array([benign_exposure(len(s)) for s in a_sc])
+    rng = np.random.default_rng(1)
+    idx = rng.integers(0, len(ca), (B, len(ca)))
+    d = (ca[idx].sum(1) - cb[idx].sum(1)) / ex[idx].sum(1)
+    return {"point": float((ca.sum() - cb.sum()) / ex.sum()), "ci95": [float(np.percentile(d, 2.5)), float(np.percentile(d, 97.5))]}
+
+
+def stage_test() -> None:
+    if GUARD.exists():
+        sys.exit("R2 test data already used (data/results/R2_TEST_USED): the test is run once")
+    val = json.loads(Path("docs/results/r2_validation.json").read_text())
+    thr = {a: val["arms"][a]["false_alarms"]["threshold"] for a in ARMS}
+    chosen = val["chosen_candidate"]
+    GUARD.parent.mkdir(parents=True, exist_ok=True)
+    GUARD.write_text("R2 test run started; thresholds and the chosen candidate from docs/results/r2_validation.json")
+    out = {"split": "test", "thresholds": thr, "chosen_candidate": chosen, "eligibility": {}, "arms": {}}
+
+    ben = []
+    for day in TEST_DAYS:
+        print("benign day", day, flush=True)
+        for t in device_traces(read_pcap_targz(Path(f"data/real/unsw/{day}.tar.gz")), day):
+            ben.append((t["id"], arrays(t)))
+    atk = []
+    for n in TEST_IOT:
+        raw = Path(f"data/real/iot23_test/CTU-IoT-Malware-Capture-{n}.raw")
+        t = iot23_trace(cut_head(raw))
+        ok, why = eligible(t)
+        out["eligibility"][n] = why
+        print("IoT-23", n, why, flush=True)
+        if ok:
+            atk.append((t["id"], arrays(t)))
+    out["benign_traces"], out["attack_captures"] = len(ben), [n for n, _ in atk]
+    out["R1-shipped_false_onsets_per_device_day"] = float(sum(rising(a["hot_shipped"][BURN:]).sum() for _, a in ben) / sum(benign_exposure(len(a["hot_shipped"])) for _, a in ben))
+    for arm in ARMS:
+        out["arms"][arm] = {"false_alarms": false_alarm_report(ben, arm, thr[arm]), "detection": detection_report(atk, arm, thr[arm])}
+    sc = {arm: [arm_score(a, arm) for _, a in ben] for arm in ARMS}
+    out["paired_chosen_minus_R1-recal"] = paired_difference(sc[chosen], sc["R1-recal"], thr[chosen], thr["R1-recal"])
+
+    fa, det, base = out["arms"][chosen]["false_alarms"], out["arms"][chosen]["detection"], out["arms"]["R1-recal"]["detection"]
+    c1 = "INCONCLUSIVE" if fa["benign_device_days"] < 20 else "PASS" if fa["ci95"][1] <= 3.75 else "INCONCLUSIVE" if fa["rate"] <= BUDGET else "FAIL"
+    caps_with_eps = sum(1 for r in det["per_capture"] if r["episodes"])
+    if det["episodes"] < 10 or caps_with_eps < 3:
+        c2 = "INCONCLUSIVE"
+    else:
+        dl = (det["median_delay_s"] or 0) - (base["median_delay_s"] or 0)
+        c2 = "PASS" if (base["recall"] - det["recall"] <= 0.10 and dl <= 60 and (base["auroc_mean_over_captures"] or 0) - (det["auroc_mean_over_captures"] or 0) <= 0.05) else "FAIL"
+    pd_ = out["paired_chosen_minus_R1-recal"]
+    c3 = "PASS" if c1 == "PASS" and c2 == "PASS" and pd_["ci95"][1] < 0 else "NOT SHOWN"
+    out["claims"] = {"1_false_alarm_budget": c1, "2_detection_not_worse_than_R1-recal": c2, "3_better_than_recalibration": c3,
+                     "R1-recal_passes_claim_1": out["arms"]["R1-recal"]["false_alarms"]["ci95"][1] <= 3.75 and out["arms"]["R1-recal"]["false_alarms"]["benign_device_days"] >= 20}
+    for arm in ARMS:
+        f, d = out["arms"][arm]["false_alarms"], out["arms"][arm]["detection"]
+        print(f"{arm:9s} test benign {f['rate']:.2f}/device-day [{f['ci95'][0]:.2f},{f['ci95'][1]:.2f}] over {f['benign_device_days']:.1f} dd; recall {d['detected']}/{d['episodes']} delay {d['median_delay_s']} AUROC {d['auroc_mean_over_captures']}")
+    print("R1-shipped", out["R1-shipped_false_onsets_per_device_day"])
+    print("claims", out["claims"], "paired", pd_)
+    Path("docs/results/r2_test.json").write_text(json.dumps(out, indent=1, default=float))
+
+
 if __name__ == "__main__":
-    {"dev": stage_dev, "validate": stage_validate}[sys.argv[1]]()
+    {"dev": stage_dev, "validate": stage_validate, "test": stage_test}[sys.argv[1]]()
