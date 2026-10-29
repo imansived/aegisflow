@@ -1,0 +1,37 @@
+{
+  "release": "r3r4",
+  "scope": "Operational semantics (declared signal sets) and alert wording. Not a detection result; says nothing about R2's open question.",
+  "specification": "docs/preregistration/R3-R4-observation-semantics.md (committed d91f439 before any implementation)",
+  "implementation_commit": "178a098",
+  "test_environment": {
+    "backend": "Python 3.12 venv; Redis 7 (docker image redis:7-alpine) on localhost:6379; SQLite; no skipped tests",
+    "frontend": "vitest 5.0.5, tsc --noEmit clean"
+  },
+  "results": {
+    "backend_full_suite": {"passed": 221, "failed": 0, "skipped": 0, "seconds": 99.8},
+    "api_and_streaming_repeats": [{"passed": 43, "failed": 0}, {"passed": 43, "failed": 0}, {"passed": 43, "failed": 0}],
+    "frontend": {"test_files": 2, "tests": 62, "failed": 0},
+    "r3_r4_acceptance_tests": {"file": "tests/test_observation.py", "tests": 23, "failed": 0, "api_test": "tests/test_api.py::test_a_device_can_declare_the_signals_it_supports", "frontend_test": "does not call a network-only device degraded for signals it never declared (R3)"},
+    "frozen_manifests_checked": ["v1", "r1", "r2"],
+    "frozen_manifest_test": "tests/test_frozen_artifact.py: 7 passed"
+  },
+  "test_instability": {
+    "observed": "With an in-process fake Redis server, a different timing-sensitive API test failed on each of two full runs (test_severity_bands..., then test_websocket...). Each passed when run alone.",
+    "diagnosis": "The fake server is about four times slower (API file 157 s vs 40 s) and the processor-thread tests have timing waits; no code defect was found. Not proven by a code change: shown by the real-Redis results above (full suite plus 3 repeats, zero failures).",
+    "decision": "API tests must be run against real Redis (docker run -d --rm --name aegisflow-test-redis -p 6379:6379 redis:7-alpine). Without Redis they skip, which hides the API path; the fake server is not a supported test target."
+  },
+  "invariants_tested": [
+    "No declaration equals declaring all four signals (R3-f)",
+    "A declared and an undeclared network-only device give identical scores, severities, patterns, alertability and alert events (R3-d)",
+    "A value sent for an unsupported signal is ignored and counted (R3-e)",
+    "The alert text names exactly the signals in the alert record, is neutral, and never lists a missing signal as a factor (R4-a to R4-d)"
+  ],
+  "remaining_limitations": [
+    "Detector effectiveness is unresolved (R2: false-alarm budget inconclusive, detection unmeasured on test data). R3/R4 do not change any score or threshold.",
+    "The network-only operating threshold was validated on the simulator only and is poorly calibrated on real traffic (R1, R2).",
+    "A declaration is set by an operator and can be wrong; a signal never declared is never watched, so a compromised device cannot be seen losing it.",
+    "The wording was not tested with operators; the tests check agreement with the record, not comprehension.",
+    "The docker images were not rebuilt or smoke-tested for this release; only the Python and frontend test suites were run.",
+    "Persistence of the declaration is tested at the store and API level, not through a full container restart."
+  ]
+}

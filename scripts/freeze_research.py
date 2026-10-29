@@ -79,6 +79,8 @@ def main(version: str) -> None:
         return main_r1()
     if version == "r2":
         return main_r2()
+    if version == "r3r4":
+        return main_r3r4()
     return main_v(version)
 
 
@@ -124,6 +126,26 @@ def main_r2() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json", len(files), "files", len(data), "data hashes")
+
+
+def main_r3r4() -> None:
+    out_dir = ROOT / "docs" / "research" / "r3r4"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r3r4/manifest.json exists: a manifest is immutable.")
+    rels = {"docs/preregistration/R3-R4-observation-semantics.md": "R3/R4 specification and acceptance criteria (committed before the implementation)",
+            "docs/results/r3r4_release.json": "R3/R4 release evidence: test results, instability finding, remaining limitations",
+            "tests/test_observation.py": "R3/R4 acceptance tests"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    code = ["backend/detection/engine.py", "backend/detection/types.py", "backend/correlation/engine.py", "backend/correlation/explain.py", "backend/services/alerts.py",
+            "backend/services/pipeline.py", "backend/database/store.py", "backend/api/app.py", "backend/api/runtime.py"]
+    manifest = {"version": "r3r4", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "observation-r3r4",
+                "statement": "Release evidence for declared signal sets and partial-observation wording. The product code is pinned by the git tag, not hashed here, so later fixes do not "
+                             "invalidate the evidence; a change to behaviour these tests cover needs a new version.",
+                "code_blob_ids_at_freeze": {c: git("rev-parse", f"HEAD:{c}") for c in code},
+                "files": files, "data": {}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json", len(files), "files")
 
 
 def main_v(version: str) -> None:
