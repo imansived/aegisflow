@@ -170,6 +170,24 @@ def main_r5inv() -> None:
     print("wrote", out_dir / "manifest.json")
 
 
+def main_r5() -> None:
+    out_dir = ROOT / "docs" / "research" / "r5"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r5/manifest.json exists: a manifest is immutable.")
+    rels = {"docs/preregistration/R5-detection-delay.md": "R5 protocol (revisions 1 and 2 before the inventory)", "docs/results/r5_inventory.json": "Inventory and failed gate",
+            "docs/results/r5_validation.json": "R5 validation thresholds (committed before the test days were scored)", "docs/results/r5_test_inputs.json": "Hashes of the test files, recorded before scoring",
+            "docs/results/r5_test.json": "R5 false-alarm test (single run, guard data/results/R5_TEST_USED); detection part not run", "ml/r5_eval.py": "R5 code", "ml/r5_inventory.py": "R5 inventory code"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    days = ["16-10-12", "16-09-23", "16-09-24", "16-09-25", "16-09-26", "16-09-27", "16-09-28", "16-09-29", "16-09-30", "16-10-01", "16-10-02", "16-10-03", "16-10-04"]
+    data = {f"real/unsw/{d}.csv.zip": sha256(ROOT / "data" / "real" / "unsw" / f"{d}.csv.zip") for d in days}
+    manifest = {"version": "r5", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "fa-r5",
+                "statement": "R5 false-alarm results. The feasibility gate failed, so no detection result exists; detection of attacks is unmeasured.",
+                "files": files, "data": {"UNSW IoT testbed benign days (validation and test)": data}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json")
+
+
 def main_v(version: str) -> None:
     out_dir = ROOT / "docs" / "research" / version
     if (out_dir / "manifest.json").exists():

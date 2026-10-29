@@ -111,6 +111,29 @@ improve detection and say nothing about the open R2 question. R2 stays sealed an
 - Next: a separate detection experiment on attacks with a clean baseline and a dated onset, specified before any of its data is collected: [`preregistration/R5-detection-delay.md`](preregistration/R5-detection-delay.md).
 - Evidence: 23 new tests (`tests/test_observation.py`), one API test and one frontend test. Not claimed: that operators understand the wording (no user study), or that an operator-set declaration cannot be wrong.
 
+## Detection on attacks with a clean baseline (R5): the data did not exist, the false-alarm budget held
+
+Protocol: [`preregistration/R5-detection-delay.md`](preregistration/R5-detection-delay.md) (two revisions, both before any R5 data was opened). Freeze: `docs/research/r5inv` (inventory) and `docs/research/r5` (results).
+
+**Feasibility gate: FAILED, so no detection claim exists.** A metadata-only inventory (schedule, device table and file listings; no capture, flow data or attack log opened) of the UNSW IoT attack traces found 234 scheduled attack episodes with exact epoch onsets and
+**15 eligible** against 30 required (13 sessions, 5 tools, none with 10 episodes). All 219 exclusions are the clean-prefix rule: the attacks are scheduled back to back about every 27 minutes, so only the first attack of a run on a device has 6 hours of unattacked traffic before it.
+Neither the rules nor the gate were loosened; the detection part (recall, delay, claims D1/D2) was **not run**, and no capture-to-split assignment exists. Delay would have been compared by restricted mean time-to-detection (tau 300 s, since attacks last 600 s). Detection of attacks remains **unmeasured**.
+
+**Claim F (false-alarm budget) ran as specified.** Thresholds were set per arm on validation benign (UNSW 16-10-12 plus the three oldest unopened days, 52.2 benign device-days) and then applied once to nine further unopened days (175 device-day traces, **159.6 benign device-days** after burn-in, 120 required):
+
+| Arm | Threshold | Validation /device-day | **Test /device-day [95% CI]** | Claim F |
+|---|---|---|---|---|
+| R1-shipped (v1) | shipped | n/a | 45.5 | n/a |
+| R1-recal | 1.000 | 0.02 | 0.21 [0.03, 0.56] | PASS, **vacuous** (see below) |
+| **A zero-inflated (primary)** | 0.725 | 2.87 | **2.68 [2.00, 3.42]** | **PASS** (upper bound under 3.75) |
+| B windowed-rate | 0.570 | 2.85 | 2.10 [1.33, 2.97] | PASS |
+
+- **A and B hold the 3.0 budget on held-out days** in this testbed, with enough exposure to say so (R2's 28 device-days could not). The R2 thresholds applied unchanged also stayed under budget (A 1.05, B 0.83) but R1-recal at its R2 threshold did not (3.70 [2.32, 5.37]).
+- **R1-recal "passes" only because it is disabled.** The v1 score saturates, no threshold below 1.0 reaches the budget, and at 1.000 it raised 0.06 alerts per device-day. A false-alarm test cannot tell a good detector from one that never fires; claim F is half of the evidence and the detection half is missing.
+- **"Better than recalibration" is not shown:** A has 2.46 more false onsets per device-day than R1-recal (interval 1.70 to 3.24), because it can alert at all; whether those alerts buy detection is exactly what could not be measured.
+- Alerts under A last a median of 40 s (mean 155 s); under B 75 s (mean 329 s); R1-recal's few alerts last a median of 655 s.
+- **Not supported:** that A or B catches attacks; that thresholds transfer across years or devices. The benign days are the 2016 testbed (23 devices) while the attacked devices are the 2018 testbed (10 devices). All UNSW traffic is assumed benign. The synthetic-overlay (S3) and matched 2018 check (S4) were not run: both are detection analyses and were held back when the gate failed.
+
 ## Failure cases (what it cannot do)
 
 | Situation | Result | Source |
