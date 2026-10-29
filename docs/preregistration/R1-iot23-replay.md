@@ -61,3 +61,13 @@ recovery states on real traffic.
 That the replay validates spatial, device or proximity detection, fusion, or the correlation window; that one device per capture is a fleet; that the
 labelled flows are the only anomalies present; that 5-second aggregation is how a real device would report. Few benign device-days are available, so false-alarm rates
 are estimates with wide uncertainty (reported with counts and a Poisson interval).
+
+---
+
+## Addendum 1 (written after the other held-out captures were replayed, before this one was downloaded)
+
+The four planned held-out captures turned out to be almost entirely malicious from their first flow (9-1 and 49-1 heads and 3-1 and 1-1 have
+0 to 0.13 benign device-days), so they cannot say anything about false alarms. One more held-out capture is added, benign by construction and
+not previously seen: **CTU-Honeypot-Capture-7-1 / Somfy-01** (a real Somfy door lock, benign flows only). Everything else in this protocol is unchanged.
+Given the small number of benign device-days overall, the false-alarm conclusion rests mostly on the development captures, which were seen before; this is
+stated in the results.
