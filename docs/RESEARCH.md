@@ -107,6 +107,8 @@ improve detection and say nothing about the open R2 question. R2 stays sealed an
 - **R4.** Every alert record carries `unsupported`, `missing`, `recovering` and an `observation` sentence generated from those same sets, e.g. "The location, device-health and proximity signals are not supported by this
   device. This alert is based on network telemetry only. Signals that were not observed neither confirm nor rule out an attack." Tests check that the sentence names exactly the signals in the record, never lists a
   missing signal as a contributing factor, and that fully observed alerts keep their original wording.
+- Release evidence is frozen (`docs/research/r3r4`, tag `observation-r3r4`, [`results/r3r4_release.json`](results/r3r4_release.json)): 221 backend tests (real Redis, none skipped), 62 frontend tests, the three earlier manifests still matching. Limitations kept with it: Docker images not rebuilt for this release; persistence tested at store/API level, not through a container restart; the fake-Redis test server is not a supported test target (it caused timing failures that real Redis does not).
+- Next: a separate detection experiment on attacks with a clean baseline and a dated onset, specified before any of its data is collected: [`preregistration/R5-detection-delay.md`](preregistration/R5-detection-delay.md).
 - Evidence: 23 new tests (`tests/test_observation.py`), one API test and one frontend test. Not claimed: that operators understand the wording (no user study), or that an operator-set declaration cannot be wrong.
 
 ## Failure cases (what it cannot do)
