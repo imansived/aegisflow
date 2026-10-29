@@ -83,6 +83,8 @@ def main(version: str) -> None:
         return main_r3r4()
     if version == "r5inv":
         return main_r5inv()
+    if version == "r5":
+        return main_r5()
     return main_v(version)
 
 

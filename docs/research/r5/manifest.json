@@ -1,378 +1,61 @@
 {
   "version": "r5",
-  "created": "2026-10-29T15:05:05.706941+00:00",
-  "frozen_at_commit": "050d846",
-  "git_tag": "research-r5",
-  "statement": "These artifacts support the headline claims in docs/RESEARCH.md. They are never overwritten: a change is a new version with a new evaluation on fresh seeds. Raw data files are not in git; their hashes are here so a regenerated copy can be checked.",
-  "environment": {
-    "python": "3.12.10",
-    "platform": "Windows-11-10.0.26200-SP0",
-    "packages": {
-      "fastapi": "0.147.0",
-      "numpy": "2.5.4",
-      "pydantic": "2.14.1",
-      "redis": "8.1.0",
-      "scikit-learn": "1.9.1",
-      "scipy": "1.18.1"
-    }
-  },
-  "experiments": [
-    {
-      "id": "E1",
-      "question": "Does keeping weak evidence (soft scores) close the late-vs-early fusion gap?",
-      "seeds": "validation 10-19",
-      "protocol": "manual \u00a75.5 (local)",
-      "results": [
-        "docs/results/e1.json",
-        "docs/results/e1_sweep_ext.json"
-      ],
-      "code": [
-        "ml/validate.py"
-      ]
-    },
-    {
-      "id": "E2",
-      "question": "Does a time window help with staggered deviations?",
-      "seeds": "validation 10-19",
-      "protocol": "manual \u00a75.6 (local)",
-      "results": [
-        "docs/results/e2.json"
-      ],
-      "code": [
-        "ml/validate.py"
-      ]
-    },
-    {
-      "id": "F1",
-      "question": "Final test of late fusion against single detectors and controls",
-      "seeds": "test 100-109 (spent)",
-      "protocol": "manual \u00a75.7 (local)",
-      "preregistration_commit": "8294f17",
-      "results": [
-        "docs/results/f1.json",
-        "docs/results/f1_dry.json"
-      ],
-      "code": [
-        "ml/final_eval.py",
-        "ml/validate.py"
-      ],
-      "guard": "data/results/F1_TEST_SEEDS_USED"
-    },
-    {
-      "id": "AUDIT",
-      "question": "Per-seed spread, alert-level precision/F1, six stress conditions, two real datasets (EXPLORATORY, post hoc)",
-      "seeds": "re-scores 100-109; fresh 200-254",
-      "protocol": "manual \u00a75.10 (local)",
-      "commit": "37cc1f2",
-      "results": [
-        "docs/results/audit.json",
-        "docs/results/audit_summary.txt",
-        "docs/results/toniot.json",
-        "docs/results/iot23.json"
-      ],
-      "code": [
-        "ml/audit.py",
-        "ml/stress_build.py",
-        "ml/audit_report.py",
-        "ml/realdata_toniot.py",
-        "ml/realdata_iot23.py"
-      ]
-    },
-    {
-      "id": "D106",
-      "question": "Does missingness-aware fusion degrade more gracefully than reading a missing signal as zero?",
-      "seeds": "test 300-309 (spent)",
-      "protocol": "docs/preregistration/D106-missing-signals.md",
-      "preregistration_commit": "4733306",
-      "code_commit": "8ca1069",
-      "results": [
-        "docs/results/d106_final.json",
-        "docs/results/d106_dry.json",
-        "docs/results/d106_ablation.json"
-      ],
-      "code": [
-        "ml/missing.py",
-        "ml/missing_ablation.py"
-      ],
-      "guard": "data/results/D106_TEST_SEEDS_USED"
-    },
-    {
-      "id": "D107",
-      "question": "Does the shipped availability handling (explicit nulls, per-pattern thresholds, fallback, Degraded state) work end to end?",
-      "seeds": "test 400-409 (spent)",
-      "protocol": "docs/preregistration/D107-availability-implementation.md",
-      "preregistration_commit": "8eacdbb",
-      "addenda_commits": [
-        "5eca50a",
-        "232dbc0",
-        "dbfd2f4"
-      ],
-      "results_commit": "cbda3e8",
-      "results": [
-        "docs/results/d107_final.json",
-        "docs/results/d107_final.log"
-      ],
-      "code": [
-        "ml/d107.py",
-        "ml/d107_eval.py",
-        "ml/export_availability.py"
-      ],
-      "guard": "data/results/D107_TEST_SEEDS_USED"
-    }
-  ],
+  "created": "2026-10-29T15:05:36.150293+00:00",
+  "frozen_at_commit": "ed7b327",
+  "git_tag": "fa-r5",
+  "statement": "R5 false-alarm results. The feasibility gate failed, so no detection result exists; detection of attacks is unmeasured.",
   "files": {
-    "models/frozen_design.json": {
-      "sha256": "ac1e62d0af1dc78682775e5fdf3d5f51e75a7579a4f4492915d1710fb66f648e",
-      "role": "the learned late-fusion model and alert thresholds served by the API (fitted on validation seeds 10-15, thresholds 16-19)",
-      "last_commit": "404e9ee"
+    "docs/preregistration/R5-detection-delay.md": {
+      "sha256": "ce517cdad3d6ee0515540ae097d670d9bb49d8af554b5669d5decfb3ef7daf5d",
+      "role": "R5 protocol (revisions 1 and 2 before the inventory)",
+      "last_commit": "73ab350"
     },
-    "models/availability_thresholds.json": {
-      "sha256": "be331b1e6a32670c256ffc767462e168c94323882edd702535523d99794fab47",
-      "role": "validated alert thresholds per availability pattern (calibrated on validation seeds 16-19, budget 3.0 false onsets per device-day)",
-      "last_commit": "67545d1"
+    "docs/results/r5_inventory.json": {
+      "sha256": "a2060e5fe0a028c874e5dcd59f1b14bec84b4f56cc271258950dc4e2adad26b0",
+      "role": "Inventory and failed gate",
+      "last_commit": "dc53772"
     },
-    "docs/preregistration/D106-missing-signals.md": {
-      "sha256": "a9975072d09bff7ef076231a4bf30544200ad75b27bcbfbcd1c8b92e737e32af",
-      "role": "D106 protocol (frozen before its code and seeds)",
-      "last_commit": "4733306"
+    "docs/results/r5_validation.json": {
+      "sha256": "0090e6e8a9ad05e89ed0eb886651abc3fec9a90c12bb99af3f29e24b8b89334a",
+      "role": "R5 validation thresholds (committed before the test days were scored)",
+      "last_commit": "439ecdd"
     },
-    "docs/preregistration/D107-availability-implementation.md": {
-      "sha256": "27fbe547074897d435aeabd6739cc44c4f7262f3154d35b96bbd4bf97588be57",
-      "role": "D107 protocol with its three pre-scoring addenda",
-      "last_commit": "dbfd2f4"
+    "docs/results/r5_test_inputs.json": {
+      "sha256": "a09ba320239678d7bfebd4d7c8103f61441a971ec2453673a05a92bc428877d4",
+      "role": "Hashes of the test files, recorded before scoring",
+      "last_commit": "439ecdd"
     },
-    "docs/results/e1.json": {
-      "sha256": "3247959674152088804a8d51a6ab4eab38020611b3b172f70837d97af2503bd8",
-      "role": "E1 result",
-      "last_commit": "8a111c7"
+    "docs/results/r5_test.json": {
+      "sha256": "d3daa10d48134b60e8a1a0227688dfbb4bcd5453c916d80e6abea209a50fa080",
+      "role": "R5 false-alarm test (single run, guard data/results/R5_TEST_USED); detection part not run",
+      "last_commit": "050d846"
     },
-    "docs/results/e1_sweep_ext.json": {
-      "sha256": "b3f150b1c5cd228e65072c895f35f61dd9889dabbdf1a5b7a86190ad39bc53f2",
-      "role": "E1 result",
-      "last_commit": "8a111c7"
+    "ml/r5_eval.py": {
+      "sha256": "52028c90e5102b3c1f637b413517d82077f12879ccf680bec9c8c6828b3af6e7",
+      "role": "R5 code",
+      "last_commit": "439ecdd"
     },
-    "ml/validate.py": {
-      "sha256": "02c530eff97142e5027ec1096d359cbc7450980a68e748d41fd5f600cc742f86",
-      "role": "E1 code",
-      "last_commit": "616cf9e"
-    },
-    "docs/results/e2.json": {
-      "sha256": "23e61fd7178d89b6d9a9a3d6b993e46568196bf373246a393d5b5a68d372eff8",
-      "role": "E2 result",
-      "last_commit": "b4cbd77"
-    },
-    "docs/results/f1.json": {
-      "sha256": "c6361fd19637903d58f6532e9292edfc54883ef3cfc661b073b842438cea134f",
-      "role": "F1 result",
-      "last_commit": "9d6df10"
-    },
-    "docs/results/f1_dry.json": {
-      "sha256": "13d7e18f3bd0db527491d1d7feb953693b69e5546d1d8b662a8de276a4d90afa",
-      "role": "F1 result",
-      "last_commit": "9d6df10"
-    },
-    "ml/final_eval.py": {
-      "sha256": "d72b7525bcf06063e21cf625448efef6f0ee36ad28ae6651c6c7255985f51d4a",
-      "role": "F1 code",
-      "last_commit": "616cf9e"
-    },
-    "docs/results/audit.json": {
-      "sha256": "629e77de01dd968af047676f0b083aba1841825e2c7f9f094d745b21d3308428",
-      "role": "AUDIT result",
-      "last_commit": "37cc1f2"
-    },
-    "docs/results/audit_summary.txt": {
-      "sha256": "e549e6c3d429be172ed4ea59b0a65de627f3490b73eae50dc3b408d06a23f43b",
-      "role": "AUDIT result",
-      "last_commit": "37cc1f2"
-    },
-    "docs/results/toniot.json": {
-      "sha256": "b220db672ff29c4286a8bcea0a9d68ea2c9aaf8621c1d3db5174aff94572f1c5",
-      "role": "AUDIT result",
-      "last_commit": "37cc1f2"
-    },
-    "docs/results/iot23.json": {
-      "sha256": "ea76c5eb3bc54c40474d0509310dfcfa926155b50118f0559b5c967e357e8a02",
-      "role": "AUDIT result",
-      "last_commit": "37cc1f2"
-    },
-    "ml/audit.py": {
-      "sha256": "cb193f23c0f19adcc83f0a2e6a2137b6a59f15faa51092a7871a800c18325387",
-      "role": "AUDIT code",
-      "last_commit": "37cc1f2"
-    },
-    "ml/stress_build.py": {
-      "sha256": "2cb719a49eb896b492f3ce87c94641ad5383624713692a2e284737b7dffe2cee",
-      "role": "AUDIT code",
-      "last_commit": "37cc1f2"
-    },
-    "ml/audit_report.py": {
-      "sha256": "25d76dec9e8a8883e068b9ff7755df4ab4ba448364207fdc816589350e6dca69",
-      "role": "AUDIT code",
-      "last_commit": "37cc1f2"
-    },
-    "ml/realdata_toniot.py": {
-      "sha256": "d468fcc42e1ab52ec6a2ea9b86a991ab7ea67edf5a323ecd9f4c6df9e1d33ac6",
-      "role": "AUDIT code",
-      "last_commit": "37cc1f2"
-    },
-    "ml/realdata_iot23.py": {
-      "sha256": "c9f81ba5fcd983ff16add98a0648ec1ae352da1b8b24b09198a2e64f159bd97f",
-      "role": "AUDIT code",
-      "last_commit": "37cc1f2"
-    },
-    "docs/results/d106_final.json": {
-      "sha256": "59731ad80716e270d259be1831804fc49e21d05f5c953bb3f9705a729ffe3696",
-      "role": "D106 result",
-      "last_commit": "b02c018"
-    },
-    "docs/results/d106_dry.json": {
-      "sha256": "bf09f05b841c42f0537a9aed00b3562e677c0e09dd2694d08c7024689664ffc8",
-      "role": "D106 result",
-      "last_commit": "8ca1069"
-    },
-    "docs/results/d106_ablation.json": {
-      "sha256": "5c2fa4000a96df16dfa23c546d3dd368237f847dc28a1f152ef99907b315e53e",
-      "role": "D106 result",
-      "last_commit": "b02c018"
-    },
-    "ml/missing.py": {
-      "sha256": "31d6c5703b17f19cb09d9255453d3b97b28e18f0726084749548c54828a64422",
-      "role": "D106 code",
-      "last_commit": "8ca1069"
-    },
-    "ml/missing_ablation.py": {
-      "sha256": "c5efe4ff7b799db42655bdffeaea4b650b01be4695f5b0efa83cbea11d47e663",
-      "role": "D106 code",
-      "last_commit": "b02c018"
-    },
-    "docs/results/d107_final.json": {
-      "sha256": "181408269ba0a4d7f2141982a0c90cd03d99479496f8dc42fbd61b189fcf822c",
-      "role": "D107 result",
-      "last_commit": "cbda3e8"
-    },
-    "docs/results/d107_final.log": {
-      "sha256": "6412eba92f695a03bac4c535c78c63d9d35b46b70c882e85f3c95166ed94b55a",
-      "role": "D107 result",
-      "last_commit": "cbda3e8"
-    },
-    "ml/d107.py": {
-      "sha256": "2227ab7326bdce62c903f9a319c611a8da668518dedcc499a9af5bf298963f9e",
-      "role": "D107 code",
-      "last_commit": "232dbc0"
-    },
-    "ml/d107_eval.py": {
-      "sha256": "7fa9754c50a0c97a4b1ff151cdcf7a7b2e4ae9f1516d2c7af0245b18253cacbc",
-      "role": "D107 code",
-      "last_commit": "dbfd2f4"
-    },
-    "ml/export_availability.py": {
-      "sha256": "0b0b851503606dfea4c847fe5c2c3f2fd7310a3d62d32ee867e86aa5c130587a",
-      "role": "D107 code",
-      "last_commit": "67545d1"
+    "ml/r5_inventory.py": {
+      "sha256": "9e43fbb2f51654813ca8dd70b7de6cc7339d8188f6a4c61c543d912f90a91374",
+      "role": "R5 inventory code",
+      "last_commit": "73ab350"
     }
   },
   "data": {
-    "validation rows (fit and thresholds)": {
-      "seed10.npz": "8f4806a30976218b821ba0193c354727e3428bfa900259c628b04cfc26125e0b",
-      "seed11.npz": "00758190066c43f1c321aeb526cacc5d38b8f7bd4b79574a6a38bf0763911507",
-      "seed12.npz": "e9ec4ac3a1c30adbc7f4f8a54a5d94e706e33a4681558e097565e84276173627",
-      "seed13.npz": "61d656f15ccdc9272fc576140f9fe87ab8ff99b444d9fecfbb77d4a3d5cca4a0",
-      "seed14.npz": "2c934cca6aa49c1806e9326b658361c9e9a58e08bb1388786e59911e4cbe4fcb",
-      "seed15.npz": "d3c503404c0d25ffd8fa6a950f81f72d7ee14ab72ab03957c80581df94fa5172",
-      "seed16.npz": "80c333989c5eee991703ea1588efaffee6f59cd43f0eead06070af0f25b920c5",
-      "seed17.npz": "c5e9e16145b5d8b5f7ce624b4e10392d568d7ff810a3b5a1d93a7410aa39c66c",
-      "seed18.npz": "a7813a785286dc9647891436d18d6629e3892a7e6958127c9f7000f2004f3666",
-      "seed19.npz": "22f862ff0f4dad2ad850a9b13f85fff61db026bc7eed0388eca08a410e2606da"
-    },
-    "F1 test rows": {
-      "seed100.npz": "aae3956f43934bb97b9d01def73cf7dfac367f895068275afeffa620ef00c3c5",
-      "seed101.npz": "d0eb2e043d7ad2092fc0bfcbe01b00479818f4bae8d8311d0549c6029248e43d",
-      "seed102.npz": "846770bae0b6c2b4b2cf3ab7d89b14af00d8bf292504b343311eafbc8d3fce14",
-      "seed103.npz": "3a7250d27128f3efa2661e5b28d7fd56ac299102087c8880c8c554bf6cd24296",
-      "seed104.npz": "1a4fd108d81b1ed997fc5878432dbdefb584a196e8f888e4fa7df8af5272442a",
-      "seed105.npz": "5407a7df3624073cb641de045a473293ce783629d50c54c0f2b5071354962453",
-      "seed106.npz": "582ceb40c95fc06284b348a48dc264004f2e97f1dcc5160fca18fc44a7566089",
-      "seed107.npz": "608a50261fbf4399d3971e4ee482c216a6aa02c0329956fe464b7a8253de51a8",
-      "seed108.npz": "eae18045552b6c244968241fa0b6b66a7fe97507c2d45eaa0d6286c13a8ef2d5",
-      "seed109.npz": "a112f70ce5f953db80ed9ae77b73920320614da753f362ed044bdff1f9bcd86c"
-    },
-    "D106 test rows": {
-      "seed300.npz": "11db4a80d00b9918d2f33ef78d9e5c7516deb3676573946153f8110adbb0233f",
-      "seed301.npz": "cb6590828e9416591c7f78b1c444bd39bcdff3f848e8cf09102b8ed25f4b777c",
-      "seed302.npz": "916fce64bc3c9388098a3960e02af967af9813e21f8902ff069b2371923e5632",
-      "seed303.npz": "27980a198fe80842cc7d6b608e784295e5ee8e004803e7a9e55708a57bfb1ffc",
-      "seed304.npz": "95289d7b98a4956da1d053607e46cad8f9a9d0505fa1101bfa12250701c88644",
-      "seed305.npz": "167b042c1f23f43fbb7ac66b70c8aee1fa95b6a0386c4cfeb0606a96502cbb8f",
-      "seed306.npz": "dde712c0dc16c64b1737535c7fd1dfed2b14486ca8a394b35c1317dffe9fbf8e",
-      "seed307.npz": "c871ba732a2317d1a5ee1c5548a8d0a20f6d3a5fb006cb815b8bac20d0de6cc0",
-      "seed308.npz": "981e210e52c45bc57024ecca2ae559b8390d63afcad610c080636ce379c462d1",
-      "seed309.npz": "8c36a65de86acd2e705d64dd314e17f8f8afc9d89e46f77fbb3b6ad39c96f54a"
-    },
-    "D107 end-to-end runs (data/d107)": {
-      "d107/complete/seed400.npz": "517f92757081b38b60d196f25c22916086e99a0051ff3e17e1199178367ae9d4",
-      "d107/complete/seed401.npz": "4b5975f2c986e3651ab213c02dcc7890c922b3148687fcd1a39bad342b7213a1",
-      "d107/complete/seed402.npz": "e3692c7ad06600595d48eef42e27afbc90f67ab3e7727909d6d612bfd5544b09",
-      "d107/complete/seed403.npz": "f4cfb72dc6bcf7a05967286a9d49b350a8a6af4cbc2ae264d69616ed07af1d2d",
-      "d107/complete/seed404.npz": "0ea3c0d98bb4449b85004ad836f55b0135d9d48f97ba64a5f8e71bf85eafb777",
-      "d107/complete/seed405.npz": "10aa191cfbd842eeea6c7703c34b39da72211b42abde9b9a503186044ea24047",
-      "d107/complete/seed406.npz": "f9807e6b224b88c6586e01d64747d857acfc6f35d6176235a87f1c2ff68710ba",
-      "d107/complete/seed407.npz": "62fa8ea227aea6a621ac5b3c9d4c2f451054698393eb75951183ef44d0b66291",
-      "d107/complete/seed408.npz": "89d5412c9d59580fc2069960fa78cfb3c3a8748f3d0305445ead3f4aff8661bb",
-      "d107/complete/seed409.npz": "85d92d80ac03af51ae0745d48f3770bea3856adf37c4d532533d1325ad2706d2",
-      "d107/correlated/seed400.npz": "f5be19b965fe23898f203b276e14918b813070fde35e0891a04e0c846fab6555",
-      "d107/correlated/seed401.npz": "e70e1b52477346feb97498299df3f6a88d81dd6b1ecf669d74518348a63f86fa",
-      "d107/correlated/seed402.npz": "1fbbbc04d9114cfaf3695ba46cebe6459e8496f001ad377955fc061b550c4ce9",
-      "d107/correlated/seed403.npz": "227f20b1a960b8c6f13da6d9c27a13e7ca7e201fbb44d11e501f050d2514dced",
-      "d107/correlated/seed404.npz": "9598ef4c148dd16562be762171e6695b9c8c7a326fc3a97bc37f546214587b7d",
-      "d107/correlated/seed405.npz": "10d7db6f8ff8c0c1c758ef37408810f1903d4b27f652186bd418f8f31725cd18",
-      "d107/correlated/seed406.npz": "40ad39a5ff9ee1f4b19b8fc0f4159d05d54713c932d879fa467d8ac86998bf6d",
-      "d107/correlated/seed407.npz": "92ab0ff8aee2ddd5d5a9e01974c62a7ffb87a79efa1920596dcf65a1d09d4e74",
-      "d107/correlated/seed408.npz": "c126958838a8c7758cddd9c6994483a125a3ff0468b33c5c5270f33ef9f54027",
-      "d107/correlated/seed409.npz": "e83df3f5f3e69dd4d642ec1d76b9f951f897e27e52e550aa774e61425ef15442",
-      "d107/intermittent/seed400.npz": "bdcd130c51bf3a5c5bd2f179dc74e4bb37a57d6aa7d21a58c9ae5dfe59e44560",
-      "d107/intermittent/seed401.npz": "25e99769de73a3e444ffd62db87dc9e219ff1a4e94308d48153690b32f6507f3",
-      "d107/intermittent/seed402.npz": "5474856af74d003b6032331fd82c843f469ababdb00bafb0d970a675e2d87a00",
-      "d107/intermittent/seed403.npz": "209392b1f6367b9faa4e5041760d938bd1c14da752d9a79f829de3d62b5768fa",
-      "d107/intermittent/seed404.npz": "39ac0e0661b146dca7d574d779694e924343f3dd7bd493b009b6b8bd40b56f34",
-      "d107/intermittent/seed405.npz": "60bdfac6bfe14b0e71521537ce7b4b921016ad65629d21bc97d90f1827f8003c",
-      "d107/intermittent/seed406.npz": "7dbb4c71a94fe7d95b973f9f7836aca2508f2cb4aefbc20662a65cccf9516328",
-      "d107/intermittent/seed407.npz": "ce5b6b0ec04ccd8609c3b0f1783170959bbe048c6dd3f18784e838ec1d432df2",
-      "d107/intermittent/seed408.npz": "52efbc4d375b83d409d1fab3b801d98b091349bb250da947e5461cf8e298e195",
-      "d107/intermittent/seed409.npz": "2696d0db65d8b755a7b6705a6b83bd02e46706ecd1d51be9e8ede8812f9530d4",
-      "d107/pair_device-proximity/seed400.npz": "935279cc7efc00a515e3833a72f6156e535eeb3310711d7f690e10a178bbf07b",
-      "d107/pair_device-proximity/seed401.npz": "2c45b7aa36b69a115f27e3089e961babc6b17b9fbbeff55b2d760f870ee30bab",
-      "d107/pair_network-device/seed400.npz": "b2d98e023c2ca364f3b417015f394f9da134b31aa70866341a58a881df4d4c05",
-      "d107/pair_network-device/seed401.npz": "769bb033c89ee4a168e2d45dcfa6fd251e43a5be74b7e342353133023504e31e",
-      "d107/pair_network-proximity/seed400.npz": "ed6790234bb5533a04766137aa4b916005d557260a89255a854d2e2393b34337",
-      "d107/pair_network-proximity/seed401.npz": "b46e5b6adc7738a8743839cf77e3406d3721d107b5b5e0e982538c24c7cb9d87",
-      "d107/pair_spatial-device/seed400.npz": "9c527dcca736830040aa842b8626d314c4578b01fb10f2da416da2fa60757db0",
-      "d107/pair_spatial-device/seed401.npz": "3f4cd881ffefa6d8c642ddcb9b2ad556d3d94ed842d0af079f2e245cbc88f217",
-      "d107/pair_spatial-network/seed400.npz": "5e590b59a732d32a8727b6f366fe22a21471a45b34d5a5aefe4602690958827b",
-      "d107/pair_spatial-network/seed401.npz": "8d387bbff2ed2883b1fc02a5ba4ea0239ecd10ea863b7e7c6baa3cdedb6f2a6a",
-      "d107/pair_spatial-proximity/seed400.npz": "6ec111925721ad5266359dbfcd5ecfe63676e9721da9472da9c7358aff7ad7b3",
-      "d107/pair_spatial-proximity/seed401.npz": "fb5e9f49a7b3a941a9b64e7a2fb7fe1849c521c3ece0b23b1d9a3528581f5d6a",
-      "d107/single_device/seed400.npz": "58cfadf360af088d8fe739e41d25013e7bf8e4bd04861142e7602ef2705b2b75",
-      "d107/single_device/seed401.npz": "72377812bfaa124314b28253f2d37dcc35a79aab46521ac344ef1bf071747ac7",
-      "d107/single_network/seed400.npz": "bfa3845e1402eb05b781f646309b6f2a641c6331a0b88fd1d8ea54119825dcbd",
-      "d107/single_network/seed401.npz": "bcdc4d0d637a8b2da4eadaaf25c1d128eb26abd78b52d59da7a9193427535467",
-      "d107/single_proximity/seed400.npz": "569098e84cb63a56fa9a727ba2fbc4d1c2e4d3958b9eb9218fee3175f2997a45",
-      "d107/single_proximity/seed401.npz": "5b8c3aa7d808efb64bc2cdfbeb5d55fc1bb0639cc4659d418c45c3bb7e88bb59",
-      "d107/single_spatial/seed400.npz": "43691c8ef5b9fd1a77cc10d3894985166746ac20ed7bf1f6527f6a3b2cd87d8d",
-      "d107/single_spatial/seed401.npz": "a9cab16cc6bd5b32e03b4a5ccb0b972c96aa78a392673821252b1b77f56d2386"
+    "UNSW IoT testbed benign days (validation and test)": {
+      "real/unsw/16-10-12.csv.zip": "f182d0ef9ef9949d67ca50102d9e9ec4c315d256138845278948c53a0658e58c",
+      "real/unsw/16-09-23.csv.zip": "8d5ca8ab6fa28de0d4b4d1968f0c76a26bd24af69f733d20da1a1ab09d25c9e3",
+      "real/unsw/16-09-24.csv.zip": "5a07a7e54df9fa55e158c82864b945dd9682134525ba6ea4043371ad0f190460",
+      "real/unsw/16-09-25.csv.zip": "8216320302a0825d52e40e2a094030450bfe55d4cee2173e53a178c30ae27671",
+      "real/unsw/16-09-26.csv.zip": "2dc88e854661ccecc107b17e68e5ebcb4c1fce46fb7390a9a2bc76367794e0d4",
+      "real/unsw/16-09-27.csv.zip": "0fca46bf5019662d6c034428389ff78e6af01b43d3b70554a7c4b2eb5802ce84",
+      "real/unsw/16-09-28.csv.zip": "05a73851b38a701b16825c5f181c9a74d0674c55cb97a6d241b39623266c8144",
+      "real/unsw/16-09-29.csv.zip": "cb1c8b3c92738a24dde23fad7568ed086bec760b3d1c6e1c4176a87c0d7b2749",
+      "real/unsw/16-09-30.csv.zip": "f99f2c3cbfca7b8cc7b94f64f8fd5504569fbd7f13f1f94021afc52547f84d8d",
+      "real/unsw/16-10-01.csv.zip": "319534e50277e60f7190199d3037b8fa2146f5bc4f7fe56c95afc26798e92da0",
+      "real/unsw/16-10-02.csv.zip": "f2b3b6a9b546e2af7b5ec02b49c7afbceeb1a9db8b500076f4705461136b324a",
+      "real/unsw/16-10-03.csv.zip": "294c84a6808dac642510f69ef5d19a872fbabee95914427c843e183b59db296b",
+      "real/unsw/16-10-04.csv.zip": "8db1098188bbe00930c66fa457085eea7fa28724dddedb05c3fd7590a1b14c2d"
     }
-  },
-  "regenerate": {
-    "validation and test rows": "python -m ml.dataset --seeds 10 19 ; --seeds 100 109 ; --seeds 300 309  (20 devices, 72 h, 33 h warm-up, 4 episodes/device/day)",
-    "D107 runs": "python -m ml.d107 build   (50 end-to-end runs through the product pipeline; Windows: if the process pool dies with WinError 6, run build_run per job)",
-    "models": "python -m ml.export_design ; python -m ml.export_availability",
-    "evaluations": "python -m ml.final_eval (F1, refuses: guard) ; python -m ml.missing --mode final (D106, guard) ; python -m ml.d107_eval (D107, guard)"
-  },
-  "spent_seeds": {
-    "validation": "10-19 (fit/threshold use only)",
-    "F1": "100-109",
-    "D106": "300-309",
-    "D107": "400-409",
-    "stress and audit": "200-254"
   }
 }
