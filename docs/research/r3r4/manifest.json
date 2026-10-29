@@ -1,0 +1,36 @@
+{
+  "version": "r3r4",
+  "created": "2026-10-29T14:48:11.568647+00:00",
+  "frozen_at_commit": "b91d563",
+  "git_tag": "observation-r3r4",
+  "statement": "Release evidence for declared signal sets and partial-observation wording. The product code is pinned by the git tag, not hashed here, so later fixes do not invalidate the evidence; a change to behaviour these tests cover needs a new version.",
+  "code_blob_ids_at_freeze": {
+    "backend/detection/engine.py": "3a24080e831d0cd05bbe340282f0077f187acf2d",
+    "backend/detection/types.py": "e0fa73ab1dbb3f2d7021c7c6efa0df15b8f2a230",
+    "backend/correlation/engine.py": "315da81b17d9f06f78d3da1cf81c36984a9554bc",
+    "backend/correlation/explain.py": "73141414919b2b36ab222a15801e96ecad2fd900",
+    "backend/services/alerts.py": "5ea0beb580eb0ce386f09d067696cb9f235eee88",
+    "backend/services/pipeline.py": "ad8e3a084137688bf7b07cd7958027dc370f2522",
+    "backend/database/store.py": "3a9b6ff423bf99c54faa9cdb4ee54d7ed65834c5",
+    "backend/api/app.py": "697693a9580476d0a5011294ffdf1e4b9bcd7a08",
+    "backend/api/runtime.py": "9eda66ad4b6f2585c336a33bb229dc6abe0a1783"
+  },
+  "files": {
+    "docs/preregistration/R3-R4-observation-semantics.md": {
+      "sha256": "773f3b1253c9c7d527d0d836caf80560ee74c307de965e910a8b1c6722ff4e9d",
+      "role": "R3/R4 specification and acceptance criteria (committed before the implementation)",
+      "last_commit": "d91f439"
+    },
+    "docs/results/r3r4_release.json": {
+      "sha256": "465b40d53e257b1442934b9d5bf8a0671692f94f42c82c0734174b0522bfe28a",
+      "role": "R3/R4 release evidence: test results, instability finding, remaining limitations",
+      "last_commit": "b91d563"
+    },
+    "tests/test_observation.py": {
+      "sha256": "6ce2e50c25cd9ddd433c98fe627dc42e0eecacbb900471ea1f0c463788010d1f",
+      "role": "R3/R4 acceptance tests",
+      "last_commit": "178a098"
+    }
+  },
+  "data": {}
+}
