@@ -87,6 +87,8 @@ def main(version: str) -> None:
         return main_r5()
     if version == "r6audit":
         return main_r6audit()
+    if version == "r7audit":
+        return main_r7audit()
     return main_v(version)
 
 
@@ -206,6 +208,25 @@ def main_r6audit() -> None:
                 "statement": "R6 stage-1 audit. Optimistic gate on the test split: " + ("PASSED" if g["passed"] else "FAILED") + " (" + str(g["measured_test_split"]["episodes"]) + " eligible test episodes of "
                              + str(g["required"]["episodes"]) + " required). Per the protocol, a failed optimistic gate stops the detection part: no capture was downloaded or opened.",
                 "gate_stage1": g, "split_rule": aud["split_rule"], "files": files, "data": {"R6 schedule and listing files (public, UNSW IoT analytics)": docs}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json")
+
+
+def main_r7audit() -> None:
+    out_dir = ROOT / "docs" / "research" / "r7audit"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r7audit/manifest.json exists: a manifest is immutable.")
+    aud = json.loads((ROOT / "docs" / "results" / "r7_audit.json").read_text())
+    rels = {"docs/preregistration/R6-matched-testbed-detection.md": "R6 protocol (unchanged; R7 builds on it)", "docs/preregistration/R7-separated-baseline-gap.md": "R7 protocol (committed before the audit ran)",
+            "docs/results/r7_audit.json": "R7 stage-1 metadata audit: calendar, eligibility, strata, split, exposure, optimistic gate", "ml/r7_audit.py": "The R7 audit script (R6's, three changes)"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    docs = {f"r5/docs/{q.name}": sha256(q) for q in sorted((ROOT / "data" / "r5" / "docs").glob("*")) if q.name in ("annotations.zip", "attackinfo.xlsx", "unsw_attack_data.html", "unsw_iottraces.html")}
+    g = aud["gate_stage1"]
+    manifest = {"version": "r7audit", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "audit-r7",
+                "statement": "R7 stage-1 audit. Optimistic gate on the test split: " + ("PASSED" if g["passed"] else "FAILED") + " (" + str(g["measured_test_split"]["episodes"]) + " eligible test episodes of "
+                             + str(g["required"]["episodes"]) + " required). The split is R6's, unchanged. No capture has been downloaded or opened.",
+                "gate_stage1": g, "split_rule": aud["split_rule"], "files": files, "data": {"R6/R7 schedule and listing files (public, UNSW IoT analytics)": docs}}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json")

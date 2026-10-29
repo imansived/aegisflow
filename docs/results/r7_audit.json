@@ -1,0 +1,5525 @@
+{
+ "protocol": "docs/preregistration/R7-separated-baseline-gap.md (on R6)",
+ "blindness": {
+  "read": [
+   "annotations.zip: annotations/00166cab6b88.csv, annotations/0017882b9a25.csv, annotations/44650d56ccd3.csv, annotations/50c7bf005639.csv, annotations/70ee50183443.csv, annotations/74c63b29d71d.csv, annotations/d073d5018308.csv, annotations/ec1a5979f489.csv, annotations/ec1a59832811.csv, annotations/f4f5d88f0a3c.csv",
+   "attackinfo.xlsx",
+   "unsw_attack_data.html"
+  ],
+  "not_opened": [
+   "any capture",
+   "flowdata.zip",
+   "annotations/*.log"
+  ],
+  "network": "HTTP HEAD (size) only"
+ },
+ "input_hashes": {
+  "annotations.zip": "1990c33d5430c4939336d79b08e9ba6a90a8c97621069cb748c3c0282d1eaafd",
+  "attackinfo.xlsx": "dccfd77698f9be527515192147f8d72ac168200229f0591eaf46086858b1fc41",
+  "unsw_attack_data.html": "3beaaac05c21b5a6902454b82b9e363a258da4be7cbe99825dacb2e6a94de342",
+  "unsw_iottraces.html": "4f47759998d149a99858db178facaadc9149a29aaab0972afa07ce88f4c9f731"
+ },
+ "devices": {
+  "ec1a59832811": {
+   "type": "WEMO Motion Sensor",
+   "range": [
+    "2018-05-28",
+    "2018-06-17"
+   ],
+   "dates_with_file": [
+    "2018-05-28",
+    "2018-05-29",
+    "2018-05-30",
+    "2018-05-31",
+    "2018-06-01",
+    "2018-06-02",
+    "2018-06-03",
+    "2018-06-04",
+    "2018-06-05",
+    "2018-06-06",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-09",
+    "2018-06-10",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-06-14",
+    "2018-06-15",
+    "2018-06-16",
+    "2018-06-17"
+   ],
+   "date_gaps_in_range": []
+  },
+  "ec1a5979f489": {
+   "type": "WEMO Power Switch",
+   "range": [
+    "2018-05-28",
+    "2018-06-17"
+   ],
+   "dates_with_file": [
+    "2018-05-28",
+    "2018-05-29",
+    "2018-05-30",
+    "2018-05-31",
+    "2018-06-01",
+    "2018-06-02",
+    "2018-06-03",
+    "2018-06-04",
+    "2018-06-05",
+    "2018-06-06",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-09",
+    "2018-06-10",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-06-14",
+    "2018-06-15",
+    "2018-06-16",
+    "2018-06-17"
+   ],
+   "date_gaps_in_range": []
+  },
+  "00166cab6b88": {
+   "type": "Samsung Camera",
+   "range": [
+    "2018-05-28",
+    "2018-06-17"
+   ],
+   "dates_with_file": [
+    "2018-05-28",
+    "2018-05-29",
+    "2018-05-30",
+    "2018-05-31",
+    "2018-06-01",
+    "2018-06-02",
+    "2018-06-03",
+    "2018-06-04",
+    "2018-06-05",
+    "2018-06-06",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-09",
+    "2018-06-10",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-06-14",
+    "2018-06-15",
+    "2018-06-16",
+    "2018-06-17"
+   ],
+   "date_gaps_in_range": []
+  },
+  "50c7bf005639": {
+   "type": "TP Link Plug",
+   "range": [
+    "2018-05-28",
+    "2018-06-17"
+   ],
+   "dates_with_file": [
+    "2018-05-28",
+    "2018-05-29",
+    "2018-05-30",
+    "2018-05-31",
+    "2018-06-01",
+    "2018-06-02",
+    "2018-06-03",
+    "2018-06-04",
+    "2018-06-05",
+    "2018-06-06",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-09",
+    "2018-06-10",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-06-14",
+    "2018-06-15",
+    "2018-06-16",
+    "2018-06-17"
+   ],
+   "date_gaps_in_range": []
+  },
+  "70ee50183443": {
+   "type": "Netatmo Camera",
+   "range": [
+    "2018-05-28",
+    "2018-06-17"
+   ],
+   "dates_with_file": [
+    "2018-05-28",
+    "2018-05-29",
+    "2018-05-30",
+    "2018-05-31",
+    "2018-06-01",
+    "2018-06-02",
+    "2018-06-03",
+    "2018-06-04",
+    "2018-06-05",
+    "2018-06-06",
+    "2018-06-07",
+    "2018-06-08",
+    "2018-06-09",
+    "2018-06-10",
+    "2018-06-11",
+    "2018-06-12",
+    "2018-06-13",
+    "2018-06-14",
+    "2018-06-15",
+    "2018-06-16",
+    "2018-06-17"
+   ],
+   "date_gaps_in_range": []
+  },
+  "0017882b9a25": {
+   "type": "Huebulb",
+   "range": [
+    "2018-09-24",
+    "2018-10-26"
+   ],
+   "dates_with_file": [
+    "2018-10-10",
+    "2018-10-11",
+    "2018-10-12",
+    "2018-10-13",
+    "2018-10-14",
+    "2018-10-15",
+    "2018-10-16",
+    "2018-10-17",
+    "2018-10-18",
+    "2018-10-19",
+    "2018-10-20",
+    "2018-10-21",
+    "2018-10-22",
+    "2018-10-23",
+    "2018-10-24",
+    "2018-10-25",
+    "2018-10-26"
+   ],
+   "date_gaps_in_range": [
+    "2018-09-24",
+    "2018-09-25",
+    "2018-09-26",
+    "2018-09-27",
+    "2018-09-28",
+    "2018-09-29",
+    "2018-09-30",
+    "2018-10-01",
+    "2018-10-02",
+    "2018-10-03",
+    "2018-10-04",
+    "2018-10-05",
+    "2018-10-06",
+    "2018-10-07",
+    "2018-10-08",
+    "2018-10-09"
+   ]
+  },
+  "44650d56ccd3": {
+   "type": "AmazonEcho",
+   "range": [
+    "2018-09-24",
+    "2018-10-26"
+   ],
+   "dates_with_file": [
+    "2018-10-10",
+    "2018-10-11",
+    "2018-10-12",
+    "2018-10-13",
+    "2018-10-14",
+    "2018-10-15",
+    "2018-10-16",
+    "2018-10-17",
+    "2018-10-18",
+    "2018-10-19",
+    "2018-10-20",
+    "2018-10-21",
+    "2018-10-22",
+    "2018-10-23",
+    "2018-10-24",
+    "2018-10-25",
+    "2018-10-26"
+   ],
+   "date_gaps_in_range": [
+    "2018-09-24",
+    "2018-09-25",
+    "2018-09-26",
+    "2018-09-27",
+    "2018-09-28",
+    "2018-09-29",
+    "2018-09-30",
+    "2018-10-01",
+    "2018-10-02",
+    "2018-10-03",
+    "2018-10-04",
+    "2018-10-05",
+    "2018-10-06",
+    "2018-10-07",
+    "2018-10-08",
+    "2018-10-09"
+   ]
+  },
+  "f4f5d88f0a3c": {
+   "type": "chromecast",
+   "range": [
+    "2018-09-24",
+    "2018-10-26"
+   ],
+   "dates_with_file": [
+    "2018-10-10",
+    "2018-10-11",
+    "2018-10-12",
+    "2018-10-13",
+    "2018-10-14",
+    "2018-10-15",
+    "2018-10-16",
+    "2018-10-17",
+    "2018-10-18",
+    "2018-10-19",
+    "2018-10-20",
+    "2018-10-21",
+    "2018-10-22",
+    "2018-10-23",
+    "2018-10-24",
+    "2018-10-25",
+    "2018-10-26"
+   ],
+   "date_gaps_in_range": [
+    "2018-09-24",
+    "2018-09-25",
+    "2018-09-26",
+    "2018-09-27",
+    "2018-09-28",
+    "2018-09-29",
+    "2018-09-30",
+    "2018-10-01",
+    "2018-10-02",
+    "2018-10-03",
+    "2018-10-04",
+    "2018-10-05",
+    "2018-10-06",
+    "2018-10-07",
+    "2018-10-08",
+    "2018-10-09"
+   ]
+  },
+  "74c63b29d71d": {
+   "type": "ihome",
+   "range": [
+    "2018-09-24",
+    "2018-10-26"
+   ],
+   "dates_with_file": [
+    "2018-10-10",
+    "2018-10-11",
+    "2018-10-12",
+    "2018-10-13",
+    "2018-10-14",
+    "2018-10-15",
+    "2018-10-16",
+    "2018-10-17",
+    "2018-10-18",
+    "2018-10-19",
+    "2018-10-20",
+    "2018-10-21",
+    "2018-10-22",
+    "2018-10-23",
+    "2018-10-24",
+    "2018-10-25",
+    "2018-10-26"
+   ],
+   "date_gaps_in_range": [
+    "2018-09-24",
+    "2018-09-25",
+    "2018-09-26",
+    "2018-09-27",
+    "2018-09-28",
+    "2018-09-29",
+    "2018-09-30",
+    "2018-10-01",
+    "2018-10-02",
+    "2018-10-03",
+    "2018-10-04",
+    "2018-10-05",
+    "2018-10-06",
+    "2018-10-07",
+    "2018-10-08",
+    "2018-10-09"
+   ]
+  },
+  "d073d5018308": {
+   "type": "lifx",
+   "range": [
+    "2018-09-24",
+    "2018-10-26"
+   ],
+   "dates_with_file": [
+    "2018-10-10",
+    "2018-10-11",
+    "2018-10-12",
+    "2018-10-13",
+    "2018-10-14",
+    "2018-10-15",
+    "2018-10-16",
+    "2018-10-17",
+    "2018-10-18",
+    "2018-10-19",
+    "2018-10-20",
+    "2018-10-21",
+    "2018-10-22",
+    "2018-10-23",
+    "2018-10-24",
+    "2018-10-25",
+    "2018-10-26"
+   ],
+   "date_gaps_in_range": [
+    "2018-09-24",
+    "2018-09-25",
+    "2018-09-26",
+    "2018-09-27",
+    "2018-09-28",
+    "2018-09-29",
+    "2018-09-30",
+    "2018-10-01",
+    "2018-10-02",
+    "2018-10-03",
+    "2018-10-04",
+    "2018-10-05",
+    "2018-10-06",
+    "2018-10-07",
+    "2018-10-08",
+    "2018-10-09"
+   ]
+  }
+ },
+ "file_sizes_bytes": {
+  "benign/18-05-28": 4145381196,
+  "benign/18-05-29": 3483660828,
+  "benign/18-05-30": 3398919892,
+  "benign/18-05-31": 2208591936,
+  "benign/18-06-09": 776438012,
+  "benign/18-06-10": 749758868,
+  "benign/18-06-11": 732667220,
+  "benign/18-06-12": 893914480,
+  "benign/18-06-13": 877272112,
+  "benign/18-06-14": 1449139244,
+  "benign/18-06-15": 793143136,
+  "benign/18-06-16": 739321464,
+  "benign/18-06-17": 744210312,
+  "benign/18-06-18": 842238620,
+  "benign/18-06-19": 802371976,
+  "benign/18-10-10": 1479073008,
+  "benign/18-10-11": 1367147188,
+  "benign/18-10-12": 1735065868,
+  "benign/18-10-13": 1229538948,
+  "benign/18-10-14": 1285881560,
+  "benign/18-10-15": 1390161420,
+  "benign/18-10-16": 1638535252,
+  "benign/18-10-17": 1162741752,
+  "benign/18-10-18": 1235245116,
+  "benign/18-10-19": 1214069844,
+  "benign/18-10-28": 1324274300,
+  "benign/18-10-29": 732190340,
+  "attack/18-06-01": 2874852804,
+  "attack/18-06-02": 3527507852,
+  "attack/18-06-03": 3698357700,
+  "attack/18-06-04": 3464919628,
+  "attack/18-06-05": 3076793468,
+  "attack/18-06-06": 3394372632,
+  "attack/18-06-07": 2400069300,
+  "attack/18-06-08": 713559348,
+  "attack/18-06-20": 739403296,
+  "attack/18-10-20": 503541320,
+  "attack/18-10-21": 146805784,
+  "attack/18-10-22": 916467360,
+  "attack/18-10-23": 1462152516,
+  "attack/18-10-24": 213831680,
+  "attack/18-10-25": 990401184,
+  "attack/18-10-26": 991244784,
+  "attack/18-10-27": 745900472
+ },
+ "total_bytes": 68291135020,
+ "split_rule": "sha256('R6/<yy-mm-dd>') first 8 bytes big-endian mod 3: 0 validation, 1-2 test",
+ "split_by_date": {
+  "18-05-28": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-05-29": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-05-30": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-05-31": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-01": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-06-02": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-06-03": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-06-04": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-06-05": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-06-06": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-06-07": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-06-08": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-06-09": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-10": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-06-11": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-12": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-13": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-06-14": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-15": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-16": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-17": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-06-18": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-06-19": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-06-20": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-10-10": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-10-11": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-10-12": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-13": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-14": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-15": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-16": {
+   "split": "validation",
+   "list": "benign"
+  },
+  "18-10-17": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-18": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-19": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-20": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-10-21": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-10-22": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-10-23": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-10-24": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-10-25": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-10-26": {
+   "split": "validation",
+   "list": "attack"
+  },
+  "18-10-27": {
+   "split": "test",
+   "list": "attack"
+  },
+  "18-10-28": {
+   "split": "test",
+   "list": "benign"
+  },
+  "18-10-29": {
+   "split": "test",
+   "list": "benign"
+  }
+ },
+ "benign_exposure_device_days": {
+  "validation": {
+   "F1": 39.17,
+   "F2": 38.47
+  },
+  "test": {
+   "F1": 75.0,
+   "F2": 31.82
+  }
+ },
+ "test_exposure_total": 106.82,
+ "test_exposure_meets_100": true,
+ "episodes_total": 234,
+ "episodes_eligible_stage1": 63,
+ "eligible_by_split": {
+  "validation": {
+   "episodes": 16,
+   "sessions": 8,
+   "tools": 8,
+   "by_stratum": {
+    "S0": 6,
+    "S1": 4,
+    "S2": 6
+   },
+   "by_tool": {
+    "ArpSpoof": 4,
+    "PingOfDeath": 1,
+    "Smurf": 2,
+    "Snmp": 1,
+    "Ssdp": 2,
+    "TcpSynDevice": 1,
+    "TcpSynReflection": 1,
+    "UdpDevice": 4
+   },
+   "devices": 7
+  },
+  "test": {
+   "episodes": 47,
+   "sessions": 20,
+   "tools": 6,
+   "by_stratum": {
+    "S0": 21,
+    "S1": 12,
+    "S2": 14
+   },
+   "by_tool": {
+    "ArpSpoof": 5,
+    "PingOfDeath": 3,
+    "Ssdp": 2,
+    "TcpSynDevice": 16,
+    "TcpSynReflection": 17,
+    "UdpDevice": 4
+   },
+   "devices": 9
+  }
+ },
+ "ineligible_reasons": {
+  "E2b attack within 60 min (campaign continuation)": 171
+ },
+ "gate_stage1": {
+  "required": {
+   "episodes": 30,
+   "sessions": 8,
+   "tools": 2,
+   "stratum_claim": 10
+  },
+  "measured_test_split": {
+   "episodes": 47,
+   "sessions": 20,
+   "tools": 6,
+   "by_stratum": {
+    "S0": 21,
+    "S1": 12,
+    "S2": 14
+   },
+   "by_tool": {
+    "ArpSpoof": 5,
+    "PingOfDeath": 3,
+    "Ssdp": 2,
+    "TcpSynDevice": 16,
+    "TcpSynReflection": 17,
+    "UdpDevice": 4
+   },
+   "devices": 9
+  },
+  "passed": true
+ },
+ "episodes": [
+  {
+   "device": "00166cab6b88",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527835334,
+   "end_epoch": 1527835936,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 91.7,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1527836944,
+   "end_epoch": 1527837544,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 92.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1527838552,
+   "end_epoch": 1527839153,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 92.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527860996,
+   "end_epoch": 1527861596,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.07,
+   "chain_hours_optimistic": 98.8,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1527862604,
+   "end_epoch": 1527863204,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 99.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1527864215,
+   "end_epoch": 1527864815,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 99.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527876695,
+   "end_epoch": 1527877296,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.3,
+   "chain_hours_optimistic": 103.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1527878296,
+   "end_epoch": 1527878896,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 103.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1527879896,
+   "end_epoch": 1527880496,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 104.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527889925,
+   "end_epoch": 1527890525,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.62,
+   "chain_hours_optimistic": 106.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1527891530,
+   "end_epoch": 1527892130,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 107.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1527893138,
+   "end_epoch": 1527893738,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 107.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527917995,
+   "end_epoch": 1527918596,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.74,
+   "chain_hours_optimistic": 114.7,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1527919596,
+   "end_epoch": 1527920197,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 115.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1527921197,
+   "end_epoch": 1527921797,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 115.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527935202,
+   "end_epoch": 1527935802,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.72,
+   "chain_hours_optimistic": 119.4,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath10L2D",
+   "onset_epoch": 1527936810,
+   "end_epoch": 1527937410,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 119.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath100L2D",
+   "onset_epoch": 1527938417,
+   "end_epoch": 1527939017,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 120.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1527943358,
+   "end_epoch": 1527943958,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.21,
+   "chain_hours_optimistic": 121.7,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10W2D",
+   "onset_epoch": 1527944959,
+   "end_epoch": 1527945559,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 122.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100W2D",
+   "onset_epoch": 1527946559,
+   "end_epoch": 1527947159,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 122.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1527949904,
+   "end_epoch": 1527950504,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.76,
+   "chain_hours_optimistic": 123.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1527951510,
+   "end_epoch": 1527952110,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 124.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100L2D",
+   "onset_epoch": 1527953123,
+   "end_epoch": 1527953723,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 124.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp1W2D2W",
+   "onset_epoch": 1527955025,
+   "end_epoch": 1527955626,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.36,
+   "chain_hours_optimistic": 125.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp10W2D2W",
+   "onset_epoch": 1527956626,
+   "end_epoch": 1527957226,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 125.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp100W2D2W",
+   "onset_epoch": 1527958226,
+   "end_epoch": 1527958826,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 125.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1527961822,
+   "end_epoch": 1527962423,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.83,
+   "chain_hours_optimistic": 126.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Smurf",
+   "name": "Smurf10L2D2L",
+   "onset_epoch": 1527963430,
+   "end_epoch": 1527964030,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 127.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Smurf",
+   "name": "Smurf100L2D2L",
+   "onset_epoch": 1527965037,
+   "end_epoch": 1527965637,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 127.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp1L2D2L",
+   "onset_epoch": 1527968269,
+   "end_epoch": 1527968870,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.73,
+   "chain_hours_optimistic": 128.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp10L2D2L",
+   "onset_epoch": 1527969880,
+   "end_epoch": 1527970480,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 129.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp100L2D2L",
+   "onset_epoch": 1527971486,
+   "end_epoch": 1527972086,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 129.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp1L2D2W",
+   "onset_epoch": 1528001914,
+   "end_epoch": 1528002515,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 8.29,
+   "chain_hours_optimistic": 138.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp10L2D2W",
+   "onset_epoch": 1528002528,
+   "end_epoch": 1528003128,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 138.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "Snmp",
+   "name": "Snmp100L2D2W",
+   "onset_epoch": 1528003135,
+   "end_epoch": 1528003735,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 138.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528224632,
+   "end_epoch": 1528225233,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 61.36,
+   "chain_hours_optimistic": 199.8,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1528226233,
+   "end_epoch": 1528226833,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 200.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1528227833,
+   "end_epoch": 1528228433,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 200.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528280869,
+   "end_epoch": 1528281470,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 14.57,
+   "chain_hours_optimistic": 215.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1528282470,
+   "end_epoch": 1528283070,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 215.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "00166cab6b88",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1528284070,
+   "end_epoch": 1528284670,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 216.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1540348890,
+   "end_epoch": 1540349490,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 327.7,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1540350097,
+   "end_epoch": 1540350697,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 328.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1540351301,
+   "end_epoch": 1540351902,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 328.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1540352509,
+   "end_epoch": 1540353109,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 328.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath10L2D",
+   "onset_epoch": 1540353718,
+   "end_epoch": 1540354318,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 329.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath100L2D",
+   "onset_epoch": 1540354923,
+   "end_epoch": 1540355523,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 329.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540356134,
+   "end_epoch": 1540356735,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 329.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1540357342,
+   "end_epoch": 1540357942,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 330.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1540358552,
+   "end_epoch": 1540359152,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 330.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2W",
+   "onset_epoch": 1540360129,
+   "end_epoch": 1540360729,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.27,
+   "chain_hours_optimistic": 330.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2W",
+   "onset_epoch": 1540360741,
+   "end_epoch": 1540361341,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 331.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2W",
+   "onset_epoch": 1540361353,
+   "end_epoch": 1540361953,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 331.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1540362695,
+   "end_epoch": 1540363296,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.21,
+   "chain_hours_optimistic": 331.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1540363696,
+   "end_epoch": 1540364296,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 331.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1540364696,
+   "end_epoch": 1540365296,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 332.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1540365943,
+   "end_epoch": 1540366543,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.18,
+   "chain_hours_optimistic": 332.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Smurf",
+   "name": "Smurf10L2D2L",
+   "onset_epoch": 1540366855,
+   "end_epoch": 1540367455,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 332.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Smurf",
+   "name": "Smurf100L2D2L",
+   "onset_epoch": 1540367763,
+   "end_epoch": 1540368363,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 332.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1540368674,
+   "end_epoch": 1540369275,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 333.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1540369583,
+   "end_epoch": 1540370183,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 333.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1540370492,
+   "end_epoch": 1540371092,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 333.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2L",
+   "onset_epoch": 1540371397,
+   "end_epoch": 1540371998,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.08,
+   "chain_hours_optimistic": 333.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2L",
+   "onset_epoch": 1540372308,
+   "end_epoch": 1540372908,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 334.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2L",
+   "onset_epoch": 1540373217,
+   "end_epoch": 1540373817,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.09,
+   "chain_hours_optimistic": 334.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1540378530,
+   "end_epoch": 1540379131,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.31,
+   "chain_hours_optimistic": 335.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1540379531,
+   "end_epoch": 1540380131,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 336.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1540380531,
+   "end_epoch": 1540381131,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 336.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1540382707,
+   "end_epoch": 1540383308,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.44,
+   "chain_hours_optimistic": 337.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp10W2D2W",
+   "onset_epoch": 1540383708,
+   "end_epoch": 1540384308,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 337.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "0017882b9a25",
+   "tool": "Ssdp",
+   "name": "Ssdp100W2D2W",
+   "onset_epoch": 1540384708,
+   "end_epoch": 1540385308,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.11,
+   "chain_hours_optimistic": 337.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540214943,
+   "end_epoch": 1540215543,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 290.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1540216550,
+   "end_epoch": 1540217150,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 290.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1540218159,
+   "end_epoch": 1540218759,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 291.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1540240592,
+   "end_epoch": 1540241193,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.06,
+   "chain_hours_optimistic": 297.6,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1540249401,
+   "end_epoch": 1540250001,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.28,
+   "chain_hours_optimistic": 300.1,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100L2D",
+   "onset_epoch": 1540251009,
+   "end_epoch": 1540251609,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 300.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1540305374,
+   "end_epoch": 1540305974,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 14.93,
+   "chain_hours_optimistic": 315.6,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10W2D",
+   "onset_epoch": 1540305984,
+   "end_epoch": 1540306584,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 315.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "44650d56ccd3",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100W2D",
+   "onset_epoch": 1540306594,
+   "end_epoch": 1540307194,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 315.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527840167,
+   "end_epoch": 1527840767,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 93.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1527841774,
+   "end_epoch": 1527842374,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 93.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1527843385,
+   "end_epoch": 1527843985,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 93.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527865835,
+   "end_epoch": 1527866436,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.07,
+   "chain_hours_optimistic": 100.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1527867446,
+   "end_epoch": 1527868047,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 100.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1527869057,
+   "end_epoch": 1527869657,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 101.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527881496,
+   "end_epoch": 1527882097,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.29,
+   "chain_hours_optimistic": 104.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1527883097,
+   "end_epoch": 1527883697,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 105.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1527884697,
+   "end_epoch": 1527885297,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 105.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527894761,
+   "end_epoch": 1527895361,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.63,
+   "chain_hours_optimistic": 108.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1527896376,
+   "end_epoch": 1527896976,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 108.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1527897987,
+   "end_epoch": 1527898587,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 109.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527922797,
+   "end_epoch": 1527923398,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.72,
+   "chain_hours_optimistic": 116.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1527924398,
+   "end_epoch": 1527924998,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 116.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1527925998,
+   "end_epoch": 1527926598,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 116.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "name": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "onset_epoch": 1527928594,
+   "end_epoch": 1527929195,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.55,
+   "chain_hours_optimistic": 117.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "name": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "onset_epoch": 1527930207,
+   "end_epoch": 1527930807,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 118.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "name": "Icmpfeatures|Localfeatures|Allfeatures|LocalICMPPortALL",
+   "onset_epoch": 1527931814,
+   "end_epoch": 1527932415,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 118.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1527956962,
+   "end_epoch": 1527957562,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.82,
+   "chain_hours_optimistic": 125.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Smurf",
+   "name": "Smurf10L2D2L",
+   "onset_epoch": 1527958575,
+   "end_epoch": 1527959175,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 125.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "Smurf",
+   "name": "Smurf100L2D2L",
+   "onset_epoch": 1527960201,
+   "end_epoch": 1527960801,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 126.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528229672,
+   "end_epoch": 1528230273,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 74.69,
+   "chain_hours_optimistic": 201.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1528231273,
+   "end_epoch": 1528231873,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 201.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1528232873,
+   "end_epoch": 1528233473,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 202.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528275905,
+   "end_epoch": 1528276506,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 11.79,
+   "chain_hours_optimistic": 214.1,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1528277506,
+   "end_epoch": 1528278106,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 214.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "50c7bf005639",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1528279106,
+   "end_epoch": 1528279706,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 215.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527844998,
+   "end_epoch": 1527845599,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 94.4,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1527846610,
+   "end_epoch": 1527847210,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 94.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1527848238,
+   "end_epoch": 1527848838,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.29,
+   "chain_hours_optimistic": 95.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527870675,
+   "end_epoch": 1527871276,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.07,
+   "chain_hours_optimistic": 101.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1527872284,
+   "end_epoch": 1527872884,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 102.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1527873890,
+   "end_epoch": 1527874490,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 102.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527886297,
+   "end_epoch": 1527886898,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.28,
+   "chain_hours_optimistic": 105.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1527887898,
+   "end_epoch": 1527888498,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 106.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1527889498,
+   "end_epoch": 1527890098,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 106.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527899600,
+   "end_epoch": 1527900201,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.64,
+   "chain_hours_optimistic": 109.6,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1527901207,
+   "end_epoch": 1527901807,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 110.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1527902817,
+   "end_epoch": 1527903417,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 110.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527927598,
+   "end_epoch": 1527928199,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.72,
+   "chain_hours_optimistic": 117.3,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1527929199,
+   "end_epoch": 1527929799,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 117.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1527930799,
+   "end_epoch": 1527931399,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 118.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528253682,
+   "end_epoch": 1528254282,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 89.52,
+   "chain_hours_optimistic": 207.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1528255282,
+   "end_epoch": 1528255883,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 208.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1528256883,
+   "end_epoch": 1528257483,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 208.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528265025,
+   "end_epoch": 1528265626,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.1,
+   "chain_hours_optimistic": 211.1,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1528266626,
+   "end_epoch": 1528267226,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 211.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "70ee50183443",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1528268227,
+   "end_epoch": 1528268827,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 212.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "74c63b29d71d",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540224603,
+   "end_epoch": 1540225204,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 293.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "74c63b29d71d",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1540226210,
+   "end_epoch": 1540226811,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 293.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "74c63b29d71d",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1540227823,
+   "end_epoch": 1540228423,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 294.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540229442,
+   "end_epoch": 1540230043,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 294.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1540231049,
+   "end_epoch": 1540231649,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 295.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1540232657,
+   "end_epoch": 1540233257,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 295.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1540244228,
+   "end_epoch": 1540244828,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.05,
+   "chain_hours_optimistic": 298.6,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1540252626,
+   "end_epoch": 1540253226,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.17,
+   "chain_hours_optimistic": 301.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100L2D",
+   "onset_epoch": 1540254243,
+   "end_epoch": 1540254843,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 301.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1540259613,
+   "end_epoch": 1540260213,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.32,
+   "chain_hours_optimistic": 302.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath10L2D",
+   "onset_epoch": 1540261222,
+   "end_epoch": 1540261822,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 303.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath100L2D",
+   "onset_epoch": 1540262834,
+   "end_epoch": 1540263434,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 303.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "Smurf",
+   "name": "Smurf1L2D2L",
+   "onset_epoch": 1540279892,
+   "end_epoch": 1540280492,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 4.57,
+   "chain_hours_optimistic": 308.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "Smurf",
+   "name": "Smurf10L2D2L",
+   "onset_epoch": 1540281500,
+   "end_epoch": 1540282100,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 309.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "Smurf",
+   "name": "Smurf100L2D2L",
+   "onset_epoch": 1540283108,
+   "end_epoch": 1540283708,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 309.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1W2D",
+   "onset_epoch": 1540300287,
+   "end_epoch": 1540300887,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 4.61,
+   "chain_hours_optimistic": 314.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10W2D",
+   "onset_epoch": 1540300897,
+   "end_epoch": 1540301498,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 314.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "d073d5018308",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100W2D",
+   "onset_epoch": 1540301508,
+   "end_epoch": 1540302108,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 314.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527830498,
+   "end_epoch": 1527831098,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 90.4,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1527832106,
+   "end_epoch": 1527832706,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 90.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1527833715,
+   "end_epoch": 1527834315,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 91.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527856158,
+   "end_epoch": 1527856758,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.07,
+   "chain_hours_optimistic": 97.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1527857765,
+   "end_epoch": 1527858365,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 97.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1527859377,
+   "end_epoch": 1527859977,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 98.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527871894,
+   "end_epoch": 1527872495,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.31,
+   "chain_hours_optimistic": 101.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1527873495,
+   "end_epoch": 1527874095,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 102.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1527875095,
+   "end_epoch": 1527875695,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 102.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527885081,
+   "end_epoch": 1527885682,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.61,
+   "chain_hours_optimistic": 105.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1527886693,
+   "end_epoch": 1527887293,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 106.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1527888305,
+   "end_epoch": 1527888905,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 106.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527913194,
+   "end_epoch": 1527913795,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.75,
+   "chain_hours_optimistic": 113.3,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1527914795,
+   "end_epoch": 1527915395,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 113.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1527916395,
+   "end_epoch": 1527916995,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 114.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527923756,
+   "end_epoch": 1527924356,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.88,
+   "chain_hours_optimistic": 116.3,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath10L2D",
+   "onset_epoch": 1527925365,
+   "end_epoch": 1527925965,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 116.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath100L2D",
+   "onset_epoch": 1527926974,
+   "end_epoch": 1527927574,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 117.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528219424,
+   "end_epoch": 1528220024,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 81.07,
+   "chain_hours_optimistic": 198.4,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1528221024,
+   "end_epoch": 1528221624,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 198.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1528222625,
+   "end_epoch": 1528223225,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 199.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528289721,
+   "end_epoch": 1528290321,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 18.47,
+   "chain_hours_optimistic": 217.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1528291321,
+   "end_epoch": 1528291921,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 218.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a5979f489",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1528292921,
+   "end_epoch": 1528293521,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 218.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1527825643,
+   "end_epoch": 1527826244,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 89.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1527827256,
+   "end_epoch": 1527827856,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 89.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1527828872,
+   "end_epoch": 1527829472,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 89.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1527851321,
+   "end_epoch": 1527851923,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.07,
+   "chain_hours_optimistic": 96.1,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1527852933,
+   "end_epoch": 1527853533,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 96.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1527854541,
+   "end_epoch": 1527855141,
+   "sydney_date": "2018-06-01",
+   "capture_id": "R6/18-06-01",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 97.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1527867093,
+   "end_epoch": 1527867694,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.32,
+   "chain_hours_optimistic": 100.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1527868694,
+   "end_epoch": 1527869294,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 101.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1527870294,
+   "end_epoch": 1527870894,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 101.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1527880245,
+   "end_epoch": 1527880845,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.6,
+   "chain_hours_optimistic": 104.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1527881855,
+   "end_epoch": 1527882455,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 104.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1527883466,
+   "end_epoch": 1527884066,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 105.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1527908393,
+   "end_epoch": 1527908994,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S2",
+   "hours_since_previous_attack": 6.76,
+   "chain_hours_optimistic": 112.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1527909994,
+   "end_epoch": 1527910594,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 112.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1527911594,
+   "end_epoch": 1527912194,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 112.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath1L2D",
+   "onset_epoch": 1527918925,
+   "end_epoch": 1527919526,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.87,
+   "chain_hours_optimistic": 114.9,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath10L2D",
+   "onset_epoch": 1527920532,
+   "end_epoch": 1527921132,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 115.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "PingOfDeath",
+   "name": "PingOfDeath100L2D",
+   "onset_epoch": 1527922140,
+   "end_epoch": 1527922740,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 115.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1527936456,
+   "end_epoch": 1527937057,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.81,
+   "chain_hours_optimistic": 119.8,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp10W2D2W",
+   "onset_epoch": 1527938057,
+   "end_epoch": 1527938657,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 120.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp100W2D2W",
+   "onset_epoch": 1527939658,
+   "end_epoch": 1527940258,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 120.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "UdpDevice",
+   "name": "UdpDevice1L2D",
+   "onset_epoch": 1527945065,
+   "end_epoch": 1527945666,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.34,
+   "chain_hours_optimistic": 122.2,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "UdpDevice",
+   "name": "UdpDevice10L2D",
+   "onset_epoch": 1527946676,
+   "end_epoch": 1527947276,
+   "sydney_date": "2018-06-02",
+   "capture_id": "R6/18-06-02",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 122.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "UdpDevice",
+   "name": "UdpDevice100L2D",
+   "onset_epoch": 1527948284,
+   "end_epoch": 1527948884,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 123.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2W",
+   "onset_epoch": 1528007499,
+   "end_epoch": 1528008099,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 16.28,
+   "chain_hours_optimistic": 139.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2W",
+   "onset_epoch": 1528008104,
+   "end_epoch": 1528008704,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 139.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2W",
+   "onset_epoch": 1528008710,
+   "end_epoch": 1528009310,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 139.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2L",
+   "onset_epoch": 1528011637,
+   "end_epoch": 1528012237,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.65,
+   "chain_hours_optimistic": 140.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2L",
+   "onset_epoch": 1528013251,
+   "end_epoch": 1528013851,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 141.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2L",
+   "onset_epoch": 1528014857,
+   "end_epoch": 1528015457,
+   "sydney_date": "2018-06-03",
+   "capture_id": "R6/18-06-03",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 141.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1528213598,
+   "end_epoch": 1528214199,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 55.04,
+   "chain_hours_optimistic": 196.8,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1528215199,
+   "end_epoch": 1528215799,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 197.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1528216799,
+   "end_epoch": 1528217399,
+   "sydney_date": "2018-06-06",
+   "capture_id": "R6/18-06-06",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 197.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1528295532,
+   "end_epoch": 1528296133,
+   "sydney_date": "2018-06-07",
+   "capture_id": "R6/18-06-07",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 21.7,
+   "chain_hours_optimistic": 219.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1528297133,
+   "end_epoch": 1528297733,
+   "sydney_date": "2018-06-07",
+   "capture_id": "R6/18-06-07",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 220.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "ec1a59832811",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1528298733,
+   "end_epoch": 1528299333,
+   "sydney_date": "2018-06-07",
+   "capture_id": "R6/18-06-07",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 220.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof1L2D",
+   "onset_epoch": 1540219772,
+   "end_epoch": 1540220372,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S1",
+   "hours_since_previous_attack": null,
+   "chain_hours_optimistic": 291.8,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof10L2D",
+   "onset_epoch": 1540221380,
+   "end_epoch": 1540221980,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 292.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "ArpSpoof",
+   "name": "ArpSpoof100L2D",
+   "onset_epoch": 1540222987,
+   "end_epoch": 1540223588,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 292.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1L2D",
+   "onset_epoch": 1540269173,
+   "end_epoch": 1540269773,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S2",
+   "hours_since_previous_attack": 12.66,
+   "chain_hours_optimistic": 305.5,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10L2D",
+   "onset_epoch": 1540270783,
+   "end_epoch": 1540271383,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 306.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100L2D",
+   "onset_epoch": 1540272392,
+   "end_epoch": 1540272992,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 306.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1L2D2L",
+   "onset_epoch": 1540274680,
+   "end_epoch": 1540275281,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.47,
+   "chain_hours_optimistic": 307.1,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10L2D2L",
+   "onset_epoch": 1540276290,
+   "end_epoch": 1540276890,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 307.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100L2D2L",
+   "onset_epoch": 1540277898,
+   "end_epoch": 1540278498,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 308.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2L",
+   "onset_epoch": 1540285311,
+   "end_epoch": 1540285911,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 1.89,
+   "chain_hours_optimistic": 310.0,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2L",
+   "onset_epoch": 1540286919,
+   "end_epoch": 1540287519,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 310.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2L",
+   "onset_epoch": 1540288528,
+   "end_epoch": 1540289128,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.28,
+   "chain_hours_optimistic": 310.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1L2D2W",
+   "onset_epoch": 1540290643,
+   "end_epoch": 1540291244,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.42,
+   "chain_hours_optimistic": 311.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp10L2D2W",
+   "onset_epoch": 1540291252,
+   "end_epoch": 1540291852,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 311.7,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp100L2D2W",
+   "onset_epoch": 1540291862,
+   "end_epoch": 1540292462,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 311.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice1W2D",
+   "onset_epoch": 1540293174,
+   "end_epoch": 1540293774,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.2,
+   "chain_hours_optimistic": 312.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice10W2D",
+   "onset_epoch": 1540293784,
+   "end_epoch": 1540294384,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 312.4,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynDevice",
+   "name": "TcpSynDevice100W2D",
+   "onset_epoch": 1540294394,
+   "end_epoch": 1540294994,
+   "sydney_date": "2018-10-23",
+   "capture_id": "R6/18-10-23",
+   "split": "validation",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.0,
+   "chain_hours_optimistic": 312.6,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1540309095,
+   "end_epoch": 1540309695,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 3.92,
+   "chain_hours_optimistic": 316.6,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection10W2D2W",
+   "onset_epoch": 1540310295,
+   "end_epoch": 1540310895,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 317.0,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1540311495,
+   "end_epoch": 1540312095,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 317.3,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1540313470,
+   "end_epoch": 1540314070,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.38,
+   "chain_hours_optimistic": 317.9,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp10W2D2W",
+   "onset_epoch": 1540314670,
+   "end_epoch": 1540315270,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 318.2,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp100W2D2W",
+   "onset_epoch": 1540315870,
+   "end_epoch": 1540316470,
+   "sydney_date": "2018-10-24",
+   "capture_id": "R6/18-10-24",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 318.5,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "Ssdp",
+   "name": "Ssdp1W2D2W",
+   "onset_epoch": 1540452323,
+   "end_epoch": 1540452924,
+   "sydney_date": "2018-10-25",
+   "capture_id": "R6/18-10-25",
+   "split": "test",
+   "stratum": "S1",
+   "hours_since_previous_attack": 37.74,
+   "chain_hours_optimistic": 356.4,
+   "eligible_stage1": true,
+   "reasons": []
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection1W2D2W",
+   "onset_epoch": 1540453525,
+   "end_epoch": 1540454125,
+   "sydney_date": "2018-10-25",
+   "capture_id": "R6/18-10-25",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 0.17,
+   "chain_hours_optimistic": 356.8,
+   "eligible_stage1": false,
+   "reasons": [
+    "E2b attack within 60 min (campaign continuation)"
+   ]
+  },
+  {
+   "device": "f4f5d88f0a3c",
+   "tool": "TcpSynReflection",
+   "name": "TcpSynReflection100W2D2W",
+   "onset_epoch": 1540462848,
+   "end_epoch": 1540463448,
+   "sydney_date": "2018-10-25",
+   "capture_id": "R6/18-10-25",
+   "split": "test",
+   "stratum": "S0",
+   "hours_since_previous_attack": 2.42,
+   "chain_hours_optimistic": 359.3,
+   "eligible_stage1": true,
+   "reasons": []
+  }
+ ],
+ "per_device_day": {
+  "ec1a59832811/2018-05-28": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "ec1a59832811/2018-05-29": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-05-30": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-05-31": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-01": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.868
+  },
+  "ec1a59832811/2018-06-02": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.672
+  },
+  "ec1a59832811/2018-06-03": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.826
+  },
+  "ec1a59832811/2018-06-04": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-05": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-06": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "ec1a59832811/2018-06-07": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "ec1a59832811/2018-06-08": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-09": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-11": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-13": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-16": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a59832811/2018-06-17": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-05-28": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "ec1a5979f489/2018-05-29": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-05-30": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-05-31": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-01": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.912
+  },
+  "ec1a5979f489/2018-06-02": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.694
+  },
+  "ec1a5979f489/2018-06-03": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-04": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-05": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-06": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.931
+  },
+  "ec1a5979f489/2018-06-07": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.938
+  },
+  "ec1a5979f489/2018-06-08": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-09": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-11": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-13": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-16": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "ec1a5979f489/2018-06-17": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-05-28": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "00166cab6b88/2018-05-29": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-05-30": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-05-31": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-01": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "00166cab6b88/2018-06-02": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.659
+  },
+  "00166cab6b88/2018-06-03": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.648
+  },
+  "00166cab6b88/2018-06-04": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-05": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-06": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.869
+  },
+  "00166cab6b88/2018-06-07": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-08": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-09": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-11": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-13": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-16": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "00166cab6b88/2018-06-17": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-05-28": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "50c7bf005639/2018-05-29": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-05-30": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-05-31": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-01": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "50c7bf005639/2018-06-02": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.672
+  },
+  "50c7bf005639/2018-06-03": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "50c7bf005639/2018-06-04": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-05": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-06": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.869
+  },
+  "50c7bf005639/2018-06-07": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-08": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-09": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-11": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-13": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-16": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "50c7bf005639/2018-06-17": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-05-28": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "70ee50183443/2018-05-29": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-05-30": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-05-31": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-01": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "70ee50183443/2018-06-02": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.738
+  },
+  "70ee50183443/2018-06-03": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-04": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-05": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-06": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.869
+  },
+  "70ee50183443/2018-06-07": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-08": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-09": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-11": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-13": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-16": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "70ee50183443/2018-06-17": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "0017882b9a25/2018-10-11": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-13": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-16": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-17": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-18": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-19": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-20": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-21": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-22": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-23": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "0017882b9a25/2018-10-24": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.603
+  },
+  "0017882b9a25/2018-10-25": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.987
+  },
+  "0017882b9a25/2018-10-26": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "44650d56ccd3/2018-10-11": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-13": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-16": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-17": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-18": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-19": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-20": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-21": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-22": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-23": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.859
+  },
+  "44650d56ccd3/2018-10-24": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.957
+  },
+  "44650d56ccd3/2018-10-25": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "44650d56ccd3/2018-10-26": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "f4f5d88f0a3c/2018-10-11": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-13": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-16": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-17": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-18": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-19": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-20": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-21": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-22": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "f4f5d88f0a3c/2018-10-23": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.671
+  },
+  "f4f5d88f0a3c/2018-10-24": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.893
+  },
+  "f4f5d88f0a3c/2018-10-25": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.929
+  },
+  "f4f5d88f0a3c/2018-10-26": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "74c63b29d71d/2018-10-11": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-13": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-16": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-17": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-18": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-19": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-20": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-21": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-22": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-23": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.934
+  },
+  "74c63b29d71d/2018-10-24": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-25": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "74c63b29d71d/2018-10-26": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-10": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 0.917
+  },
+  "d073d5018308/2018-10-11": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-12": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-13": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-14": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-15": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-16": {
+   "split": "validation",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-17": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-18": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-19": {
+   "split": "test",
+   "kind": "benign",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-20": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-21": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-22": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-23": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 0.727
+  },
+  "d073d5018308/2018-10-24": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 0.957
+  },
+  "d073d5018308/2018-10-25": {
+   "split": "test",
+   "kind": "attack",
+   "device_days": 1.0
+  },
+  "d073d5018308/2018-10-26": {
+   "split": "validation",
+   "kind": "attack",
+   "device_days": 1.0
+  }
+ },
+ "unverifiable_from_metadata": [
+  "no recording gap at day-file boundaries",
+  "no device reset or reconfiguration",
+  "benign-list and attack-list days recorded under the same conditions",
+  "benign-list days free of unlabelled attacks",
+  "file contents match their labelled dates"
+ ]
+}
