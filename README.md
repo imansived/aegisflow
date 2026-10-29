@@ -50,6 +50,11 @@ through the real pipeline, the shipped version loses 0.10 less recall than the o
 (interval +0.086 to +0.118, 10 of 10 seeds), within 0.013 of the heavier per-pattern learned model, at the same alert budget. It still loses
 0.21 on average, and when both location and network are gone it is nearly blind.
 
+**Real traces (R1, docs/preregistration/R1-iot23-replay.md).** Replaying real IoT-23 device traffic (network signal only) through the unchanged system:
+the availability and recovery states behave exactly as designed, but the network detector raises about **32 false alert onsets per device-day** on real
+benign traffic (the simulator: about 5), because real devices are silent on 90% of ticks and the detector expected always-chatty ones. The original
+benchmark (`research-v1`) is left untouched; fixes would be a new version with a new protocol. See docs/RESEARCH.md.
+
 ## Run it (Docker)
 
 ```powershell

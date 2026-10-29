@@ -1,0 +1,72 @@
+{
+  "version": "r1",
+  "created": "2026-10-29T08:37:35.547481+00:00",
+  "frozen_at_commit": "ce884b5",
+  "git_tag": "replay-r1",
+  "statement": "Exploratory replay of the UNCHANGED research-v1 system on real traces. research-v1's own manifest is not touched; a design change prompted by these results is a new version with its own protocol and evaluation.",
+  "system_under_test": {
+    "tag": "research-v1",
+    "commit": "891b4ef"
+  },
+  "experiments": [
+    {
+      "id": "R1",
+      "question": "How does the unchanged research-v1 system behave on real IoT-23 traces (network signal only)?",
+      "seeds": "n/a (public captures)",
+      "protocol": "docs/preregistration/R1-iot23-replay.md",
+      "preregistration_commit": "e6c9658",
+      "results": [
+        "docs/results/r1_replay.json",
+        "docs/results/r1_compare.json"
+      ],
+      "code": [
+        "ml/replay_iot23.py",
+        "ml/replay_compare.py"
+      ],
+      "system_under_test": "git tag research-v1 (unchanged)"
+    }
+  ],
+  "files": {
+    "docs/preregistration/R1-iot23-replay.md": {
+      "sha256": "ea374fa52eb1483bd8db354b2244b1f709d1a642619644f81f161d2038525ed3",
+      "role": "R1 protocol, with its addendum",
+      "last_commit": "ce884b5"
+    },
+    "docs/results/r1_replay.json": {
+      "sha256": "dabd3c94040de6e11bc64ea153e75c423c3e5531a64d8cb010a70254e78111be",
+      "role": "R1 result",
+      "last_commit": ""
+    },
+    "docs/results/r1_compare.json": {
+      "sha256": "c24fc2d159a756b71c4fcf5b71b684e3bac2f67a9f937b262c29a3cb16b2ae90",
+      "role": "R1 result",
+      "last_commit": ""
+    },
+    "ml/replay_iot23.py": {
+      "sha256": "72cc80fa32c61d6d83ceafbb29abcede5179cb7e24eda46b8063bc82988d985a",
+      "role": "R1 code",
+      "last_commit": "ce884b5"
+    },
+    "ml/replay_compare.py": {
+      "sha256": "cfc52fa14a2a86e14d23e29a8d26389477542bbb8c80590b5672d9974d58dadf",
+      "role": "R1 code",
+      "last_commit": "ce884b5"
+    }
+  },
+  "data": {
+    "IoT-23 captures replayed (public, Stratosphere Laboratory)": {
+      "real/iot23/CTU-Honeypot-Capture-4-1.conn.log.labeled": "aebe40ea0e03b120265a5c7bc140dd9b0d3fe2fce65559e84776b7dd5360e71e",
+      "real/iot23/CTU-Honeypot-Capture-5-1.conn.log.labeled": "f36db06e7d6ba7364e932a5b003f75835e004b320d70019e8a2f0ba8685d9262",
+      "real/iot23/CTU-Honeypot-Capture-7-1.Somfy-01.conn.log.labeled": "fb37fb38393c48b064d3afd373b075ffe31063d4924a2df1c5d13fc490b830cc",
+      "real/iot23/CTU-IoT-Malware-Capture-1-1.conn.log.labeled": "953e8c27a9b2fcfc2776aa136baf9249e6dde4cf752b9192ac7ca0e63b86e232",
+      "real/iot23/CTU-IoT-Malware-Capture-20-1.conn.log.labeled": "ef48ad72f65efd13d517223e61e4d877ba53a082ddb8159324b18d3f310d0711",
+      "real/iot23/CTU-IoT-Malware-Capture-21-1.conn.log.labeled": "b63db259aead078f50fc150aa97ace4d1f69576e1245334962759d978ce437eb",
+      "real/iot23/CTU-IoT-Malware-Capture-3-1.conn.log.labeled": "9851009bbca03e15089fa1a356dd4b5eee4a98161a51703626058a0b507f50d0",
+      "real/iot23/CTU-IoT-Malware-Capture-34-1.conn.log.labeled": "d69e49b2aae8c1bd33286936531658202dec47d989f0439bad3f8be180467a6e",
+      "real/iot23/CTU-IoT-Malware-Capture-42-1.conn.log.labeled": "269fa1b22d9a37e159cf41b81a213a0032d21306f5d39b4c20cb0d211b04e8aa",
+      "real/iot23/CTU-IoT-Malware-Capture-49-1.head.conn.log.labeled": "e24174f9c72018c58fa07495c6f1dd0de87dd21141e6c6136141c32f3612eb6c",
+      "real/iot23/CTU-IoT-Malware-Capture-8-1.conn.log.labeled": "4877ca8f0f01902fbd18d28b7d06cb3d0be082355b7f2c8862c9deef1782eb8a",
+      "real/iot23/CTU-IoT-Malware-Capture-9-1.head.conn.log.labeled": "d98798da13f65d532457e5fe168fe8a619a2414d38812d0a5a0a16fd08bf5874"
+    }
+  }
+}

@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFESTS = sorted((ROOT / "docs" / "research").glob("v*/manifest.json"))
+MANIFESTS = sorted((ROOT / "docs" / "research").glob("*/manifest.json"))
 
 
 def _sha(p: Path) -> str:
@@ -37,5 +37,5 @@ def test_raw_data_that_is_present_matches_its_recorded_hash(manifest: Path):
 
 
 def test_the_spent_seed_guards_are_recorded():
-    m = json.loads(MANIFESTS[-1].read_text())
+    m = json.loads((ROOT / "docs" / "research" / "v1" / "manifest.json").read_text())
     assert all("guard" in e for e in m["experiments"] if e["id"] in ("F1", "D106", "D107"))

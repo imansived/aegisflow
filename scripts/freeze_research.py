@@ -64,7 +64,44 @@ DATA = {
 }
 
 
+R1 = {
+    "experiments": [{"id": "R1", "question": "How does the unchanged research-v1 system behave on real IoT-23 traces (network signal only)?",
+                     "seeds": "n/a (public captures)", "protocol": "docs/preregistration/R1-iot23-replay.md", "preregistration_commit": "e6c9658",
+                     "results": ["docs/results/r1_replay.json", "docs/results/r1_compare.json"],
+                     "code": ["ml/replay_iot23.py", "ml/replay_compare.py"], "system_under_test": "git tag research-v1 (unchanged)"}],
+    "artifacts": [("docs/preregistration/R1-iot23-replay.md", "R1 protocol, with its addendum")],
+    "data": {"IoT-23 captures replayed (public, Stratosphere Laboratory)": ("data/real/iot23", None)},
+}
+
+
 def main(version: str) -> None:
+    if version == "r1":
+        return main_r1()
+    return main_v(version)
+
+
+def main_r1() -> None:
+    out_dir = ROOT / "docs" / "research" / "r1"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r1/manifest.json exists: a manifest is immutable.")
+    files = {}
+    for rel, role in R1["artifacts"]:
+        files[rel] = {"sha256": sha256(ROOT / rel), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", rel)}
+    for e in R1["experiments"]:
+        for rel in e["results"] + e["code"]:
+            files[rel] = {"sha256": sha256(ROOT / rel), "role": "R1 " + ("result" if rel in e["results"] else "code"), "last_commit": git("log", "-1", "--format=%h", "--", rel)}
+    caps = {f"real/iot23/{p.name}": sha256(p) for p in sorted((ROOT / "data" / "real" / "iot23").glob("*.labeled"))}
+    manifest = {"version": "r1", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "replay-r1",
+                "statement": "Exploratory replay of the UNCHANGED research-v1 system on real traces. research-v1's own manifest is not touched; a design change prompted by "
+                             "these results is a new version with its own protocol and evaluation.",
+                "system_under_test": {"tag": "research-v1", "commit": git("rev-parse", "--short", "research-v1")},
+                "experiments": R1["experiments"], "files": files, "data": {"IoT-23 captures replayed (public, Stratosphere Laboratory)": caps}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json", len(files), "files", len(caps), "capture hashes")
+
+
+def main_v(version: str) -> None:
     out_dir = ROOT / "docs" / "research" / version
     if (out_dir / "manifest.json").exists():
         raise SystemExit(f"{out_dir / 'manifest.json'} exists: a manifest is immutable. Make a new version instead.")

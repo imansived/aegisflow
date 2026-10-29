@@ -36,7 +36,7 @@ F1_THR = 0.9831
 GROUPS = {
     "dev": ["CTU-Honeypot-Capture-4-1", "CTU-Honeypot-Capture-5-1", "CTU-IoT-Malware-Capture-42-1", "CTU-IoT-Malware-Capture-20-1",
             "CTU-IoT-Malware-Capture-21-1", "CTU-IoT-Malware-Capture-8-1", "CTU-IoT-Malware-Capture-34-1"],
-    "held": ["CTU-IoT-Malware-Capture-3-1", "CTU-IoT-Malware-Capture-1-1", "CTU-IoT-Malware-Capture-9-1.head", "CTU-IoT-Malware-Capture-49-1.head"],
+    "held": ["CTU-IoT-Malware-Capture-3-1", "CTU-IoT-Malware-Capture-1-1", "CTU-IoT-Malware-Capture-9-1.head", "CTU-IoT-Malware-Capture-49-1.head", "CTU-Honeypot-Capture-7-1.Somfy-01"],
 }
 
 

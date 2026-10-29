@@ -1,0 +1,3910 @@
+{
+ "meta": {
+  "prereg": "e6c9658 + addendum",
+  "system": "tag research-v1 (unchanged)",
+  "note": "development captures were seen before with an older script; held-out captures are almost entirely malicious from the first flow"
+ },
+ "development_A": [
+  {
+   "capture": "CTU-Honeypot-Capture-4-1",
+   "condition": "A (steady)",
+   "host": "192.168.1.132",
+   "ticks": 15742,
+   "hours": 21.9,
+   "active_ticks": 233,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.786,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 24.17317037255191,
+    "count": 19,
+    "ci95": [
+     14.553827663102423,
+     37.749399920262036
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 24.17317037255191,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.447209119704507,
+    "frac_gt_0.3": 0.016786923869827712
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 19,
+    "overlapping_malicious": 0,
+    "false": 19,
+    "false_per_device_day": 24.17317037255191
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 15323,
+    "anomalous": 419,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 15742
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 19,
+    "names_unavailable_signals": 19,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 19,
+    "network_features_per_alert": {
+     "1": 1,
+     "2": 17,
+     "3+": 1
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2018-10-25T14:27:52.400159+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T15:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T16:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T17:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T18:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T19:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T20:02:02.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal; download volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal",
+       "download volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T21:02:17.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T22:02:17.400159+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 4.3 standard deviations above normal; upload volume is 3.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 4.3 standard deviations above normal",
+       "upload volume is 3.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T23:02:17.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-Honeypot-Capture-5-1",
+   "condition": "A (steady)",
+   "host": "192.168.2.3",
+   "ticks": 3571,
+   "hours": 5.0,
+   "active_ticks": 278,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.082,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 48.98653437278526,
+    "count": 4,
+    "ci95": [
+     13.347181896713602,
+     125.42498391989781
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 61.23316796598157,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.42411759713307046,
+    "frac_gt_0.3": 0.03472714386959603
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 4,
+    "overlapping_malicious": 0,
+    "false": 4,
+    "false_per_device_day": 48.98653437278526
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 3404,
+    "anomalous": 167,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 3571
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 4,
+    "names_unavailable_signals": 4,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 4,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 2,
+     "3+": 2
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2018-09-21T13:38:33.881175+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 3.2 standard deviations above normal; contacting endpoints it does not normally use (2.5 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 3.2 standard deviations above normal",
+       "contacting endpoints it does not normally use (2.5 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-09-21T13:43:43.881175+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.5 standard deviations above normal); download volume is 2.6 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.5 standard deviations above normal)",
+       "download volume is 2.6 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-09-21T14:38:43.881175+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 3.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-09-21T14:43:43.881175+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-42-1",
+   "condition": "A (steady)",
+   "host": "192.168.1.197",
+   "ticks": 6009,
+   "hours": 8.3,
+   "active_ticks": 1803,
+   "malicious_ticks": 2,
+   "judged_benign_device_days": 0.264,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 56.73013788575181,
+    "count": 15,
+    "ci95": [
+     31.751427527795077,
+     93.56773519353807
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 68.07616546290217,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.5796076238062943,
+    "frac_gt_0.3": 0.05230903917706282
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 7,
+    "overlapping_malicious": 0,
+    "false": 7,
+    "false_per_device_day": 26.474064346684177
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 5557,
+    "anomalous": 452,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 6009
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 7,
+    "names_unavailable_signals": 7,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 7,
+    "network_features_per_alert": {
+     "1": 7,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2019-01-10T19:20:07.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (4.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (4.0 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:24:37.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (4.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (4.0 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:32:42.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:35:22.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:40:57.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:53:57.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T20:00:27.987598+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-20-1",
+   "condition": "A (steady)",
+   "host": "192.168.100.103",
+   "ticks": 17268,
+   "hours": 24.0,
+   "active_ticks": 2663,
+   "malicious_ticks": 16,
+   "judged_benign_device_days": 0.874,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 27.461263408820024,
+    "count": 24,
+    "ci95": [
+     17.594949631107276,
+     40.86018318236363
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 24.028605482717524,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.5926429986932091,
+    "frac_gt_0.3": 0.042974440471460734
+   },
+   "malicious_judged_ticks": 6,
+   "malicious_episodes": 1,
+   "episodes_flagged": 1,
+   "alerts_opened": {
+    "total": 13,
+    "overlapping_malicious": 1,
+    "false": 12,
+    "false_per_device_day": 13.725178713264496
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16289,
+    "anomalous": 979,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 17268
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 13,
+    "names_unavailable_signals": 13,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 13,
+    "network_features_per_alert": {
+     "1": 4,
+     "2": 9,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-10-02T22:52:14.600293+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.7 standard deviations above normal; contacting endpoints it does not normally use (3.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.7 standard deviations above normal",
+       "contacting endpoints it does not normally use (3.0 standard deviations above normal)"
+      ]
+     }
+    ],
+    "examples_false": [
+     {
+      "started": "2018-10-02T15:29:19.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 4.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 4.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T15:37:29.600293+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.0 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.0 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T15:48:29.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 4.0 standard deviations above normal; upload volume is 3.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 4.0 standard deviations above normal",
+       "upload volume is 3.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T19:49:59.600293+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.6 standard deviations above normal; upload volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.6 standard deviations above normal",
+       "upload volume is 3.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T20:05:09.600293+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.7 standard deviations above normal; upload volume is 3.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.7 standard deviations above normal",
+       "upload volume is 3.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T20:28:34.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.9 standard deviations above normal; download volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.9 standard deviations above normal",
+       "download volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T01:30:24.600293+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:12:29.600293+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.2 standard deviations above normal; download volume is 2.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 2.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:26:24.600293+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal; download volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal",
+       "download volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:30:59.600293+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-21-1",
+   "condition": "A (steady)",
+   "host": "192.168.100.113",
+   "ticks": 17210,
+   "hours": 23.9,
+   "active_ticks": 2188,
+   "malicious_ticks": 14,
+   "judged_benign_device_days": 0.87,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 33.319148936170215,
+    "count": 29,
+    "ci95": [
+     22.314356966544437,
+     47.85185578050375
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 40.21276595744681,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.7492657465339065,
+    "frac_gt_0.3": 0.04022606382978723
+   },
+   "malicious_judged_ticks": 10,
+   "malicious_episodes": 3,
+   "episodes_flagged": 2,
+   "alerts_opened": {
+    "total": 12,
+    "overlapping_malicious": 2,
+    "false": 10,
+    "false_per_device_day": 11.481727574750831
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 15662,
+    "anomalous": 1548,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 17210
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 12,
+    "names_unavailable_signals": 12,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 12,
+    "network_features_per_alert": {
+     "1": 4,
+     "2": 8,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-10-03T22:52:33.710599+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-10-04T07:09:18.710599+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": [
+     {
+      "started": "2018-10-03T19:46:23.710599+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T19:54:08.710599+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:04:58.710599+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:11:28.710599+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:15:38.710599+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:31:08.710599+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:39:08.710599+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T21:04:43.710599+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-04T01:03:58.710599+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.5 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.5 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-04T06:12:48.710599+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-8-1",
+   "condition": "A (steady)",
+   "host": "192.168.100.113",
+   "ticks": 17280,
+   "hours": 24.0,
+   "active_ticks": 8919,
+   "malicious_ticks": 7782,
+   "judged_benign_device_days": 0.459,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 8.709677419354838,
+    "count": 4,
+    "ci95": [
+     2.3730939587024817,
+     22.300233406120945
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 8.709677419354838,
+   "soft_score_benign": {
+    "p50": 0.0004330501906123496,
+    "p99": 0.2933903622942112,
+    "frac_gt_0.3": 0.006930443548387097
+   },
+   "malicious_judged_ticks": 7184,
+   "auroc_active_ticks": 0.3814747162725679,
+   "malicious_episodes": 2,
+   "episodes_flagged": 2,
+   "alerts_opened": {
+    "total": 8,
+    "overlapping_malicious": 8,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16755,
+    "anomalous": 525,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 17280
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 8,
+    "names_unavailable_signals": 8,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 8,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 8,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-07-31T18:27:26.474174+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal; download volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal",
+       "download volume is 3.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-07-31T18:31:56.474174+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal; download volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal",
+       "download volume is 3.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-07-31T22:40:46.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 3.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T05:42:26.474174+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 3.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 3.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T09:01:51.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 3.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 3.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T09:06:16.474174+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 3.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 3.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T09:10:41.474174+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 3.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 3.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T12:38:56.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 3.5 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-34-1",
+   "condition": "A (steady)",
+   "host": "192.168.1.195",
+   "ticks": 17280,
+   "hours": 24.0,
+   "active_ticks": 6078,
+   "malicious_ticks": 4928,
+   "judged_benign_device_days": 0.694,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 2.8819212808539025,
+    "count": 2,
+    "ci95": [
+     0.34901403712806156,
+     10.410490568568214
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 8.645763842561708,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.16372304193901402,
+    "frac_gt_0.3": 0.005170113408939293
+   },
+   "malicious_judged_ticks": 3848,
+   "auroc_active_ticks": 0.7556560648791345,
+   "malicious_episodes": 10,
+   "episodes_flagged": 4,
+   "alerts_opened": {
+    "total": 7,
+    "overlapping_malicious": 7,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16798,
+    "anomalous": 482,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 17280
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 7,
+    "names_unavailable_signals": 7,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 7,
+    "network_features_per_alert": {
+     "1": 5,
+     "2": 2,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-12-21T16:50:16.962094+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.6 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.6 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-12-21T16:59:26.962094+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 0.99): contacting endpoints it does not normally use (3.2 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.2 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-12-21T17:47:21.962094+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-21T18:04:11.962094+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-21T21:05:06.962094+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 5.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 5.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-22T08:22:36.962094+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 120.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 120.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-22T10:50:11.962094+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 3.6 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  }
+ ],
+ "development_B": [
+  {
+   "capture": "CTU-Honeypot-Capture-4-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.1.132",
+   "ticks": 15742,
+   "hours": 21.9,
+   "active_ticks": 233,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.538,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 26.02129719264279,
+    "count": 14,
+    "ci95": [
+     14.22608531509888,
+     43.659315153847345
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 27.879961277831562,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.4442270215163996,
+    "frac_gt_0.3": 0.016672044745616867
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 14,
+    "overlapping_malicious": 0,
+    "false": 14,
+    "false_per_device_day": 21.774977497749777
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 15419,
+    "anomalous": 323,
+    "ticks_blind": 4285,
+    "ticks_recovering_while_signal_present": 1813,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 4285,
+     "2": 11457
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 139,
+    "n_interrupted_by_a_new_outage": 46
+   },
+   "explainability": {
+    "alerts": 14,
+    "names_unavailable_signals": 14,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 14,
+    "network_features_per_alert": {
+     "1": 1,
+     "2": 12,
+     "3+": 1
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2018-10-25T14:27:52.400159+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T15:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T16:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T17:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T18:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T19:02:12.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T20:02:27.400159+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 5.1 standard deviations above normal; upload volume is 4.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 5.1 standard deviations above normal",
+       "upload volume is 4.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-25T22:02:47.400159+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.6 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.6 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-26T00:02:17.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-26T01:02:17.400159+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-Honeypot-Capture-5-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.2.3",
+   "ticks": 3571,
+   "hours": 5.0,
+   "active_ticks": 278,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.015,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 129.9248120300752,
+    "count": 2,
+    "ci95": [
+     15.734497493382385,
+     469.3330936025189
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 129.9248120300752,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.4274067156644829,
+    "frac_gt_0.3": 0.03383458646616541
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 2,
+    "overlapping_malicious": 0,
+    "false": 2,
+    "false_per_device_day": 42.04379562043796
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 3513,
+    "anomalous": 58,
+    "ticks_blind": 1145,
+    "ticks_recovering_while_signal_present": 556,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 1145,
+     "2": 2426
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 37,
+    "n_interrupted_by_a_new_outage": 21
+   },
+   "explainability": {
+    "alerts": 2,
+    "names_unavailable_signals": 2,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 2,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 2,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2018-09-21T14:38:43.881175+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 3.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-09-21T14:43:43.881175+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 3.1 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-42-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.1.197",
+   "ticks": 6009,
+   "hours": 8.3,
+   "active_ticks": 1803,
+   "malicious_ticks": 2,
+   "judged_benign_device_days": 0.174,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 80.37209302325581,
+    "count": 14,
+    "ci95": [
+     43.94017115431039,
+     134.85071527751452
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 68.89036544850498,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.5644238005525446,
+    "frac_gt_0.3": 0.06976744186046512
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 7,
+    "overlapping_malicious": 0,
+    "false": 7,
+    "false_per_device_day": 32.30769230769231
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 5657,
+    "anomalous": 352,
+    "ticks_blind": 1559,
+    "ticks_recovering_while_signal_present": 734,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 1559,
+     "2": 4450
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 59,
+    "n_interrupted_by_a_new_outage": 15
+   },
+   "explainability": {
+    "alerts": 7,
+    "names_unavailable_signals": 7,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 7,
+    "network_features_per_alert": {
+     "1": 7,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": [
+     {
+      "started": "2019-01-10T19:20:07.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (4.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (4.0 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:25:32.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (4.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (4.0 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:32:42.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:36:02.987598+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:40:57.987598+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.8 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.8 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:54:57.987598+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.7 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.7 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2019-01-10T19:59:37.987598+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.7 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.7 standard deviations above normal)"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-20-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.100.103",
+   "ticks": 17268,
+   "hours": 24.0,
+   "active_ticks": 2663,
+   "malicious_ticks": 16,
+   "judged_benign_device_days": 0.605,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 33.040152963671126,
+    "count": 20,
+    "ci95": [
+     20.181783789271524,
+     51.0278365352024
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 33.040152963671126,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.7470630724829959,
+    "frac_gt_0.3": 0.04531548757170172
+   },
+   "malicious_judged_ticks": 4,
+   "malicious_episodes": 1,
+   "episodes_flagged": 1,
+   "alerts_opened": {
+    "total": 11,
+    "overlapping_malicious": 1,
+    "false": 10,
+    "false_per_device_day": 13.642823306489815
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16534,
+    "anomalous": 734,
+    "ticks_blind": 4644,
+    "ticks_recovering_while_signal_present": 2202,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 4644,
+     "2": 12624
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 166,
+    "n_interrupted_by_a_new_outage": 56
+   },
+   "explainability": {
+    "alerts": 11,
+    "names_unavailable_signals": 11,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 11,
+    "network_features_per_alert": {
+     "1": 4,
+     "2": 7,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-10-02T22:52:19.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 4.1 standard deviations above normal; contacting endpoints it does not normally use (3.0 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 4.1 standard deviations above normal",
+       "contacting endpoints it does not normally use (3.0 standard deviations above normal)"
+      ]
+     }
+    ],
+    "examples_false": [
+     {
+      "started": "2018-10-02T15:29:19.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 4.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 4.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T15:37:29.600293+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.0 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.0 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T15:48:29.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 4.0 standard deviations above normal; upload volume is 3.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 4.0 standard deviations above normal",
+       "upload volume is 3.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T19:49:59.600293+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.6 standard deviations above normal; upload volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.6 standard deviations above normal",
+       "upload volume is 3.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-02T20:28:29.600293+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T01:30:34.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 4.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 4.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:13:24.600293+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 4.0 standard deviations above normal; download volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 4.0 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:26:24.600293+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:36:44.600293+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T09:44:24.600293+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-21-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.100.113",
+   "ticks": 17210,
+   "hours": 23.9,
+   "active_ticks": 2188,
+   "malicious_ticks": 14,
+   "judged_benign_device_days": 0.604,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 41.403105232892464,
+    "count": 25,
+    "ci95": [
+     26.79390668300659,
+     61.11915082742234
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 51.33985048878666,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.8591857091584831,
+    "frac_gt_0.3": 0.047153536515238646
+   },
+   "malicious_judged_ticks": 9,
+   "malicious_episodes": 2,
+   "episodes_flagged": 1,
+   "alerts_opened": {
+    "total": 11,
+    "overlapping_malicious": 1,
+    "false": 10,
+    "false_per_device_day": 13.871718712370553
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16121,
+    "anomalous": 1089,
+    "ticks_blind": 4607,
+    "ticks_recovering_while_signal_present": 2014,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 4607,
+     "2": 12603
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 151,
+    "n_interrupted_by_a_new_outage": 54
+   },
+   "explainability": {
+    "alerts": 11,
+    "names_unavailable_signals": 11,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 11,
+    "network_features_per_alert": {
+     "1": 4,
+     "2": 7,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-10-03T22:52:33.710599+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.9 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.9 standard deviations above normal)"
+      ]
+     }
+    ],
+    "examples_false": [
+     {
+      "started": "2018-10-03T19:47:03.710599+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.4 standard deviations above normal; download volume is 2.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.4 standard deviations above normal",
+       "download volume is 2.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T19:54:08.710599+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T19:56:33.710599+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.7 standard deviations above normal; download volume is 2.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.7 standard deviations above normal",
+       "download volume is 2.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:04:58.710599+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:11:28.710599+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:16:58.710599+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-03T20:39:08.710599+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.4 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.4 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-04T01:03:58.710599+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.9 standard deviations above normal; upload volume is 3.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.9 standard deviations above normal",
+       "upload volume is 3.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-04T06:12:48.710599+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-10-04T06:30:33.710599+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.2 standard deviations above normal; download volume is 2.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.2 standard deviations above normal",
+       "download volume is 2.3 standard deviations above normal"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-8-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.100.113",
+   "ticks": 17280,
+   "hours": 24.0,
+   "active_ticks": 8919,
+   "malicious_ticks": 7782,
+   "judged_benign_device_days": 0.318,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 6.293935530868693,
+    "count": 2,
+    "ci95": [
+     0.7622247920669667,
+     22.735859205658354
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 6.293935530868693,
+   "soft_score_benign": {
+    "p50": 0.0006348562222446841,
+    "p99": 0.29685811055625627,
+    "frac_gt_0.3": 0.008923693316335822
+   },
+   "malicious_judged_ticks": 4952,
+   "auroc_active_ticks": 0.38103283482850153,
+   "malicious_episodes": 147,
+   "episodes_flagged": 4,
+   "alerts_opened": {
+    "total": 5,
+    "overlapping_malicious": 5,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16843,
+    "anomalous": 437,
+    "ticks_blind": 4677,
+    "ticks_recovering_while_signal_present": 2088,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 4677,
+     "2": 12603
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 154,
+    "n_interrupted_by_a_new_outage": 56
+   },
+   "explainability": {
+    "alerts": 5,
+    "names_unavailable_signals": 5,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 5,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 5,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-07-31T18:27:26.474174+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal; download volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal",
+       "download volume is 3.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-07-31T18:31:56.474174+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.6 standard deviations above normal; download volume is 3.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.6 standard deviations above normal",
+       "download volume is 3.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T09:01:51.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 3.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T09:06:16.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 3.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-08-01T12:38:56.474174+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.5 standard deviations above normal; download volume is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.5 standard deviations above normal",
+       "download volume is 3.5 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-34-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.1.195",
+   "ticks": 17280,
+   "hours": 24.0,
+   "active_ticks": 6078,
+   "malicious_ticks": 4928,
+   "judged_benign_device_days": 0.479,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 4.175425878941645,
+    "count": 2,
+    "ci95": [
+     0.5056634448761284,
+     15.083073927542591
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 8.35085175788329,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.10004714033594853,
+    "frac_gt_0.3": 0.00422858523619669
+   },
+   "malicious_judged_ticks": 2886,
+   "auroc_active_ticks": 0.732762883365293,
+   "malicious_episodes": 82,
+   "episodes_flagged": 3,
+   "alerts_opened": {
+    "total": 6,
+    "overlapping_malicious": 6,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 16904,
+    "anomalous": 376,
+    "ticks_blind": 4677,
+    "ticks_recovering_while_signal_present": 2088,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 4677,
+     "2": 12603
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 154,
+    "n_interrupted_by_a_new_outage": 56
+   },
+   "explainability": {
+    "alerts": 6,
+    "names_unavailable_signals": 6,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 6,
+    "network_features_per_alert": {
+     "1": 4,
+     "2": 2,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-12-21T16:50:16.962094+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.6 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.6 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-12-21T16:59:26.962094+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 0.99): contacting endpoints it does not normally use (3.2 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.2 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-12-21T17:47:21.962094+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-21T18:04:11.962094+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-22T08:22:36.962094+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 120.4 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 120.4 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-12-22T10:50:11.962094+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 3.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 3.5 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  }
+ ],
+ "held_out_A": [
+  {
+   "capture": "CTU-IoT-Malware-Capture-3-1",
+   "condition": "A (steady)",
+   "host": "192.168.2.5",
+   "ticks": 26010,
+   "hours": 36.1,
+   "active_ticks": 23439,
+   "malicious_ticks": 23375,
+   "judged_benign_device_days": 0.132,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     27.957823231179297
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.005268806479544734,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 21570,
+   "auroc_active_ticks": 0.7634411465885439,
+   "malicious_episodes": 3,
+   "episodes_flagged": 2,
+   "alerts_opened": {
+    "total": 11,
+    "overlapping_malicious": 11,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 22957,
+    "anomalous": 3053,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 26010
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 11,
+    "names_unavailable_signals": 11,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 11,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 7,
+     "3+": 4
+    },
+    "examples_true": [
+     {
+      "started": "2018-05-19T21:26:44.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-19T23:27:54.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 3.0 standard deviations above normal; connection count is 2.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal",
+       "connection count is 2.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-19T23:40:59.958006+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.0 standard deviations above normal; download volume is 3.0 standard deviations above normal; connection count is 2.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.0 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal",
+       "connection count is 2.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:18:24.958006+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 3.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 3.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:45:14.958006+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.2 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T08:10:04.958006+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 3.1 standard deviations above normal; connection count is 2.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 3.1 standard deviations above normal",
+       "connection count is 2.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T08:14:49.958006+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.0 standard deviations above normal; upload volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.0 standard deviations above normal",
+       "upload volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T11:40:04.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.9 standard deviations above normal; connection count is 2.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.9 standard deviations above normal",
+       "connection count is 2.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T12:05:49.958006+00:00",
+      "severity": "high",
+      "peak": 0.992,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T15:25:44.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.9 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-1-1",
+   "condition": "A (steady)",
+   "host": "192.168.100.103",
+   "ticks": 80571,
+   "hours": 111.9,
+   "active_ticks": 80571,
+   "malicious_ticks": 80567,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     15935.9592417722
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0005064718466697982,
+    "p99": 0.07708850336303205,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 78407,
+   "auroc_active_ticks": 0.5130696238856225,
+   "malicious_episodes": 2,
+   "episodes_flagged": 2,
+   "alerts_opened": {
+    "total": 94,
+    "overlapping_malicious": 94,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 69569,
+    "anomalous": 11002,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 80571
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 94,
+    "names_unavailable_signals": 94,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 94,
+    "network_features_per_alert": {
+     "1": 12,
+     "2": 76,
+     "3+": 6
+    },
+    "examples_true": [
+     {
+      "started": "2018-05-09T18:00:21.015073+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.9 standard deviations above normal; upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.9 standard deviations above normal",
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T18:23:41.015073+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T19:04:01.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.5 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.5 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T19:59:36.015073+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.6 standard deviations above normal; upload volume is 2.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.6 standard deviations above normal",
+       "upload volume is 2.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T20:17:51.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.5 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.5 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-05-09T20:41:31.015073+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.9 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.9 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:16:26.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.5 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.5 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:32:41.015073+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.4 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.4 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:49:46.015073+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T22:06:51.015073+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-9-1.head",
+   "condition": "A (steady)",
+   "host": "192.168.100.111",
+   "ticks": 4908,
+   "hours": 6.8,
+   "active_ticks": 2196,
+   "malicious_ticks": 1933,
+   "judged_benign_device_days": 0.048,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     76.7998035748058
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.2252697008293001,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 1918,
+   "auroc_active_ticks": 1.0,
+   "malicious_episodes": 1,
+   "episodes_flagged": 1,
+   "alerts_opened": {
+    "total": 1,
+    "overlapping_malicious": 1,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 2864,
+    "anomalous": 2044,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 4908
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "explainability": {
+    "alerts": 1,
+    "names_unavailable_signals": 1,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 1,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 1,
+     "3+": 0
+    },
+    "examples_true": [
+     {
+      "started": "2018-07-25T13:30:01.648888+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): connection count is 10.7 standard deviations above normal; contacting endpoints it does not normally use (10.1 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "connection count is 10.7 standard deviations above normal",
+       "contacting endpoints it does not normally use (10.1 standard deviations above normal)"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-49-1.head",
+   "condition": "A (steady)",
+   "host": "192.168.1.193",
+   "ticks": 976,
+   "hours": 1.4,
+   "active_ticks": 976,
+   "malicious_ticks": 975,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": NaN,
+    "count": 0,
+    "ci95": [
+     NaN,
+     NaN
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": NaN,
+   "soft_score_benign": {
+    "p50": null,
+    "p99": null,
+    "frac_gt_0.3": null
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 0,
+    "overlapping_malicious": 0,
+    "false": 0,
+    "false_per_device_day": NaN
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 976,
+    "anomalous": 0,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 976
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": false
+   },
+   "explainability": {
+    "alerts": 0,
+    "names_unavailable_signals": 0,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 0,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-Honeypot-Capture-7-1.Somfy-01",
+   "condition": "A (steady)",
+   "host": "0.0.0.0",
+   "ticks": 987,
+   "hours": 1.4,
+   "active_ticks": 13,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": NaN,
+    "count": 0,
+    "ci95": [
+     NaN,
+     NaN
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": NaN,
+   "soft_score_benign": {
+    "p50": null,
+    "p99": null,
+    "frac_gt_0.3": null
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 0,
+    "overlapping_malicious": 0,
+    "false": 0,
+    "false_per_device_day": NaN
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 987,
+    "anomalous": 0,
+    "ticks_blind": 0,
+    "ticks_recovering_while_signal_present": 0,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "2": 987
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": false
+   },
+   "explainability": {
+    "alerts": 0,
+    "names_unavailable_signals": 0,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 0,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": []
+   }
+  }
+ ],
+ "held_out_B": [
+  {
+   "capture": "CTU-IoT-Malware-Capture-3-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.2.5",
+   "ticks": 26010,
+   "hours": 36.1,
+   "active_ticks": 23439,
+   "malicious_ticks": 23375,
+   "judged_benign_device_days": 0.093,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     39.469868091076656
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.00556390601291386,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 15185,
+   "auroc_active_ticks": 0.7778070464273954,
+   "malicious_episodes": 257,
+   "episodes_flagged": 20,
+   "alerts_opened": {
+    "total": 21,
+    "overlapping_malicious": 21,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 23923,
+    "anomalous": 2087,
+    "ticks_blind": 7050,
+    "ticks_recovering_while_signal_present": 3324,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 7050,
+     "2": 18960
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 254,
+    "n_interrupted_by_a_new_outage": 80
+   },
+   "explainability": {
+    "alerts": 21,
+    "names_unavailable_signals": 21,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 21,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 19,
+     "3+": 2
+    },
+    "examples_true": [
+     {
+      "started": "2018-05-19T21:26:44.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-19T23:27:54.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.1 standard deviations above normal; download volume is 3.0 standard deviations above normal; connection count is 2.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.1 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal",
+       "connection count is 2.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-19T23:40:59.958006+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): upload volume is 3.0 standard deviations above normal; download volume is 3.0 standard deviations above normal; connection count is 2.1 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.0 standard deviations above normal",
+       "download volume is 3.0 standard deviations above normal",
+       "connection count is 2.1 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:18:24.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 2.9 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 2.9 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:24:34.958006+00:00",
+      "severity": "high",
+      "peak": 0.995,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.2 standard deviations above normal; upload volume is 3.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 3.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:26:14.958006+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.2 standard deviations above normal; upload volume is 3.2 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 3.2 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:45:14.958006+00:00",
+      "severity": "high",
+      "peak": 0.993,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.1 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.1 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T07:53:54.958006+00:00",
+      "severity": "high",
+      "peak": 0.991,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.0 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.0 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T08:14:34.958006+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.2 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-20T08:15:59.958006+00:00",
+      "severity": "high",
+      "peak": 0.994,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 0.99, fusion: learned)\n  1. network (contributes 0.99): download volume is 3.2 standard deviations above normal; upload volume is 3.0 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.2 standard deviations above normal",
+       "upload volume is 3.0 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-1-1",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.100.103",
+   "ticks": 80571,
+   "hours": 111.9,
+   "active_ticks": 80571,
+   "malicious_ticks": 80567,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     21247.94565569627
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.07785252860947138,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 57046,
+   "auroc_active_ticks": 0.556346340380278,
+   "malicious_episodes": 778,
+   "episodes_flagged": 75,
+   "alerts_opened": {
+    "total": 117,
+    "overlapping_malicious": 117,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 71084,
+    "anomalous": 9487,
+    "ticks_blind": 21362,
+    "ticks_recovering_while_signal_present": 9764,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 21362,
+     "2": 59209
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 732,
+    "n_interrupted_by_a_new_outage": 251
+   },
+   "explainability": {
+    "alerts": 117,
+    "names_unavailable_signals": 117,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 117,
+    "network_features_per_alert": {
+     "1": 11,
+     "2": 101,
+     "3+": 5
+    },
+    "examples_true": [
+     {
+      "started": "2018-05-09T18:00:21.015073+00:00",
+      "severity": "high",
+      "peak": 1.0,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.9 standard deviations above normal; upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.9 standard deviations above normal",
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T18:23:41.015073+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): upload volume is 3.3 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "upload volume is 3.3 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T19:04:01.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.5 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.5 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T19:59:36.015073+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.6 standard deviations above normal; upload volume is 2.5 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.6 standard deviations above normal",
+       "upload volume is 2.5 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T20:17:51.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.5 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.5 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-05-09T20:41:31.015073+00:00",
+      "severity": "high",
+      "peak": 0.999,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.9 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.9 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:16:26.015073+00:00",
+      "severity": "high",
+      "peak": 0.998,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): contacting endpoints it does not normally use (3.5 standard deviations above normal)\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "contacting endpoints it does not normally use (3.5 standard deviations above normal)"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:32:41.015073+00:00",
+      "severity": "high",
+      "peak": 0.997,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.4 standard deviations above normal; upload volume is 2.7 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.4 standard deviations above normal",
+       "upload volume is 2.7 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T21:49:46.015073+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.6 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.6 standard deviations above normal"
+      ]
+     },
+     {
+      "started": "2018-05-09T22:06:51.015073+00:00",
+      "severity": "high",
+      "peak": 0.996,
+      "unavailable": [
+       "device",
+       "proximity",
+       "spatial"
+      ],
+      "explanation": "HIGH behavioural anomaly on D-001 (anomaly score 1.00, fusion: learned)\n  1. network (contributes 1.00): download volume is 3.3 standard deviations above normal; upload volume is 2.8 standard deviations above normal\n  Note: the score ranks how unusual this is; it is not a probability that an attack occurred.",
+      "reasons": [
+       "download volume is 3.3 standard deviations above normal",
+       "upload volume is 2.8 standard deviations above normal"
+      ]
+     }
+    ],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-9-1.head",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.100.111",
+   "ticks": 4908,
+   "hours": 6.8,
+   "active_ticks": 2196,
+   "malicious_ticks": 1933,
+   "judged_benign_device_days": 0.029,
+   "false_onsets_per_device_day_shipped": {
+    "rate": 0.0,
+    "count": 0,
+    "ci95": [
+     0.0,
+     125.72748908696016
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": 0.0,
+   "soft_score_benign": {
+    "p50": 0.0,
+    "p99": 0.22795551431847375,
+    "frac_gt_0.3": 0.0
+   },
+   "malicious_judged_ticks": 1219,
+   "auroc_active_ticks": 0.4741044572053596,
+   "malicious_episodes": 23,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 0,
+    "overlapping_malicious": 0,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 4737,
+    "anomalous": 171,
+    "ticks_blind": 1022,
+    "ticks_recovering_while_signal_present": 518,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 1022,
+     "2": 3886
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": true
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 42,
+    "n_interrupted_by_a_new_outage": 10
+   },
+   "explainability": {
+    "alerts": 0,
+    "names_unavailable_signals": 0,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 0,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-IoT-Malware-Capture-49-1.head",
+   "condition": "B (intermittent network loss)",
+   "host": "192.168.1.193",
+   "ticks": 976,
+   "hours": 1.4,
+   "active_ticks": 976,
+   "malicious_ticks": 975,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": NaN,
+    "count": 0,
+    "ci95": [
+     NaN,
+     NaN
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": NaN,
+   "soft_score_benign": {
+    "p50": null,
+    "p99": null,
+    "frac_gt_0.3": null
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 0,
+    "overlapping_malicious": 0,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 976,
+    "anomalous": 0,
+    "ticks_blind": 251,
+    "ticks_recovering_while_signal_present": 126,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 251,
+     "2": 725
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": false
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 8,
+    "n_interrupted_by_a_new_outage": 7
+   },
+   "explainability": {
+    "alerts": 0,
+    "names_unavailable_signals": 0,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 0,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": []
+   }
+  },
+  {
+   "capture": "CTU-Honeypot-Capture-7-1.Somfy-01",
+   "condition": "B (intermittent network loss)",
+   "host": "0.0.0.0",
+   "ticks": 987,
+   "hours": 1.4,
+   "active_ticks": 13,
+   "malicious_ticks": 0,
+   "judged_benign_device_days": 0.0,
+   "false_onsets_per_device_day_shipped": {
+    "rate": NaN,
+    "count": 0,
+    "ci95": [
+     NaN,
+     NaN
+    ]
+   },
+   "false_onsets_per_device_day_f1_threshold": NaN,
+   "soft_score_benign": {
+    "p50": null,
+    "p99": null,
+    "frac_gt_0.3": null
+   },
+   "malicious_judged_ticks": 0,
+   "malicious_episodes": 0,
+   "episodes_flagged": 0,
+   "alerts_opened": {
+    "total": 0,
+    "overlapping_malicious": 0,
+    "false": 0,
+    "false_per_device_day": 0.0
+   },
+   "states": {
+    "normal": 0,
+    "degraded": 987,
+    "anomalous": 0,
+    "ticks_blind": 251,
+    "ticks_recovering_while_signal_present": 114,
+    "fallback_ticks_while_network_present": 0,
+    "pattern_values": {
+     "0": 251,
+     "2": 736
+    }
+   },
+   "invariants": {
+    "never_normal": true,
+    "alert_while_not_alertable": 0,
+    "alert_while_blind_or_recovering": 0,
+    "judged_by_validated_network_only_threshold": false
+   },
+   "recovery_lag_ticks": {
+    "mean": 11.0,
+    "min": 11,
+    "max": 11,
+    "expected_ticks": 11,
+    "n": 8,
+    "n_interrupted_by_a_new_outage": 3
+   },
+   "explainability": {
+    "alerts": 0,
+    "names_unavailable_signals": 0,
+    "explanation_text_mentions_partial_observation": 0,
+    "reasons_named": 0,
+    "network_features_per_alert": {
+     "1": 0,
+     "2": 0,
+     "3+": 0
+    },
+    "examples_true": [],
+    "examples_false": []
+   }
+  }
+ ]
+}
