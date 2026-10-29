@@ -1,0 +1,47 @@
+{
+  "version": "r5inv",
+  "created": "2026-10-29T14:56:38.899414+00:00",
+  "frozen_at_commit": "dc53772",
+  "git_tag": "inventory-r5",
+  "statement": "R5 feasibility inventory. Gate result: FAILED (15 eligible episodes of 30 required). No capture-to-split assignment exists because the protocol computes it only after the gate passes.",
+  "gate": {
+    "required": {
+      "episodes": 30,
+      "sessions": 8,
+      "types": 2,
+      "per_type_claim": 10
+    },
+    "measured": {
+      "episodes": 15,
+      "sessions": 13,
+      "types": 5,
+      "types_with_claim_size": [],
+      "passed": false
+    }
+  },
+  "files": {
+    "docs/preregistration/R5-detection-delay.md": {
+      "sha256": "ce517cdad3d6ee0515540ae097d670d9bb49d8af554b5669d5decfb3ef7daf5d",
+      "role": "R5 protocol with revisions 1 and 2 (committed before the inventory ran)",
+      "last_commit": "73ab350"
+    },
+    "docs/results/r5_inventory.json": {
+      "sha256": "a2060e5fe0a028c874e5dcd59f1b14bec84b4f56cc271258950dc4e2adad26b0",
+      "role": "Metadata-only inventory: every scheduled episode, its eligibility and reasons, the gate, the benign-day plan",
+      "last_commit": "dc53772"
+    },
+    "ml/r5_inventory.py": {
+      "sha256": "9e43fbb2f51654813ca8dd70b7de6cc7339d8188f6a4c61c543d912f90a91374",
+      "role": "The inventory script (reads schedule and listing files and HTTP HEAD only)",
+      "last_commit": "73ab350"
+    }
+  },
+  "data": {
+    "R5 schedule and listing files (public, UNSW IoT analytics)": {
+      "r5/docs/annotations.zip": "1990c33d5430c4939336d79b08e9ba6a90a8c97621069cb748c3c0282d1eaafd",
+      "r5/docs/attackinfo.xlsx": "dccfd77698f9be527515192147f8d72ac168200229f0591eaf46086858b1fc41",
+      "r5/docs/unsw_attack_data.html": "3beaaac05c21b5a6902454b82b9e363a258da4be7cbe99825dacb2e6a94de342",
+      "r5/docs/unsw_iottraces.html": "4f47759998d149a99858db178facaadc9149a29aaab0972afa07ce88f4c9f731"
+    }
+  }
+}
