@@ -13,8 +13,11 @@ not probabilities.
 
 ## What was found
 
+**Start with [docs/RESEARCH.md](docs/RESEARCH.md)**: every headline claim with its experiment, evidence file, seeds and commit, plus the failure cases and
+what the evidence does not cover. The artifacts behind it are frozen with hashes in [docs/research/v1/manifest.json](docs/research/v1/manifest.json) (git tag `research-v1`).
+
 The central claim was tested with a pre-registered final evaluation on unseen simulated data (1,331 episodes, every
-system held to the same 0.1% false-alarm budget; full method and limits in the manual, §5.7):
+system held to the same 0.1% false-alarm budget; "0.1%" turned out to mean 2 to 7 false alerts per device per day, see below):
 
 | Question | Result |
 |---|---|
@@ -26,7 +29,7 @@ system held to the same 0.1% false-alarm budget; full method and limits in the m
 
 An honest, partial result, reported with its corrections and limits. It says nothing about real fleets.
 
-**Audit after the fact (manual §5.10, exploratory).** The results were then attacked. Counting alerts instead of rows, every
+**Audit after the fact (exploratory; see docs/RESEARCH.md).** The results were then attacked. Counting alerts instead of rows, every
 system raises 2 to 7 false alarms per device per day at that budget; fusion still beats "any detector fires" under every
 stress test (unseen combinations, benign noise, noisy sensors, benign drift, lost telemetry, a missing signal), but its edge over
 the single best detector appears only when the anomaly lies outside that detector's view, and it reverses under sensor noise. The
@@ -34,12 +37,12 @@ frozen thresholds do not survive noise or drift. Two public real datasets were u
 network, mixed and session-confounded) and IoT-23 real IoT traffic (network only; the frozen network threshold gives 12 to 76
 false alerts per device-day on real traffic). Location and proximity have no real-data validation.
 
-**Missing signals (D106, pre-registered, manual §5.11).** When one signal disappears the current system reads it as "normal": with
+**Missing signals (D106, pre-registered, docs/preregistration/D106-missing-signals.md).** When one signal disappears the current system reads it as "normal": with
 the network signal gone its recall on weak and staged attacks falls from 0.87 to 0.18 while its alert rate drops, which looks
 quiet and is blind. Treating availability explicitly (a separate threshold per set of available signals, and optionally a separate
 learned fusion per set) cut the average loss from 0.34 to 0.22 across 12 missing-signal conditions at the same alert budget
 (+0.12, 10 of 10 fresh seeds). A post-hoc ablation shows nearly all of that comes from the per-set thresholds, the cheaper
-change. Now implemented and independently validated (D107, manual §5.12): telemetry marks a signal group
+change. Now implemented and independently validated (D107, docs/preregistration/D107-availability-implementation.md): telemetry marks a signal group
 unavailable with an explicit null (never a zero); detectors score and learn nothing from it; the unchanged learned fusion is judged by a
 threshold validated for exactly the signals that remain, with a conservative fallback (no alert, reported as Degraded) for any combination
 without one; and the dashboard shows **Normal / Anomalous / Degraded**, never "Normal" for a device it cannot fully see. On 10 fresh seeds run
@@ -55,9 +58,10 @@ docker compose up -d --build
 ```
 
 Open **http://localhost:8080** and sign in with the **admin** token to run the demo, or the **viewer** token to watch.
-In the Demo panel start the fleet (about a minute to learn each device's normal behaviour), select a device, and inject
-a scenario. The spec's seven-step walkthrough is in [docs/DEMO.md](docs/DEMO.md); `python scripts/demo_flow.py` runs it
-from the command line.
+In **Scenarios** start the fleet (about a minute to learn each device's normal behaviour), pick a device, and inject a threat or a signal
+outage. The four-minute story (normal, anomalous, outage, blind spot, recovery, late alert) is in [docs/DEMO.md](docs/DEMO.md); `python scripts/demo_story.py`
+runs it in a browser and regenerates its screenshots. Without a route to Docker's registry, `docker compose -f docker-compose.yml -f docker-compose.overlay.yml up -d --build`
+layers the current code onto earlier images.
 
 The stack is three containers (Redis, API, nginx + dashboard). Only the dashboard is exposed, on `127.0.0.1`. Put TLS in
 front before serving anyone else.
@@ -66,9 +70,11 @@ front before serving anyone else.
 
 | | |
 |---|---|
-| [docs/AegisFlow-Technical-Manual.md](docs/AegisFlow-Technical-Manual.md) | The reasoning behind every decision, the experiments, every bug found and what it taught, and the limits. Start with its headline findings and §7.1 |
-| [docs/DEMO.md](docs/DEMO.md) | The seven-step demonstration, step by step |
-| `docs/results/` | The raw results of the validation and final experiments |
+| [docs/RESEARCH.md](docs/RESEARCH.md) | The results: main comparison, failure cases, limitations, why thresholds only, and a trace from each claim to its experiment |
+| [docs/DEMO.md](docs/DEMO.md) | The honest four-minute demonstration, with screenshots |
+| `docs/preregistration/` | The D106 and D107 protocols, committed before their test seeds existed |
+| `docs/research/v1/manifest.json` | Hashes and commits of every frozen artifact; never edited, a change is a new version |
+| `docs/results/` | The raw results of every experiment |
 
 ## Layout
 
@@ -125,4 +131,4 @@ The final test run (`python -m ml.final_eval`) refuses to run twice on the same 
 
 Simulated data only; the scenarios and effect sizes are my own model. The real-data check the spec asked for was not
 done. No TLS, key rotation, per-user accounts or audit log. Single node. All verified on Windows with Docker Desktop.
-The full list is in the manual, §7.1.
+The full list is in docs/RESEARCH.md.

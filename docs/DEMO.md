@@ -1,92 +1,82 @@
-# The AegisFlow demonstration
+# The AegisFlow demonstration: one honest story
 
-The seven steps from the specification (§37), done in the dashboard. Every observation below was recorded from a real run
-of the Docker stack; nothing here is staged. For the same flow without clicking, run `python scripts/demo_flow.py`.
+About four minutes. The fleet is **simulated** (ten devices in a 130 m facility); what is real is the pipeline: telemetry through Redis, per-signal
+detectors, fusion, alerts, and a dashboard that says what it can and cannot see. The whole story is also scripted and checked by a browser run:
+`python scripts/demo_story.py` regenerates the screenshots below and fails if any scene stops showing what is claimed.
 
-**Before you start:** `docker compose up -d --build`, open http://localhost:8080, sign in with the **admin** token.
+**Start:** `docker compose up -d --build`, open http://localhost:8080, sign in with the admin token from `.env`, open **Scenarios**, press
+**Start fleet** (the dashboard shows a calibration while each device learns its own normal, about a minute).
 
-## Step 1: start the system
+The idea in one line: **four weak signals agreeing is stronger evidence than any one of them, and a signal that is missing is not evidence of
+anything.**
 
-In the **Demo** panel choose **10 devices** and a speed (20× is comfortable), then **Start fleet**.
+## Scene 1: a normal device
 
-*What you see:* a progress bar, "Building each device's baseline". The system is fast-forwarding **34 simulated hours**
-through the real pipeline so every device has learned its own normal behaviour; without that it would refuse to raise
-alerts, deliberately. It takes about **a minute**. Then the map fills with ten devices, the status pill says **Live**, and
-the header shows the site clock (it starts on a Tuesday at 10:00, working hours).
+![a normal device](img/demo/01_normal.png)
 
-## Step 2: show baseline activity
+Select any quiet device on the map. Four signals are seen, the score is low, the badge says **Normal**.
+*Knows:* what each of its four signals looks like compared with this device's own history at this time of day.
+*Cannot know:* whether "ordinary for this device" is also "safe" (a device that is already compromised teaches the baseline that compromise is normal).
 
-Watch the map for a minute. Devices drift between the Office, Meeting Room and Lab and sit quietly; all show **Normal**.
-Click a device in the list: its score is low (about 0.1) and its four signal bars are near zero.
+## Scene 2: a device becomes anomalous
 
-*Honest note:* occasionally a device you did not touch is flagged (for example "connection count is 3.2 standard deviations
-above normal"). That is the system's measured false-alarm rate at work, about five alert onsets per device per day for the
-learned fusion (manual §5.7). It is a cost of the method, not a fault in the demo.
+![an anomaly](img/demo/02_anomalous.png)
 
-## Step 3: trigger a spatial event
+**Scenarios → Breach**: a device walks into the restricted server room. The location signal fires, the alert opens with its reason in plain
+language, and the correlation lanes show which signals moved and what the fused score did. Try **Whisper** (several weak deviations together) to
+see the case the project is about: no single lane is alarming, the fused risk is.
+*Knows:* which signals contributed and by how much. *Cannot know:* intent. An authorised visit looks identical (97–98% of benign look-alikes are flagged).
 
-Select a device (say **D-004**), then **Enter restricted zone** (strength 0.80 or higher).
+## Scene 3: a signal outage
 
-*What you see:* the device walks across the site to the hatched **ServerRoom**. Within seconds its marker turns red and
-pulses, the score jumps past the alert line on its chart, and an alert appears at the top of the feed: **High: entered a
-restricted zone**. The map draws the path it took.
+![an outage](img/demo/03_outage.png)
 
-## Step 4: add other deviations
+**Scenarios → Lose network signal** for another device. It is not an anomaly and no alert opens, but the device is **never shown as Normal**: the badge
+says **Degraded**, the top bar counts it, the live feed lists it under **Blind spots**, the network lane reads *no data*, and the score is
+computed from the three signals that remain, judged by a threshold validated for exactly those three.
+*Knows:* that it is partly blind, and which signal is missing. *Cannot know:* what the network is doing.
 
-On the same device click, a couple of seconds apart: **Unknown connections**, **Battery drain / CPU**, **Unknown device
-nearby**.
+## Scene 4: an attack inside the blind spot
 
-## Step 5: show correlation
+![the blind spot](img/demo/04_blind_spot.png)
 
-Watch the device panel. The four signal bars (Location, Network, Device health, Proximity) light up one after another, in
-their own colours. The feed reports **"Another signal joined"** as each is added, and the alert's count grows to
-**4 signals**. This is the point of the system: no single event proves anything; several changing together do.
+While the network signal is gone, **Exfiltrate** the same device. Nothing alerts. The dashboard still says **Degraded: a quiet score here does not
+mean healthy.** This is the honest limit: an attack in the missing signal's territory is invisible, and the system says so instead of pretending.
 
-## Step 6: explain the alert
+## Scene 5: recovery is not instant
 
-Read **Why it was flagged**. In a real run it said:
+![recovering](img/demo/05_recovering.png)
 
-1. **Location** (contributes 0.38): *entered a restricted zone*
-2. **Proximity** (0.31): *unknown (unenrolled) devices are nearby, 6.0 standard deviations above normal*
-3. **Network** (0.30): *contacting endpoints it does not normally use (29 standard deviations above normal); connection
-   count is 8.4 above normal; upload volume is 7.4 above normal; download volume is 5.0 above normal*
-4. **Device health**: *temperature 4.1, CPU load 3.9, battery draining 3.0 standard deviations above normal*
+When the outage ends the signal is back, but its one-minute smoothing window is nearly empty and judging a nearly empty window produces false alerts
+(measured: 3 to 20 per device-day). So the detector withholds judgment until the window has refilled, and the device says **recovering**.
 
-and, always, *"the score ranks how unusual this is; it is not a probability that an attack occurred."*
+## Scene 6: the alert, late
 
-## Step 7: restore normal behaviour
+![the alert after recovery](img/demo/06_alert_after_recovery.png)
 
-Click **Restore normal**.
+The exfiltration is now observed and the alert opens. It is late by the length of the blind period plus the refill: **the blind time is not recoverable**.
+The feed records *signal restored: fully observed again* and the alert names its reason.
 
-*What you see:* the device walks back to the Office, its signals fall away, the score decays, the marker returns to grey
-and the alert closes. The slowest signal is battery drain, which is judged over a 5-minute window, so full recovery takes about
-**16 seconds** at 20× speed (about five simulated minutes).
+## Scene 7: everything restored
 
-## Step 8: lose a signal (a blind spot is not a healthy device)
+![fully observed](img/demo/07_fully_observed.png)
 
-In **Scenarios**, under *Observability loss*, click **Lose network signal** for the selected device, then **Watch it on the map**.
+**Restore normal** ends the episodes; no blind spots and no open alerts remain.
 
-*What you see:* the device is not an anomaly and no alert opens, but it is never shown as Normal. Its marker turns hollow and dashed,
-the top bar counts a **Degraded** device, the live feed lists it under **Blind spots** ("a quiet score here does not mean healthy"),
-the correlation timeline shows *no data* for the network lane with the gap hatched, and the Device Network table names the missing
-signal. Alerts for this device are judged by the threshold validated for exactly the signals that remain (manual §5.11); a combination
-with no validated threshold raises no alert and says so. **Restore normal** ends the outage; the feed notes that it is fully observed again.
+## What to say if asked
 
-## Other things worth showing
-
-- **Statistics:** risk by device, alerts by severity and by leading signal, processing latency (typically a few milliseconds).
-  **Show data as tables** switches every chart to a table.
-- **Evidence:** the final test's pre-registered comparisons with their intervals, including the ones that did *not* come out
-  in the project's favour.
-- **Viewer role:** sign out and in with the viewer token. Everything is visible; every control is gone, and the server would
-  refuse the request anyway.
+- *"Does it beat a good single detector?"* Not in general (+0.02, interval includes zero); it clearly beats "any detector fires" (+0.43), and it covers
+  anomalies the single detector cannot see. See [RESEARCH.md](RESEARCH.md).
+- *"Is this real data?"* The fleet is simulated; two public datasets were used for partial real checks and they show the thresholds do not transfer.
+- *"What changed because of testing?"* Two real defects found on a validation seed before scoring: false alerts after outages and a GPS-loss clock bug.
+- *"What would you do next?"* A real fleet or replayed real traces; an alert budget low enough to run in production; handling for drift and cold start.
 
 ## If something looks wrong
 
 | Symptom | Likely cause |
 |---|---|
-| "Start fleet" is missing | A demo is already running. Press **Stop**. |
-| Nothing alerts | The baselines are not ready (still warming), or the device was not selected. |
-| Sign-in fails | Wrong token, or too many failed attempts in a short time (wait a minute). |
-| Compose will not start | `.env` is missing or its tokens are empty, shorter than 16 characters, or identical. |
-| Port 8080 is taken | Set `AEGIS_PORT` in `.env`. |
+| "Start fleet" is missing | A demo is already running (Scenarios shows **Stop**). |
+| Nothing alerts | The baselines are not ready, or the device is not the one selected in Scenarios. |
+| "Degraded" never appears | The signal-loss episode needs the fleet to be live; check the target device. |
+| The page cannot be reached (error -102) | Docker Desktop is not running, or the stack is stopped: `docker compose up -d`. |
+| `docker compose build` times out pulling base images | No route to the registry. `docker compose -f docker-compose.yml -f docker-compose.overlay.yml up -d --build` layers the current code onto the previous images (see `docker/api.overlay.Dockerfile`). |

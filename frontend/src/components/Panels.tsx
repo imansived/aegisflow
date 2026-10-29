@@ -19,7 +19,7 @@ export function correlationSentence(snap: Snapshot): string {
   const active = seen.filter((m) => snap.effective[m] >= ACTIVE_LEVEL).sort((a, b) => snap.effective[b] - snap.effective[a])
   const strongest = Math.max(0, ...seen.map((m) => snap.effective[m]))
   // A missing signal is never reported as a normal one: say what cannot be seen.
-  const blind = lost.length ? `Not fully observed: ${lostText(snap)} unavailable. ` : ''
+  const blind = lost.length ? `Not fully observed: ${lostText(snap)} ${(snap.recovering ?? []).length === lost.length ? 'recovering (judgment withheld while its window refills)' : 'unavailable'}. ` : ''
   if (seen.length === 0) return 'No signal is available: this device cannot be judged.'
   if (active.length === 0) {
     return lost.length
@@ -69,7 +69,7 @@ export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll, devic
                 <li key={d.device_id}>
                   <button className="acard degraded" aria-pressed={selected === d.device_id} onClick={() => onSelect(d.device_id)}>
                     <span className="acard-top"><b>{d.device_id}</b><StateBadge snap={d} /></span>
-                    <span className="acard-why">{lostText(d)} unavailable. {d.severity === 'normal' ? 'A quiet score here does not mean healthy.' : 'Alerts for this device rest on fewer signals.'}</span>
+                    <span className="acard-why">{lostText(d)} {(d.recovering ?? []).length ? 'recovering (window refilling).' : 'unavailable.'} {d.severity === 'normal' ? 'A quiet score here does not mean healthy.' : 'Alerts for this device rest on fewer signals.'}</span>
                     {d.fallback && <span className="meta">{d.fallback}</span>}
                   </button>
                 </li>
@@ -173,7 +173,7 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
           <CorrelationLanes
             times={p.map((q) => q.t)}
             lanes={MODALITIES.map((m) => ({ key: m, label: MODALITY_LABEL[m], color: SIGNAL_COLOR[m], values: p.map((q) => ((q.missing >> MODALITIES.indexOf(m)) & 1 ? NaN : q.effective[m])), now: snap.effective[m],
-              lost: lostSignals(snap).includes(m), gaps: p.map((q) => ((q.missing >> MODALITIES.indexOf(m)) & 1) === 1) }))}
+              lost: lostSignals(snap).includes(m), recovering: (snap.recovering ?? []).includes(m), gaps: p.map((q) => ((q.missing >> MODALITIES.indexOf(m)) & 1) === 1) }))}
             fused={p.map((q) => q.score)} fusedNow={snap.score} activeLevel={ACTIVE_LEVEL} alertLevel={status?.alert_thresholds.raise_at} />
         </div>
         <div className="corr-why" aria-label="Why it was flagged">
@@ -199,7 +199,7 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
           {lostSignals(snap).length > 0 && (
             <ul className="blind-list" aria-label="Unavailable signals">
               {lostSignals(snap).map((m) => (
-                <li key={m}><span className={`sigchip lost m-${m}`}><i />{MODALITY_LABEL[m]}</span><span className="reason">unavailable: not observed, not normal</span></li>
+                <li key={m}><span className={`sigchip lost m-${m}`}><i />{MODALITY_LABEL[m]}</span><span className="reason">{(snap.recovering ?? []).includes(m) ? 'recovering: the signal is back but its window is refilling, so judgment is withheld' : 'unavailable: not observed, not normal'}</span></li>
               ))}
               {snap.fallback && <li><span className="reason">{snap.fallback}: no alert can be raised for this combination.</span></li>}
             </ul>

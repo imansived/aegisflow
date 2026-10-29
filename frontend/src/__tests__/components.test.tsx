@@ -345,6 +345,13 @@ describe('degraded observability', () => {
     expect(firstRow.querySelectorAll('.na')).toHaveLength(3)
   })
 
+  it('says recovering, not unavailable, while a returned signal refills its window', () => {
+    const d = degraded('D-001', ['network'], { recovering: ['network'] })
+    expect(correlationSentence(d)).toMatch(/network recovering \(judgment withheld while its window refills\)/)
+    render(<CorrelationPanel snap={d} history={{}} alerts={[]} status={STATUS} />)
+    expect(screen.getByLabelText('Unavailable signals').textContent).toMatch(/recovering: the signal is back but its window is refilling/)
+  })
+
   it('spans finds the runs where a signal was unavailable', () => {
     expect(spans([false, true, true, false, true])).toEqual([[1, 3], [4, 4]])
     expect(spans(undefined)).toEqual([])

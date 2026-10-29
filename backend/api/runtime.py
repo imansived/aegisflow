@@ -65,6 +65,40 @@ def _iso(ts: datetime) -> str:
     return ts.astimezone(timezone.utc).isoformat()
 
 
+def build_snapshot(t: Telemetry, f, prev: dict | None) -> dict:
+    """The dashboard's view of one device after one event. Pure, so it can be tested without Redis or a server."""
+    lost = t.unavailable
+    stale = "spatial" in lost
+    if stale:  # no fix: keep the last known position, flagged as stale, rather than inventing one
+        lat, lon = (prev["latitude"], prev["longitude"]) if prev else SITE_ORIGIN
+    else:
+        lat, lon = t.latitude, t.longitude
+    zone = zone_of((lat, lon))
+    n_near = None if t.nearby_devices is None else len(t.nearby_devices)
+    anomalous = f.severity != "normal"
+    snap = {
+        "device_id": t.device_id, "ts": _iso(t.timestamp),
+        "latitude": lat, "longitude": lon, "position_stale": stale,
+        "zone": zone.name if zone else None, "restricted": bool(zone and zone.kind.value == "restricted") and not stale,
+        # null = unavailable this tick (never a silent zero)
+        "battery": t.battery, "cpu_usage": t.cpu_usage, "temperature": t.temperature,
+        "network_connections": t.network_connections, "nearby_devices": n_near,
+        "memory_usage": t.memory_usage, "bytes_sent": t.bytes_sent, "bytes_received": t.bytes_received,
+        "score": round(f.score, 4), "severity": f.severity,
+        "effective": {m.value: round(v, 3) for m, v in f.effective.items()},
+        "contributions": {m.value: round(v, 3) for m, v in f.contributions.items()},
+        "learning": f.learning,
+        # Observability: how much of this device was actually seen. A quiet score on a partly seen device is
+        # NOT "normal": the state says Degraded, with the missing signals named.
+        # `unavailable` = what the device reported as null PLUS what a detector is withholding judgment on while its
+        # window refills after an outage; `recovering` is the second part, so the dashboard can say which is which.
+        "unavailable": sorted(m.value for m in f.unavailable), "recovering": sorted(m.value for m in f.unavailable if m.value not in lost),
+        "observability": f.observability, "alertable": f.alertable, "fallback": f.fallback,
+        "state": "anomalous" if anomalous else ("normal" if f.observability == "full" else "degraded"),
+    }
+    return snap
+
+
 class Runtime:
     def __init__(self, settings: Settings, hub: Hub | None = None, det_cfg: DetectionConfig | None = None,
                  corr_cfg: CorrelationConfig | None = None):
@@ -174,33 +208,7 @@ class Runtime:
             self.hub.publish({"type": "alert", **ev})
 
     def _on_processed(self, t: Telemetry, f) -> None:
-        prev = self.live.get(t.device_id)
-        lost = t.unavailable
-        stale = "spatial" in lost
-        if stale:  # no fix: keep the last known position, flagged as stale, rather than inventing one
-            lat, lon = (prev["latitude"], prev["longitude"]) if prev else SITE_ORIGIN
-        else:
-            lat, lon = t.latitude, t.longitude
-        zone = zone_of((lat, lon))
-        n_near = None if t.nearby_devices is None else len(t.nearby_devices)
-        anomalous = f.severity != "normal"
-        snap = {
-            "device_id": t.device_id, "ts": _iso(t.timestamp),
-            "latitude": lat, "longitude": lon, "position_stale": stale,
-            "zone": zone.name if zone else None, "restricted": bool(zone and zone.kind.value == "restricted") and not stale,
-            # null = unavailable this tick (never a silent zero)
-            "battery": t.battery, "cpu_usage": t.cpu_usage, "temperature": t.temperature,
-            "network_connections": t.network_connections, "nearby_devices": n_near,
-            "memory_usage": t.memory_usage, "bytes_sent": t.bytes_sent, "bytes_received": t.bytes_received,
-            "score": round(f.score, 4), "severity": f.severity,
-            "effective": {m.value: round(v, 3) for m, v in f.effective.items()},
-            "contributions": {m.value: round(v, 3) for m, v in f.contributions.items()},
-            "learning": f.learning,
-            # Observability: how much of this device was actually seen. A quiet score on a partly seen device is
-            # NOT "normal": the state says Degraded, with the missing signals named.
-            "unavailable": sorted(lost), "observability": f.observability, "alertable": f.alertable, "fallback": f.fallback,
-            "state": "anomalous" if anomalous else ("normal" if f.observability == "full" else "degraded"),
-        }
+        snap = build_snapshot(t, f, self.live.get(t.device_id))
         self.live[t.device_id] = snap
         if self.warming:
             return

@@ -1,0 +1,9 @@
+# Registry-less variant: `docker compose -f docker-compose.yml -f docker-compose.overlay.yml up -d --build` (see docker/api.overlay.Dockerfile).
+services:
+  api:
+    build:
+      dockerfile: docker/api.overlay.Dockerfile
+  web:
+    build:
+      context: frontend/dist
+      dockerfile: ../../docker/web.overlay.Dockerfile

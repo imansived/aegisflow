@@ -29,6 +29,7 @@ export interface Snapshot {
   learning: boolean
   // Observability (D106/D107). Older servers do not send these; treat absence as fully observed.
   unavailable?: Modality[]
+  recovering?: Modality[] // unavailable only because the detector's window is refilling after an outage
   observability?: 'full' | 'degraded' | 'blind'
   state?: 'normal' | 'anomalous' | 'degraded'
   alertable?: boolean

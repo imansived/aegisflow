@@ -84,7 +84,7 @@ export function MultiLine({ times, series, height = 120, ariaLabel, unit = '', m
   )
 }
 
-export interface Lane { key: string; label: string; color: string; values: number[]; now: number; extra?: string; lost?: boolean; gaps?: boolean[] }
+export interface Lane { key: string; label: string; color: string; values: number[]; now: number; extra?: string; lost?: boolean; recovering?: boolean; gaps?: boolean[] }
 
 /** The correlation timeline: one thin lane per signal (each on its own 0..1 scale), a faint line at the level where a
  *  signal counts as active, and the fused score underneath with the alert level. When several lanes lift together and
@@ -121,7 +121,7 @@ export function CorrelationLanes({ times, lanes, fused, fusedNow, activeLevel, a
               <path d={d} fill="none" stroke={l.color} strokeWidth="1.6" strokeLinejoin="round" />
               <rect x={0} y={top + laneH / 2 - 8} width="9" height="9" rx="2.5" fill={l.color} />
               <text className="lane-label" x={16} y={top + laneH / 2 + 1}>{l.label}</text>
-              <text className={`lane-now${l.lost ? ' lost' : ''}`} x={L - 8} y={top + laneH / 2 + 1} textAnchor="end" fill={!l.lost && l.now >= activeLevel ? l.color : undefined}>{l.lost ? 'no data' : l.now.toFixed(2)}</text>
+              <text className={`lane-now${l.lost ? ' lost' : ''}`} x={L - 8} y={top + laneH / 2 + 1} textAnchor="end" fill={!l.lost && l.now >= activeLevel ? l.color : undefined}>{l.lost ? (l.recovering ? 'recovering' : 'no data') : l.now.toFixed(2)}</text>
             </g>
           )
         })}

@@ -97,6 +97,24 @@ else:
     ok("device D-901 already registered (earlier run); skipping the send")
 
 
+print("5b. explicit signal availability crosses the proxy: a null group is accepted, a half-missing group and an omitted field are not")
+reg2 = c.post("/api/devices", headers=AH, json={"device_id": "D-902", "name": "Smoke test (availability)", "type": "badge"})
+assert reg2.status_code in (201, 409), reg2.text
+if reg2.status_code == 201:
+    key2 = reg2.json()["api_key"]
+    time.sleep(3)
+    hk = {"X-Device-Key": key2}
+    lost = {**TELEMETRY, "device_id": "D-902", "network_connections": None, "bytes_sent": None, "bytes_received": None, "remote_endpoints": None}
+    assert c.post("/api/telemetry", headers=hk, json=lost).status_code == 202
+    half = {**TELEMETRY, "device_id": "D-902", "latitude": None}  # longitude still present
+    assert c.post("/api/telemetry", headers=hk, json=half).status_code == 422
+    omitted = {k: v for k, v in {**TELEMETRY, "device_id": "D-902"}.items() if k != "battery"}
+    assert c.post("/api/telemetry", headers=hk, json=omitted).status_code == 422
+    ok("network group null -> 202; latitude null with longitude present -> 422; battery omitted -> 422")
+else:
+    ok("device D-902 already registered (earlier run); skipping the availability send")
+
+
 async def ws_check():
     async with websockets.connect(f"ws://localhost:{PORT}/api/ws?token={VIEWER}") as ws:
         return json.loads(await asyncio.wait_for(ws.recv(), 10))["type"]

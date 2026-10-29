@@ -251,3 +251,33 @@ def test_a_detector_withholds_judgment_while_its_window_refills_after_an_outage(
     assert not any(v for t, v in out.items() if t <= window - 5)  # still refilling
     assert out[int(window) + 5] and out[95]  # judging again once the window has refilled
     assert all(eng.process(tele(520 + i * 5)).results[Modality.SPATIAL].available for i in range(3))  # other signals unaffected
+
+
+def test_the_dashboard_snapshot_separates_what_was_reported_missing_from_what_is_recovering():
+    from backend.api.runtime import build_snapshot
+
+    eng = DetectionEngine(["D-001"])
+    ce = CorrelationEngine(NoisyOr(), FROZEN_CORRELATION, ThresholdTable({FULL: Operating(0.9, 0.8), 13: Operating(0.7, 0.6)}))
+    prev, snaps = None, {}
+    for i in range(60):
+        t = tele(i * 5, lost=("network",) if i == 30 else ())
+        snaps[i] = prev = build_snapshot(t, ce.update(eng.process(t)), prev)
+    assert snaps[10]["state"] == "normal" and snaps[10]["unavailable"] == [] and snaps[10]["battery"] == 80.0
+    assert snaps[30]["unavailable"] == ["network"] and snaps[30]["recovering"] == [] and snaps[30]["network_connections"] is None
+    assert snaps[30]["state"] == "degraded" and snaps[30]["observability"] == "degraded"
+    # the signal is back at tick 31, but its window is refilling: still unavailable to the judge, and labelled as recovering
+    assert snaps[35]["unavailable"] == ["network"] and snaps[35]["recovering"] == ["network"] and snaps[35]["network_connections"] == 5
+    assert snaps[35]["state"] == "degraded"
+    assert snaps[45]["unavailable"] == [] and snaps[45]["state"] == "normal"  # refilled: fully observed again
+
+
+def test_losing_gps_keeps_the_last_known_position_and_says_it_is_stale():
+    from backend.api.runtime import build_snapshot
+
+    eng = DetectionEngine(["D-001"])
+    ce = CorrelationEngine(NoisyOr(), FROZEN_CORRELATION, ThresholdTable({FULL: Operating(0.9, 0.8)}))
+    t0 = tele(0)
+    s0 = build_snapshot(t0, ce.update(eng.process(t0)), None)
+    t1 = tele(5, lost=("spatial",))
+    s1 = build_snapshot(t1, ce.update(eng.process(t1)), s0)
+    assert s1["position_stale"] and (s1["latitude"], s1["longitude"]) == (s0["latitude"], s0["longitude"]) and not s1["restricted"]
