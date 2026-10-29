@@ -1,0 +1,102 @@
+{
+  "version": "r7stage2",
+  "created": "2026-10-29T17:34:06.364838+00:00",
+  "frozen_at_commit": "35995c6",
+  "git_tag": "stage2-r7",
+  "statement": "R7 stage-2 continuity verification. Gate on the test split: FAILED (10 eligible test episodes of 30 required). Per the protocol the detection part is not run and the rules are not revised. No attack score exists.",
+  "gate_stage2": {
+    "required": {
+      "episodes": 30,
+      "sessions": 8,
+      "tools": 2
+    },
+    "measured_test_split": {
+      "episodes": 10,
+      "sessions": 6,
+      "tools": 5,
+      "devices": 6,
+      "by_stratum": {
+        "S0": 7,
+        "S1": 0,
+        "S2": 3
+      },
+      "by_tool": {
+        "PingOfDeath": 3,
+        "Ssdp": 1,
+        "TcpSynDevice": 3,
+        "TcpSynReflection": 1,
+        "UdpDevice": 2
+      }
+    },
+    "passed": false
+  },
+  "files": {
+    "docs/preregistration/R7-separated-baseline-gap.md": {
+      "sha256": "67eb1cccd17b5b36030ce6e49e7327a9ca4b38046160be828f88fa4de8f233cc",
+      "role": "R7 protocol",
+      "last_commit": "afa75fc"
+    },
+    "docs/preregistration/R6-matched-testbed-detection.md": {
+      "sha256": "a35d1b4148b533a1e1f049d71bc4cc86c64e4fe134d1b9b48cb547353cea32dc",
+      "role": "R6 protocol (stage-2 rules)",
+      "last_commit": "195ee4e"
+    },
+    "docs/results/r7_audit.json": {
+      "sha256": "ba54cf617c4ee7c271261501022f18630a75fa3c5fd5996cafe8a7dd664707ca",
+      "role": "R7 stage-1 audit",
+      "last_commit": "465b9f5"
+    },
+    "docs/results/r7_stage2.json": {
+      "sha256": "7cc7298d7a9da8744a1d3eb0bc36c92ac9bbd274c9e393205e4919d7a16a53d5",
+      "role": "R7 stage-2 result: verified chains, per-episode status, gate",
+      "last_commit": "35995c6"
+    },
+    "ml/r7_stage2.py": {
+      "sha256": "22ecc09266a85b9bdcba83364f83bd51ac9cb763db871f8a514a13e596918f7d",
+      "role": "Stage-2 tool (timestamps and Ethernet addresses only)",
+      "last_commit": "843ac22"
+    }
+  },
+  "data": {
+    "Per-file scan results (timestamps and Ethernet addresses only)": {
+      "r7/stage2/attack_18-06-01.json": "75f835ef19634836c444558b55d7f19a964658e6253e2f5d91d01255f00a069e",
+      "r7/stage2/attack_18-06-02.json": "2065165057e4976177725dd77c17de1d55e43c0ad41b5a8b8cbea10fd6d04655",
+      "r7/stage2/attack_18-06-03.json": "c43e9d7e150182b894a7084a90a24d2df6e0f31733f343b7965636570c9f5968",
+      "r7/stage2/attack_18-06-04.json": "54ce27d989d2b5db7482b1f496ddbce88c63d7695cccd48e0135ea2e9eed3897",
+      "r7/stage2/attack_18-06-05.json": "7d286aadf65557833624299b139eedc9b3558375f2348e807953730dd6ad1707",
+      "r7/stage2/attack_18-06-06.json": "d33f2bcf6c8dc7bb5a01c10992eef355037e2278d3ffff8403031bbed3da33f6",
+      "r7/stage2/attack_18-06-07.json": "2bdcf720f1dac88c50a3475e9ade156a5460171933704396d277ca9da21778e9",
+      "r7/stage2/attack_18-06-08.json": "f02845805bf2851456b666c9d49ac3840feb3c0eac4b3c5437c1bb6e6ba049b8",
+      "r7/stage2/attack_18-10-20.json": "7e20e43337297bfa43fc9e4b12cde0697850a0ad4cf929a84e8fcb4d0372627f",
+      "r7/stage2/attack_18-10-21.json": "857fd826ed03ffe63e4d3c8936cfe8353a6c0e4ecaa56a87fab376d38b98f6a4",
+      "r7/stage2/attack_18-10-22.json": "3116e209dc76823f8b890c0a030932988cc2841e2fb32cd4baf50a18d1b1b266",
+      "r7/stage2/attack_18-10-23.json": "6e29b73160d98752377e48f934105e98788f74264f1383cfda777eb42634f7cd",
+      "r7/stage2/attack_18-10-24.json": "338e150a81da43dab3b475afc00908fab5321aea45ca3d3a05b85d6e9d8319b9",
+      "r7/stage2/attack_18-10-25.json": "399abe8d56430f92d0413b9d2d66657ece66b74344578dbd3bca1e4ec34cf0b9",
+      "r7/stage2/attack_18-10-26.json": "df84172ccfdc5c284bd2f01a9c746a7229f6580c4da770fd55c996d8bfd700db",
+      "r7/stage2/benign_18-05-28.json": "761fdf7d1469201927f16dc6ecec849e97445e28148e01c1c49f1494e7287881",
+      "r7/stage2/benign_18-05-29.json": "0e6abb8b396534938f5ad2158d357f2f22f7299cb8225d561a4e82f883058ce2",
+      "r7/stage2/benign_18-05-30.json": "8a323f83e41fc0bd7ecae0a942a6ab191bf18ec97c267cc0bb06d653da5ec686",
+      "r7/stage2/benign_18-05-31.json": "83d14eb44b298f2568b6a9076f6920f1a9aae5322c4442ca8e462547816bf36c",
+      "r7/stage2/benign_18-06-09.json": "5b82119a097caf2114cc74161eb9a474a79f73a1eef6e00c52399d4bf2ccd5c1",
+      "r7/stage2/benign_18-06-10.json": "065d454efe12ba8621d98a771f982bcf3abc7f8c484aaa3fe91ce3f1e979b957",
+      "r7/stage2/benign_18-06-11.json": "9c99f239afd683dc142ab7d5b93c8a602f8488a0c3167cbc167f474fe9a2b173",
+      "r7/stage2/benign_18-06-12.json": "be188fa475faf6627de61e791188bbfda0d21973a44457dc6dbb1dba49b475fe",
+      "r7/stage2/benign_18-06-13.json": "01db8d22c80e469dbd369dd17ac3909ba068e1dd75fe20eebdc0243a7fb25140",
+      "r7/stage2/benign_18-06-14.json": "4b4a605dd167c3f3db43daa5d1a760f4f529b44e8ba2e882601155ebb209d610",
+      "r7/stage2/benign_18-06-15.json": "7f63ffbb0f5754c6485e6a49ea96ff8a17c619f3257a7ffd750f3a7fdc0f1907",
+      "r7/stage2/benign_18-06-16.json": "9afcc37db85175a6652bbd53525b3c62a75634d1c3bf3ffc61cf977dd4cad5e2",
+      "r7/stage2/benign_18-06-17.json": "b49208d865415bd77d26d1d3b50e0c4bca4fe00d9a5e0b0745bd91cb8bd50405",
+      "r7/stage2/benign_18-10-10.json": "cfc5df94032d02ac8347c27856aff3f8243b3deb45a0a0d6ab0788cbc7d399a8",
+      "r7/stage2/benign_18-10-11.json": "3d1004c5eb3a7a9665c3a23b224481c6810bce29457f47e9730ee47e3ad808e2",
+      "r7/stage2/benign_18-10-12.json": "4b860a05d8b503f31f2e5d0ba584fc523cc6c1363bd91a93efd5343b1a3c659e",
+      "r7/stage2/benign_18-10-13.json": "9e4cea06f2606a72d5ba883b3c18a22c4618dfa91b8aba4691d9c90c0ae2b316",
+      "r7/stage2/benign_18-10-14.json": "005b4e7558963113c2278b9fbf6bbfb83444bf7a5207e76d4d5f636c54f33f85",
+      "r7/stage2/benign_18-10-15.json": "eb939bd6bb608b08614e7747ed3d02dc4772c12ef979276a4cbc57384db0d048",
+      "r7/stage2/benign_18-10-16.json": "b7be3879cfd6e44fc91d864e6670c92fe72971543d7c8284f14281ea62c10426",
+      "r7/stage2/benign_18-10-17.json": "dc1f6db72bffbe498ce01a6249bf240944d262df500205d5d7498347c7f68221",
+      "r7/stage2/benign_18-10-18.json": "9c680810fee652759da4428301a97bbf0120c06cf6570e549b5a33d13f6442bb",
+      "r7/stage2/benign_18-10-19.json": "f5fe5e8816cf1d6030ba06a66ac9698ed7c5664e73896269969d68698257da7e"
+    }
+  }
+}
