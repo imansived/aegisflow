@@ -81,6 +81,8 @@ def main(version: str) -> None:
         return main_r2()
     if version == "r3r4":
         return main_r3r4()
+    if version == "r5inv":
+        return main_r5inv()
     return main_v(version)
 
 
@@ -146,6 +148,26 @@ def main_r3r4() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
     print("wrote", out_dir / "manifest.json", len(files), "files")
+
+
+def main_r5inv() -> None:
+    out_dir = ROOT / "docs" / "research" / "r5inv"
+    if (out_dir / "manifest.json").exists():
+        raise SystemExit("docs/research/r5inv/manifest.json exists: a manifest is immutable.")
+    inv = json.loads((ROOT / "docs" / "results" / "r5_inventory.json").read_text())
+    rels = {"docs/preregistration/R5-detection-delay.md": "R5 protocol with revisions 1 and 2 (committed before the inventory ran)",
+            "docs/results/r5_inventory.json": "Metadata-only inventory: every scheduled episode, its eligibility and reasons, the gate, the benign-day plan",
+            "ml/r5_inventory.py": "The inventory script (reads schedule and listing files and HTTP HEAD only)"}
+    files = {r: {"sha256": sha256(ROOT / r), "role": role, "last_commit": git("log", "-1", "--format=%h", "--", r)} for r, role in rels.items()}
+    docs = {f"r5/docs/{q.name}": sha256(q) for q in sorted((ROOT / "data" / "r5" / "docs").glob("*")) if q.name != "tmp.html"}
+    manifest = {"version": "r5inv", "created": datetime.now(timezone.utc).isoformat(), "frozen_at_commit": git("rev-parse", "--short", "HEAD"), "git_tag": "inventory-r5",
+                "statement": "R5 feasibility inventory. Gate result: " + ("PASSED" if inv["gate"]["measured"]["passed"] else "FAILED") + " ("
+                             + str(inv["gate"]["measured"]["episodes"]) + " eligible episodes of " + str(inv["gate"]["required"]["episodes"]) + " required). "
+                             "No capture-to-split assignment exists because the protocol computes it only after the gate passes.",
+                "gate": inv["gate"], "files": files, "data": {"R5 schedule and listing files (public, UNSW IoT analytics)": docs}}
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("wrote", out_dir / "manifest.json")
 
 
 def main_v(version: str) -> None:
