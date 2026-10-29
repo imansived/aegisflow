@@ -92,7 +92,9 @@ def build_snapshot(t: Telemetry, f, prev: dict | None) -> dict:
         # NOT "normal": the state says Degraded, with the missing signals named.
         # `unavailable` = what the device reported as null PLUS what a detector is withholding judgment on while its
         # window refills after an outage; `recovering` is the second part, so the dashboard can say which is which.
-        "unavailable": sorted(m.value for m in f.unavailable), "recovering": sorted(m.value for m in f.unavailable if m.value not in lost),
+        # R3 splits it: `unsupported` = never declared (not a fault), `missing` = declared but null, `recovering` = back, still withheld.
+        "unavailable": sorted(m.value for m in f.unavailable), "recovering": sorted(m.value for m in f.recovering),
+        "unsupported": sorted(m.value for m in f.unsupported), "missing": sorted(m.value for m in f.missing),
         "observability": f.observability, "alertable": f.alertable, "fallback": f.fallback,
         "state": "anomalous" if anomalous else ("normal" if f.observability == "full" else "degraded"),
     }
@@ -124,7 +126,10 @@ class Runtime:
         self.enrolled: set[str] = set()
         Path(settings.db_path).parent.mkdir(parents=True, exist_ok=True)
         reader = EventStore(settings.db_path)
-        self.enrolled.update(d["device_id"] for d in reader.list_devices())
+        devices = reader.list_devices()
+        self.enrolled.update(d["device_id"] for d in devices)
+        # Signal groups each device supports (R3). Only devices that declared a subset have an entry; shared by reference with the detectors.
+        self.declared: dict[str, frozenset[str]] = {d["device_id"]: frozenset(d["signals"]) for d in devices if d["signals"] is not None}
         reader.close()
 
         self.live: dict[str, dict] = {}  # latest snapshot per device, for the dashboard
@@ -145,7 +150,7 @@ class Runtime:
         return Pipeline(
             self.enrolled, self.fusion, self._store,
             det_cfg=self.det_cfg, corr_cfg=self.corr_cfg, alert_cfg=self.alert_cfg, table=self.table,
-            on_alert=self._on_alert, on_processed=self._on_processed,
+            on_alert=self._on_alert, on_processed=self._on_processed, declared=self.declared,
         )
 
     def reset_analysis(self) -> None:
@@ -270,8 +275,10 @@ class Runtime:
     def ingest(self, t: Telemetry) -> None:
         publish(self.redis, [t], self.settings.stream)
 
-    def register_enrolled(self, device_id: str) -> None:
+    def register_enrolled(self, device_id: str, signals: list[str] | None = None) -> None:
         self.enrolled.add(device_id)
+        if signals is not None:
+            self.declared[device_id] = frozenset(signals)
 
     def status(self) -> dict:
         p = self._processor

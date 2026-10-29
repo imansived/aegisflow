@@ -31,6 +31,11 @@ class Scores:
     # Raw engineered features, kept so the early-fusion Isolation Forest baseline (Phase 5)
     # can be trained on exactly what the detectors saw.
     features: dict[str, float]
+    # Why a signal is not observed (R3). `reported_null` = the device sent it as null; `unsupported` = the device never
+    # declared it (so it is not expected, and whatever was sent for it is ignored). A signal that is in `unavailable`
+    # but in neither is one a detector is withholding judgment on while its window refills after an outage.
+    reported_null: frozenset[Modality] = frozenset()
+    unsupported: frozenset[Modality] = frozenset()
 
     def score(self, m: Modality) -> float:
         return self.results[m].score

@@ -1,4 +1,4 @@
-import { SEVERITY_LABEL } from '../format'
+import { SEVERITY_LABEL, lostSignals } from '../format'
 import type { Modality, Severity } from '../types'
 import { MODALITY_LABEL } from '../format'
 
@@ -33,9 +33,9 @@ export function DegradedBadge({ lost, label = true }: { lost?: string; label?: b
 }
 
 /** The one badge for a device: Anomalous (a severity glyph) beats Degraded beats Normal. */
-export function StateBadge({ snap, label = true }: { snap: { severity: Severity; observability?: string; unavailable?: Modality[] }; label?: boolean }) {
+export function StateBadge({ snap, label = true }: { snap: { severity: Severity; observability?: string; unavailable?: Modality[]; unsupported?: Modality[] }; label?: boolean }) {
   if (snap.severity === 'normal' && snap.observability && snap.observability !== 'full') {
-    return <DegradedBadge lost={(snap.unavailable ?? []).join(' and ')} label={label} />
+    return <DegradedBadge lost={lostSignals(snap).join(' and ')} label={label} />
   }
   return <SeverityBadge severity={snap.severity} label={label} />
 }

@@ -12,12 +12,12 @@ export const MODALITY_LABEL: Record<Modality, string> = {
 }
 
 /** Signals this device reported as unavailable. An unavailable signal is NOT a normal one (manual §5.11). */
-export const lostSignals = (s: Pick<Snapshot, 'unavailable'>): Modality[] => s.unavailable ?? []
+export const lostSignals = (s: Pick<Snapshot, 'unavailable' | 'unsupported'>): Modality[] => (s.unavailable ?? []).filter((m) => !(s.unsupported ?? []).includes(m))
 export const isDegraded = (s: Pick<Snapshot, 'observability'>): boolean => !!s.observability && s.observability !== 'full'
 /** What to show for a device: Anomalous wins, then Degraded (partly observed), else Normal. */
 export const deviceState = (s: Snapshot): 'anomalous' | 'degraded' | 'normal' =>
   s.severity !== 'normal' ? 'anomalous' : isDegraded(s) ? 'degraded' : 'normal'
-export const lostText = (s: Pick<Snapshot, 'unavailable'>): string => lostSignals(s).map((m) => MODALITY_LABEL[m].toLowerCase()).join(' and ')
+export const lostText = (s: Pick<Snapshot, 'unavailable' | 'unsupported'>): string => lostSignals(s).map((m) => MODALITY_LABEL[m].toLowerCase()).join(' and ')
 
 const siteClock = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Asia/Kolkata', // the simulated site's local time (contracts/site.py SITE_TZ)

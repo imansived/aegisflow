@@ -36,8 +36,9 @@ class Pipeline:
         on_alert: Callable[[dict], None] | None = None,
         on_fused: Callable[[Fused], None] | None = None,
         on_processed: Callable[[Telemetry, Fused], None] | None = None,
+        declared: dict[str, frozenset[str]] | None = None,
     ):
-        self.detection = DetectionEngine(enrolled, det_cfg)
+        self.detection = DetectionEngine(enrolled, det_cfg, declared=declared)
         self.correlation = CorrelationEngine(fusion, corr_cfg, table)
         self.alerts = AlertManager(alert_cfg, corr_cfg)
         self.store, self.on_alert, self.on_fused = store, on_alert, on_fused

@@ -64,6 +64,12 @@ class Fused:
     # `alertable` is False when there is no validated threshold for this combination (the conservative fallback).
     unavailable: frozenset[Modality] = frozenset()
     pattern: int = FULL
+    # R3. Of the signals not observed: `unsupported` = the device never declared them (not expected, not a fault);
+    # `missing` = declared but reported null; `recovering` = declared and back, judgment still withheld. `unavailable`
+    # is all three together and drives the threshold pattern; `observability` is judged against what was declared.
+    unsupported: frozenset[Modality] = frozenset()
+    missing: frozenset[Modality] = frozenset()
+    recovering: frozenset[Modality] = frozenset()
     observability: str = "full"  # "full" | "degraded" | "blind"
     alertable: bool = True
     operating: Operating | None = None  # the validated thresholds that judged this tick, when a table is in use
@@ -115,6 +121,11 @@ class CorrelationEngine:
         contrib = self.fusion.contributions(st.e) if s >= self.cfg.explain_above else {}
 
         lost = scores.unavailable
+        unsupported = scores.unsupported
+        missing = scores.reported_null - unsupported
+        recovering = lost - scores.reported_null - unsupported
+        expected_lost = missing | recovering  # what a device that declared these signals should be showing and is not
+        declared = set(MODALITIES) - unsupported
         pattern = pattern_of(lost)
         operating: Operating | None = None
         alertable, fallback = True, ""
@@ -144,7 +155,10 @@ class CorrelationEngine:
             fusion=self.fusion.name,
             unavailable=lost,
             pattern=pattern,
-            observability="full" if not lost else "blind" if pattern == 0 else "degraded",
+            unsupported=unsupported,
+            missing=missing,
+            recovering=recovering,
+            observability="full" if not expected_lost else "blind" if declared <= expected_lost else "degraded",
             alertable=alertable,
             operating=operating,
             fallback=fallback,

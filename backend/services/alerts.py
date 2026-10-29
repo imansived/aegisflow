@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 
 from backend.correlation.engine import CorrelationConfig, Fused, severity
-from backend.correlation.explain import explain, factors
+from backend.correlation.explain import explain, factors, observation
 
 _ORDER = {"normal": 0, "low": 1, "medium": 2, "high": 3}
 
@@ -119,6 +119,10 @@ class AlertManager:
             "peak_score": round(cur.peak, 3),
             "severity": cur.sev,
             "unavailable": sorted(m.value for m in pf.unavailable),
+            "unsupported": sorted(m.value for m in pf.unsupported),
+            "missing": sorted(m.value for m in pf.missing),
+            "recovering": sorted(m.value for m in pf.recovering),
+            "observation": observation(pf),
             "fusion": pf.fusion,
             "factors": factors(pf),
             "explanation": explain(pf),

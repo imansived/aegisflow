@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { MODALITY_LABEL, SEVERITY_LABEL, isDegraded, lostText, sevRank } from '../format'
+import { MODALITY_LABEL, SEVERITY_LABEL, isDegraded, lostSignals, lostText, sevRank } from '../format'
 import { makeIso, path, type Pt } from '../iso'
 import type { Point } from '../live'
 import { MODALITIES, type Severity, type Site, type Snapshot } from '../types'
@@ -90,7 +90,7 @@ function Spires({ iso, d }: { iso: ReturnType<typeof makeIso>; d: Snapshot }) {
     const a = (i / 4) * Math.PI * 2 + Math.PI / 4
     const du = SPIRE_RADIUS * Math.cos(a)
     const dv = SPIRE_RADIUS * Math.sin(a)
-    const lost = (d.unavailable ?? []).includes(m)
+    const lost = lostSignals(d).includes(m)
     const v = lost ? 0 : Math.min(1, Math.max(0, d.effective[m]))
     return { m, v, lost, foot: iso.near(d.latitude, d.longitude, du, dv, 0), tip: iso.near(d.latitude, d.longitude, du, dv, 1.5 + v * SPIRE_MAX) }
   })

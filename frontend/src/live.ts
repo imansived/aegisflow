@@ -1,5 +1,5 @@
 import { useEffect, useReducer, type Dispatch } from 'react'
-import { MODALITY_LABEL, SEVERITY_LABEL, sevRank } from './format'
+import { MODALITY_LABEL, SEVERITY_LABEL, lostSignals, sevRank } from './format'
 import { MODALITIES, type Alert, type HistoryPoint, type Modality, type Severity, type Snapshot, type WsMessage } from './types'
 
 export interface FeedItem {
@@ -111,8 +111,8 @@ export function reducer(state: LiveState, action: Action): LiveState {
           text: `${up ? 'Rose' : 'Fell'} from ${SEVERITY_LABEL[prev.severity]} to ${SEVERITY_LABEL[s.severity]} (score ${s.score.toFixed(2)})`,
         })
       }
-      const gone = (s.unavailable ?? []).filter((m) => !(prev?.unavailable ?? []).includes(m))
-      const back = (prev?.unavailable ?? []).filter((m) => !(s.unavailable ?? []).includes(m))
+      const gone = lostSignals(s).filter((m) => !(prev ? lostSignals(prev) : []).includes(m))
+      const back = (prev ? lostSignals(prev) : []).filter((m) => !lostSignals(s).includes(m))
       if (prev && gone.length) {
         feed = pushFeed(feed, {
           id: `${s.device_id}@${s.ts}:lost`, ts: s.ts, kind: 'observability', device_id: s.device_id, severity: 'normal',
@@ -121,7 +121,7 @@ export function reducer(state: LiveState, action: Action): LiveState {
       } else if (prev && back.length) {
         feed = pushFeed(feed, {
           id: `${s.device_id}@${s.ts}:back`, ts: s.ts, kind: 'observability', device_id: s.device_id, severity: 'normal',
-          text: `${back.map((m) => MODALITY_LABEL[m]).join(' and ')} signal restored${(s.unavailable ?? []).length ? '' : ': fully observed again'}`,
+          text: `${back.map((m) => MODALITY_LABEL[m]).join(' and ')} signal restored${lostSignals(s).length ? '' : ': fully observed again'}`,
         })
       }
       const pts = state.history[s.device_id] ?? []

@@ -541,3 +541,14 @@ def test_live_demo_runs_the_whole_system_and_an_injected_intrusion_raises_an_ale
         client.post("/demo/stop", headers=AH)
         assert client.get("/demo/status", headers=VH).json()["state"] == "idle"
     r.delete(s.stream, s.dead_letter)
+
+
+def test_a_device_can_declare_the_signals_it_supports(api):
+    client, rt, _ = api
+    resp = client.post("/devices", headers=AH, json={"device_id": "D-007", "name": "Cam", "type": "camera", "signals": ["network"]})
+    assert resp.status_code == 201
+    assert rt.declared["D-007"] == frozenset({"network"})
+    assert client.get("/devices/D-007", headers=VH).json()["signals"] == ["network"]
+    assert {d["device_id"]: d["signals"] for d in client.get("/devices", headers=VH).json()}["D-007"] == ["network"]
+    for bad in ([], ["network", "network"], ["wifi"]):
+        assert client.post("/devices", headers=AH, json={"device_id": "D-008", "name": "x", "signals": bad}).status_code == 422

@@ -7,6 +7,7 @@ import { HoloFloor } from '../components/HoloFloor'
 import { CorrelationPanel, AnomalyFeed, correlationSentence, focusDevice } from '../components/Panels'
 import { linePath, spans } from '../components/MiniCharts'
 import { StateBadge } from '../components/Glyph'
+import { lostSignals, lostText } from '../format'
 import { SideNav } from '../components/SideNav'
 import Anomalies from '../pages/Anomalies'
 import Network from '../pages/Network'
@@ -298,6 +299,16 @@ describe('Scenarios', () => {
 describe('degraded observability', () => {
   const degraded = (id: string, lost: Modality[], over: Partial<Snapshot> = {}) =>
     snap(id, 'normal', 0.05, { unavailable: lost, observability: 'degraded', state: 'degraded', ...over })
+
+  it('does not call a network-only device degraded for signals it never declared (R3)', () => {
+    const netOnly = snap('D-004', 'normal', 0.05, { unavailable: ['spatial', 'device', 'proximity'], unsupported: ['spatial', 'device', 'proximity'], observability: 'full', state: 'normal' })
+    const { container } = render(<StateBadge snap={netOnly} />)
+    expect(container.textContent).toContain('Normal')
+    expect(container.textContent).not.toContain('Degraded')
+    expect(lostSignals(netOnly)).toEqual([])
+    // when its declared network signal is lost, only that one is named
+    expect(lostText({ unavailable: ['spatial', 'device', 'proximity', 'network'], unsupported: ['spatial', 'device', 'proximity'] })).toBe('network')
+  })
 
   it('never calls a partly observed device Normal', () => {
     const { container } = render(<StateBadge snap={degraded('D-001', ['network'])} />)

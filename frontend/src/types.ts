@@ -30,6 +30,8 @@ export interface Snapshot {
   // Observability (D106/D107). Older servers do not send these; treat absence as fully observed.
   unavailable?: Modality[]
   recovering?: Modality[] // unavailable only because the detector's window is refilling after an outage
+  unsupported?: Modality[] // never declared by this device (R3): not a fault, never shown as lost
+  missing?: Modality[] // declared but reported unavailable
   observability?: 'full' | 'degraded' | 'blind'
   state?: 'normal' | 'anomalous' | 'degraded'
   alertable?: boolean
@@ -56,6 +58,8 @@ export interface Alert {
   status?: 'open' | 'closed'
   event?: 'opened' | 'escalated' | 'updated' | 'closed'
   unavailable?: Modality[] // signals that were unavailable when the alert was at its worst
+  unsupported?: Modality[] // of those, the ones the device never declared (R3)
+  observation?: string // what the alert rests on, in words (R4)
 }
 
 export interface DeviceInfo {

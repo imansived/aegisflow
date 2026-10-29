@@ -4,6 +4,7 @@ The primary key (device_id, ts) is what makes processing idempotent: a message t
 delivers twice is inserted once (manual §3.6, §3.19).
 """
 
+import json
 import sqlite3
 from datetime import timezone
 
@@ -34,7 +35,8 @@ CREATE TABLE IF NOT EXISTS devices (
     name       TEXT NOT NULL,
     type       TEXT NOT NULL,
     created_at TEXT NOT NULL,
-    key_hash   TEXT                -- NULL for devices registered without a key (demo fleet)
+    key_hash   TEXT,               -- NULL for devices registered without a key (demo fleet)
+    signals    TEXT                -- JSON list of the signal groups the device supports; NULL = all four
 );
 
 -- Sampled fused scores over time, for the dashboard's history charts.
@@ -47,6 +49,10 @@ CREATE TABLE IF NOT EXISTS anomaly_history (
     PRIMARY KEY (device_id, ts)
 ) WITHOUT ROWID;
 """
+
+
+def _signals(raw: str | None) -> list[str] | None:
+    return None if raw is None else json.loads(raw)
 
 
 class EventStore:
@@ -63,6 +69,8 @@ class EventStore:
             self.db.execute("PRAGMA synchronous=NORMAL")
             self.db.execute("PRAGMA busy_timeout=10000")
         self.db.executescript(SCHEMA)
+        if "signals" not in {r[1] for r in self.db.execute("PRAGMA table_info(devices)")}:  # a database made before R3
+            self.db.execute("ALTER TABLE devices ADD COLUMN signals TEXT")
 
     # --- transaction control -------------------------------------------------------------
     def begin(self) -> None:
@@ -179,24 +187,27 @@ class EventStore:
         return [Telemetry.model_validate_json(r[0]) for r in rows]
 
     # --- device registry -----------------------------------------------------------------
-    def register_device(self, device_id: str, name: str, type_: str, created_at: str, key_hash: str | None) -> bool:
-        """True if newly registered, False if the id already exists (nothing is changed)."""
+    def register_device(self, device_id: str, name: str, type_: str, created_at: str, key_hash: str | None,
+                        signals: list[str] | None = None) -> bool:
+        """True if newly registered, False if the id already exists (nothing is changed).
+        `signals` = the signal groups the device supports (R3); None = all four."""
         cur = self.db.execute(
-            "INSERT OR IGNORE INTO devices (device_id, name, type, created_at, key_hash) VALUES (?, ?, ?, ?, ?)",
-            (device_id, name, type_, created_at, key_hash),
+            "INSERT OR IGNORE INTO devices (device_id, name, type, created_at, key_hash, signals) VALUES (?, ?, ?, ?, ?, ?)",
+            (device_id, name, type_, created_at, key_hash, None if signals is None else json.dumps(sorted(signals))),
         )
         return cur.rowcount == 1
 
     def get_device(self, device_id: str) -> dict | None:
         r = self.db.execute(
-            "SELECT device_id, name, type, created_at, key_hash FROM devices WHERE device_id = ?", (device_id,)
+            "SELECT device_id, name, type, created_at, key_hash, signals FROM devices WHERE device_id = ?", (device_id,)
         ).fetchone()
-        return None if r is None else {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "key_hash": r[4]}
+        return None if r is None else {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "key_hash": r[4],
+                                       "signals": _signals(r[5])}
 
     def list_devices(self) -> list[dict]:
         return [
-            {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "has_key": r[4] is not None}
-            for r in self.db.execute("SELECT device_id, name, type, created_at, key_hash FROM devices ORDER BY device_id")
+            {"device_id": r[0], "name": r[1], "type": r[2], "created_at": r[3], "has_key": r[4] is not None, "signals": _signals(r[5])}
+            for r in self.db.execute("SELECT device_id, name, type, created_at, key_hash, signals FROM devices ORDER BY device_id")
         ]
 
     # --- anomaly history -----------------------------------------------------------------

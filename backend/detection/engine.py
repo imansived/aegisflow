@@ -3,6 +3,7 @@
 from collections.abc import Callable, Iterable
 
 from contracts.geo import haversine_m
+from contracts.scenarios import Modality
 from contracts.site import is_working, zone_of
 from contracts.telemetry import Telemetry
 
@@ -19,12 +20,17 @@ class DetectionEngine:
         enrolled: Iterable[str],
         cfg: DetectionConfig | None = None,
         sink: Callable[[Scores], None] | None = None,
+        declared: dict[str, frozenset[str]] | None = None,
     ):
         self.cfg = cfg or DetectionConfig()
         # A mutable set is kept by REFERENCE, so devices registered later (POST /devices) are
         # recognised as enrolled without rebuilding the engine. Anything else is frozen.
         self.enrolled = enrolled if isinstance(enrolled, set) else frozenset(enrolled)
         self.sink = sink
+        # device -> the signal groups it supports (R3). A device with no entry supports all four. Kept BY REFERENCE, like
+        # `enrolled`, so a device declared after start-up is recognised at once.
+        self.declared = declared if declared is not None else {}
+        self.ignored_undeclared = 0  # values received for a signal the device does not support (ignored)
         self.detectors = [
             SpatialDetector(self.cfg),
             NetworkDetector(self.cfg),
@@ -36,7 +42,11 @@ class DetectionEngine:
 
     def process(self, t: Telemetry) -> Scores:
         now_s = t.timestamp.timestamp()
-        lost = t.unavailable  # signal groups the device reported as unavailable this tick
+        reported_null = t.unavailable  # signal groups the device reported as unavailable this tick
+        decl = self.declared.get(t.device_id)
+        unsupported = frozenset() if decl is None else frozenset(m.value for m in Modality) - decl
+        self.ignored_undeclared += len(unsupported - reported_null)
+        lost = reported_null | unsupported  # an unsupported signal is never read, even if the device sent something
         # Time since the device's previous event (any event, with or without a GPS fix): the proximity detector's
         # persistence clock depends on it, so losing the GPS signal must not stretch it.
         last_t = self._last_event.get(t.device_id)
@@ -67,7 +77,8 @@ class DetectionEngine:
             res, feats = det.step(ctx)
             results[res.modality] = res
             features |= feats
-        scores = Scores(t.device_id, t.timestamp, ctx.bucket, results, features)
+        scores = Scores(t.device_id, t.timestamp, ctx.bucket, results, features,
+                        frozenset(Modality(g) for g in reported_null), frozenset(Modality(g) for g in unsupported))
         if self.sink:
             self.sink(scores)
         return scores

@@ -9,9 +9,10 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.concurrency import run_in_threadpool
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from backend.database.store import EventStore
+from contracts.scenarios import Modality
 from contracts.site import SITE_ORIGIN, ZONES
 from contracts.telemetry import DEVICE_ID_PATTERN, Telemetry
 
@@ -28,6 +29,16 @@ class DeviceIn(BaseModel):
     device_id: str = Field(pattern=DEVICE_ID_PATTERN)
     name: str = Field(min_length=1, max_length=64)
     type: str = Field(default="generic", min_length=1, max_length=32)
+    # The signal groups this device supports (R3). Omitted = all four. A device that has no GPS or no proximity scan
+    # should say so here: otherwise its absent signals read as a fault and it is Degraded for good.
+    signals: list[Modality] | None = Field(default=None, min_length=1, max_length=4)
+
+    @field_validator("signals")
+    @classmethod
+    def _distinct(cls, v):
+        if v is not None and len(set(v)) != len(v):
+            raise ValueError("signals must not repeat")
+        return v
 
 
 class DemoStartIn(BaseModel):
@@ -112,9 +123,10 @@ def create_app(settings: Settings | None = None, det_cfg=None) -> FastAPI:
     def create_device(body: DeviceIn, _: str = Depends(admin), db: EventStore = Depends(store)) -> dict:
         key = new_device_key()
         stamp = datetime.now(timezone.utc).isoformat()
-        if not db.register_device(body.device_id, body.name, body.type, stamp, hash_key(key)):
+        sig = None if body.signals is None else [m.value for m in body.signals]
+        if not db.register_device(body.device_id, body.name, body.type, stamp, hash_key(key), sig):
             raise HTTPException(409, f"device {body.device_id} already exists")
-        rt.register_enrolled(body.device_id)
+        rt.register_enrolled(body.device_id, sig)
         # The key is returned ONCE. Only its hash is stored, so it cannot be shown again.
         return {"device_id": body.device_id, "api_key": key, "note": "store this key now; it cannot be retrieved later"}
 

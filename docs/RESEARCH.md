@@ -95,6 +95,20 @@ What this supports, and what it does not:
 - Unmet by design: all UNSW traffic was assumed benign; the packet-metadata adapter is not a Zeek flow; candidates have no learn-gate and use one time bucket. The unseen IoT-23 captures are infected from the start, so they cannot test "attack after a benign baseline".
 - `research-v1` is unchanged. Adopting A or B would be a `research-v2` with its own availability calibration and a detection test on data that has a benign baseline before the attack.
 
+## Observation semantics (R3) and alert wording (R4): product changes, not detection results
+
+Specification and acceptance tests, committed before the code: [`preregistration/R3-R4-observation-semantics.md`](preregistration/R3-R4-observation-semantics.md). They do **not**
+improve detection and say nothing about the open R2 question. R2 stays sealed and unchanged.
+
+- **R3.** A device may declare the signals it supports (`signals` on `POST /devices`, stored with the device; default all four). Each tick, each signal is *observed*, *unsupported* (never declared;
+  a value sent anyway is ignored and counted), *missing* (declared, null) or *recovering* (declared, back, judgment withheld for 60 s). Observability is judged against the declared set, so a network-only
+  device with a healthy network signal is `full`/Normal instead of Degraded for life, while a declared signal that disappears is Degraded exactly as before. Scores, thresholds and alert decisions are unchanged:
+  a test feeds one scripted run to a declared and an undeclared network-only device and requires identical scores, severities, patterns and alert events.
+- **R4.** Every alert record carries `unsupported`, `missing`, `recovering` and an `observation` sentence generated from those same sets, e.g. "The location, device-health and proximity signals are not supported by this
+  device. This alert is based on network telemetry only. Signals that were not observed neither confirm nor rule out an attack." Tests check that the sentence names exactly the signals in the record, never lists a
+  missing signal as a contributing factor, and that fully observed alerts keep their original wording.
+- Evidence: 23 new tests (`tests/test_observation.py`), one API test and one frontend test. Not claimed: that operators understand the wording (no user study), or that an operator-set declaration cannot be wrong.
+
 ## Failure cases (what it cannot do)
 
 | Situation | Result | Source |
