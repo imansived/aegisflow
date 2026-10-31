@@ -1,0 +1,195 @@
+{
+ "note": "SHA-256 of the 38 local copies used by R7 stage 2, computed before they were deleted. The source publishes no checksums. After re-downloading, compare hashes and byte sizes (sizes also equal the Content-Length recorded in r7_audit.json). The per-file scan outputs and their hashes are in docs/research/r7stage2/manifest.json.",
+ "files": {
+  "attack_18-06-01.pcap": {
+   "sha256": "befc3f6882a2b3137652a81af1deba4f71d3cbd4b80db6344c2d64a9fc112bed",
+   "bytes": 2874852804,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-01.pcap"
+  },
+  "attack_18-06-04.pcap": {
+   "sha256": "46cc43471ae97e0a188e47f7fc3432b149f0170db7c4f428d7d3691305767dd1",
+   "bytes": 3464919628,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-04.pcap"
+  },
+  "attack_18-06-02.pcap": {
+   "sha256": "59f5aedf7dc03c3831aa95da0ab1c7e550fe196e88459a9c5929d383b938d797",
+   "bytes": 3527507852,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-02.pcap"
+  },
+  "attack_18-06-03.pcap": {
+   "sha256": "bccdaa24f0bc0279a38079420b852013631e802437269cf52a9c46592c124249",
+   "bytes": 3698357700,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-03.pcap"
+  },
+  "attack_18-06-08.pcap": {
+   "sha256": "77d6a30b5ba59da61775447869eeb0598b76dca064c1a411c55af765d429c3bd",
+   "bytes": 713559348,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-08.pcap"
+  },
+  "attack_18-10-20.pcap": {
+   "sha256": "61b49603c746eaebde231182050d9b8b7432339ead81346f16e9e1db5b77afad",
+   "bytes": 503541320,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-20.pcap"
+  },
+  "attack_18-10-21.pcap": {
+   "sha256": "7c51eefcbe2c1d350aa7e282390fb9655c59a8a169410aaf476eb7d1313de8cc",
+   "bytes": 146805784,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-21.pcap"
+  },
+  "attack_18-06-07.pcap": {
+   "sha256": "15f5ebae1f065b4cb615682b9601a73961b386400ecafe4b6784931a636e1254",
+   "bytes": 2400069300,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-07.pcap"
+  },
+  "attack_18-06-05.pcap": {
+   "sha256": "204407823f0ac4b25200b0d2135776df4b33792c5e301dc25e2852818d8a9ca1",
+   "bytes": 3076793468,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-05.pcap"
+  },
+  "attack_18-10-22.pcap": {
+   "sha256": "18fff1260cecc70a281a99c25e8a258d8ea15993659008935033940edcbe660c",
+   "bytes": 916467360,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-22.pcap"
+  },
+  "attack_18-10-24.pcap": {
+   "sha256": "2b6f0371e83e4c19622329667e919fbd85f20fd5b8770c40d1ea6e8577a141d5",
+   "bytes": 213831680,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-24.pcap"
+  },
+  "attack_18-06-06.pcap": {
+   "sha256": "2a5cb52f3eb60e8fbfb8a14ca3d325a1dac6bb8bc3bccc0270502c9457ad29eb",
+   "bytes": 3394372632,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-06-06.pcap"
+  },
+  "attack_18-10-25.pcap": {
+   "sha256": "83e75d5ca63c47a43b8ec85e8da7cdc2957b2eccc0532e6138d8656081575aaf",
+   "bytes": 990401184,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-25.pcap"
+  },
+  "attack_18-10-26.pcap": {
+   "sha256": "dae8417f86091fc6714052278b0c8aafbf8a32eeb879fa4e782927c4dc4a6ef9",
+   "bytes": 991244784,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-26.pcap"
+  },
+  "attack_18-10-23.pcap": {
+   "sha256": "d8715a3589d65b0b76be3a2d5053a7aebccb41bb1beaccfd8959c437f96e725f",
+   "bytes": 1462152516,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/AttackAndBenign/18-10-23.pcap"
+  },
+  "benign_18-05-31.pcap": {
+   "sha256": "129d813aff81f563dec8450c0557ae20492a6a2545cd86146a46ce583e7dc5f9",
+   "bytes": 2208591936,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-05-31.pcap"
+  },
+  "benign_18-06-09.pcap": {
+   "sha256": "0f5618383352f8c6360b8d8730bfe853c1846a5495c6bc29b13731d4c26f787a",
+   "bytes": 776438012,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-09.pcap"
+  },
+  "benign_18-05-29.pcap": {
+   "sha256": "94677ec9e031e78fe9df5fc9d6045ebd62fdd78069ddf6e7f697282350844643",
+   "bytes": 3483660828,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-05-29.pcap"
+  },
+  "benign_18-05-30.pcap": {
+   "sha256": "9cf16681f5fa0b85393c5385aea9ee15d9332623c40ae646764dbf8a62771f96",
+   "bytes": 3398919892,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-05-30.pcap"
+  },
+  "benign_18-05-28.pcap": {
+   "sha256": "42c8c8444ab6d2a50170e8aee7012436fe2ce877d40f026b07614972f06ca808",
+   "bytes": 4145381196,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-05-28.pcap"
+  },
+  "benign_18-06-10.pcap": {
+   "sha256": "bf1f5aaed070c1e6e0410be6b12b9430211a99a860cb6d6a3bcbfda633477adc",
+   "bytes": 749758868,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-10.pcap"
+  },
+  "benign_18-06-11.pcap": {
+   "sha256": "ff6bfb671021be5b48ac27dd7b145bc69e867a48a638a18e4b4cfdc1e5ef0e3d",
+   "bytes": 732667220,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-11.pcap"
+  },
+  "benign_18-06-12.pcap": {
+   "sha256": "155836760efb73dd731ba4e8506ede7aef19c6b0dce97b673f2864333a8871bb",
+   "bytes": 893914480,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-12.pcap"
+  },
+  "benign_18-06-13.pcap": {
+   "sha256": "5e9c0f2e0b14e99c1516101742f1486f4089fcd52b5f6048e7f6502c40a95c20",
+   "bytes": 877272112,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-13.pcap"
+  },
+  "benign_18-06-15.pcap": {
+   "sha256": "206201d5a0994872511cc4ede20fefa0eae26c8ce848bdfb0e9f9f817337aafc",
+   "bytes": 793143136,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-15.pcap"
+  },
+  "benign_18-06-16.pcap": {
+   "sha256": "f055fc4da89ee145869350a8ea37281fede10ee4b4d01e5209b865a39a232051",
+   "bytes": 739321464,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-16.pcap"
+  },
+  "benign_18-06-14.pcap": {
+   "sha256": "592929f8295498f4c5ba8bd9db78360c837e3b6473f6abab750dc11f3cfe4424",
+   "bytes": 1449139244,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-14.pcap"
+  },
+  "benign_18-06-17.pcap": {
+   "sha256": "7c44e37941765c9af15c6d09fb7828104cbe1972e66317f64557484afd83d07c",
+   "bytes": 744210312,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-06-17.pcap"
+  },
+  "benign_18-10-10.pcap": {
+   "sha256": "a2207ad90f3ab635c4456608b55662f2e1495cadf5069a073a16f878aa9124b7",
+   "bytes": 1479073008,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-10.pcap"
+  },
+  "benign_18-10-11.pcap": {
+   "sha256": "262dfd80831263049d3a896620d4c988c06e7516647fc7f49e860b974e4fd34d",
+   "bytes": 1367147188,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-11.pcap"
+  },
+  "benign_18-10-13.pcap": {
+   "sha256": "99c9d6aeb141944dec9f2d66a22e9ca545e8c1cd5a3fca74918144b1534e2e04",
+   "bytes": 1229538948,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-13.pcap"
+  },
+  "benign_18-10-12.pcap": {
+   "sha256": "cdf2b2a171ba23c76b4853d7e19cc60c933d199e61cd16a558f662a6a8ea6a14",
+   "bytes": 1735065868,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-12.pcap"
+  },
+  "benign_18-10-14.pcap": {
+   "sha256": "8ae8fbcf6ce5ddb51887c72c973b488f55f3c627534bbcbd71d9a49672031589",
+   "bytes": 1285881560,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-14.pcap"
+  },
+  "benign_18-10-15.pcap": {
+   "sha256": "99b66d3577dba95f2d09d1e6c66089bc4d7398044c043c047d1bce5c3a2db1d9",
+   "bytes": 1390161420,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-15.pcap"
+  },
+  "benign_18-10-17.pcap": {
+   "sha256": "391193c59be8c52ad624124529f17a597b7bf080fe5de8adce40a4a59ce98919",
+   "bytes": 1162741752,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-17.pcap"
+  },
+  "benign_18-10-16.pcap": {
+   "sha256": "0b744e9b1d8974040491790b8bfa7059600f4487c4b831926777edfe286479d5",
+   "bytes": 1638535252,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-16.pcap"
+  },
+  "benign_18-10-18.pcap": {
+   "sha256": "d73cb24c5084d8870bab536db88fc619925c1a7ef01000e47622a3bb44fa3c4a",
+   "bytes": 1235245116,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-18.pcap"
+  },
+  "benign_18-10-19.pcap": {
+   "sha256": "3ae7987c838ae3de7f8d6d290091f823a2e5fb75643d2ec411f42f38df5fedac",
+   "bytes": 1214069844,
+   "url": "https://iotanalytics.unsw.edu.au/anomaly-data/pcap/benign/18-10-19.pcap"
+  }
+ }
+}
