@@ -1,0 +1,178 @@
+{
+ "purpose": "Close the Docker gap: the images were built at research-v1 and not rebuilt for R3/R4.",
+ "git_commit_built_from": "d954537",
+ "baseline_before": "No stack was running and the existing images were two days old (pre-R3/R4); frontend/dist was stale. There was nothing to smoke-test, so the first smoke run is on the rebuilt stack.",
+ "build": {
+  "command": "docker compose down -v --remove-orphans; docker compose build --no-cache; docker compose up -d",
+  "source": "official from-scratch build (docker/api.Dockerfile, docker/web.Dockerfile); the registry was reachable, so the offline overlay build was not used",
+  "result": "success",
+  "images": {
+   "aegisflow-api:latest": {
+    "id": "sha256:08051da9f5fde97d5fb885fdac318b9fdfc7e90e2cd4cc1de17a0b441b4f6ada",
+    "created": "2026-10-31T09:27:56.84566342Z",
+    "size_mb": 78.2
+   },
+   "aegisflow-web:latest": {
+    "id": "sha256:ae5c2d6b30a0055fc5ded9102d750d6de9ebdabdbcb95df163d76702654b2de1",
+    "created": "2026-10-31T09:27:33.493088545Z",
+    "size_mb": 21.1
+   }
+  },
+  "base_images": {
+   "python:3.12-slim": "python@sha256:aa943ce411423c7582288f18707ff66eddcbaeb510502d747a72aeb34f30d159",
+   "node:22-alpine": "node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914",
+   "nginxinc/nginx-unprivileged:1.27-alpine": "nginxinc/nginx-unprivileged@sha256:65e3e85dbaed8ba248841d9d58a899b6197106c23cb0ff1a132b7bfe0547e4c0",
+   "redis:7-alpine": "redis@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499"
+  },
+  "r3r4_code_in_image": "backend.correlation.explain has 'observation' (checked inside the built api image)",
+  "containers": "redis, api, web all healthy; clean volumes (no data carried over)"
+ },
+ "smoke_stack": {
+  "script": "scripts/smoke_stack.py",
+  "result": "STACK OK",
+  "checks": [
+   "strict CSP and security headers; nginx version hidden; SPA fallback",
+   "API reachable only through the proxy, auth enforced",
+   "100 KB body refused with 413",
+   "client address cannot be spoofed to dodge the failed-key limiter",
+   "registered device accepted (202)",
+   "explicit availability across the proxy (null group 202, half-missing 422, omitted field 422)",
+   "WebSocket works through nginx, tokens not in logs",
+   "containers non-root (api uid 10001, web uid 101)",
+   "registry survives an API restart"
+  ]
+ },
+ "observation_check": {
+  "script": "scripts/smoke_observation.py",
+  "result": "OK",
+  "note": "First attempt failed at the spike step because the synthetic device was still learning after 800 events (the unfamiliar-endpoint baseline needs 3600 s of event time plus 720 samples, about 1440 events); alerts are withheld while learning. A test-design error, not a runtime defect: the script now warms until the device reports learning=False (it did at 1500 events) and uses a fresh device id. No detector, model or threshold was changed.",
+  "report": {
+   "device": "D-932",
+   "checks": [
+    {
+     "check": "empty, unknown and repeated declarations are rejected (422)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "check": "declared signals=['network'] is stored and returned by GET /devices and /devices/{id}",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "check": "observability full, state normal, unsupported = device+proximity+spatial, nothing missing or recovering",
+     "ok": true,
+     "detail": "learning=False"
+    },
+    {
+     "check": "location sent by a device that never declared it is treated as unsupported (state unchanged)",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "check": "alert record: unsupported = device+proximity+spatial; text: The location, device-health and proximity signals are not supported by this device. This a...",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "check": "network lost: state degraded, missing = ['network'], observability blind",
+     "ok": true,
+     "detail": ""
+    },
+    {
+     "check": "network back: recovering = ['network'], judgment withheld (alertable=False)",
+     "ok": true,
+     "detail": ""
+    }
+   ],
+   "started": "2026-10-31T09:42:10.234243+00:00",
+   "events_to_finish_learning": 1500,
+   "snapshot_quiet": {
+    "device_id": "D-932",
+    "ts": "2026-10-31T08:47:12+00:00",
+    "latitude": 18.5204,
+    "longitude": 73.8567,
+    "position_stale": true,
+    "zone": "Office",
+    "restricted": false,
+    "battery": null,
+    "cpu_usage": null,
+    "temperature": null,
+    "network_connections": 6,
+    "nearby_devices": null,
+    "memory_usage": null,
+    "bytes_sent": 1186,
+    "bytes_received": 2227,
+    "score": 0.073,
+    "severity": "normal",
+    "effective": {
+     "spatial": 0.0,
+     "network": 0.0,
+     "device": 0.0,
+     "proximity": 0.0
+    },
+    "contributions": {},
+    "learning": false,
+    "unavailable": [
+     "device",
+     "proximity",
+     "spatial"
+    ],
+    "recovering": [],
+    "unsupported": [
+     "device",
+     "proximity",
+     "spatial"
+    ],
+    "missing": [],
+    "observability": "full",
+    "alertable": true,
+    "fallback": "",
+    "state": "normal"
+   },
+   "alert": {
+    "alert_id": "D-932@2026-10-31T08:47:22+00:00",
+    "severity": "high",
+    "peak_score": 1.0,
+    "unavailable": [
+     "device",
+     "proximity",
+     "spatial"
+    ],
+    "unsupported": [
+     "device",
+     "proximity",
+     "spatial"
+    ],
+    "missing": [],
+    "recovering": [],
+    "observation": "The location, device-health and proximity signals are not supported by this device. This alert is based on network telemetry only. Signals that were not observed neither confirm nor rule out an attack."
+   },
+   "finished": "2026-10-31T09:55:55.957569+00:00",
+   "passed": true
+  }
+ },
+ "dashboard_e2e": {
+  "script": "scripts/e2e_dashboard.py (AEGIS_UI=http://localhost:8080)",
+  "result": "E2E OK",
+  "detail": "login, calibration, intrusion alert raised and closed, signal loss shown as Degraded, device network, anomalies, statistics, evidence, reload keeps session, viewer without controls, phone width with 0 px horizontal overflow; no failed HTTP responses, no browser errors"
+ },
+ "demo_story": {
+  "script": "scripts/demo_story.py",
+  "result": "DEMO STORY OK",
+  "detail": "seven scenes asserted; docs/img/demo screenshots regenerated from the rebuilt stack"
+ },
+ "alerts_seen_in_stack": "demo intrusion alert: observation \"All four signals were observed.\"; network-only device alert: unsupported device+proximity+spatial, text states it rests on network telemetry only",
+ "api_log_errors": 0,
+ "frozen_artifacts": "unchanged: no file under models/, docs/research/ or any frozen manifest was edited; tests/test_frozen_artifact.py passes",
+ "not_covered": [
+  "TLS, key rotation, per-user accounts, multi-node (unchanged limits)",
+  "pixel-exact reproducibility of the demo screenshots",
+  "after a restart, an incoming event from a declared device was not re-sent (its device key was not kept); the in-memory declaration map is rebuilt from the store at start-up and covered by the store-level tests"
+ ],
+ "persistence_across_full_restart": {
+  "command": "docker compose down; docker compose up -d (volumes kept)",
+  "result": "all three containers healthy again; GET /devices still returns signals=[\"network\"] for the two declared test devices; the network-only device's alert (unsupported = device, proximity, spatial) is still in the store"
+ },
+ "supersedes": "the Docker limitation recorded in docs/results/r3r4_release.json (frozen, not edited)"
+}

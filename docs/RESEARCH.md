@@ -157,7 +157,7 @@ The reason is what the timestamps show, which the metadata could not: the daily 
 
 | Question | Evidence | Status |
 |---|---|---|
-| Does the pipeline behave as specified (streaming, idempotent writes, availability states, recovery, declared signals, alert wording)? | 221 backend tests (real Redis, none skipped), 62 frontend tests, a browser end-to-end run, Docker smoke checks (images built at `research-v1`, not rebuilt for R3/R4) | **Engineering-validated** |
+| Does the pipeline behave as specified (streaming, idempotent writes, availability states, recovery, declared signals, alert wording)? | 221 backend tests (real Redis, none skipped), 62 frontend tests, a browser end-to-end run, Docker: images rebuilt from scratch at the R3/R4 commit, smoke test, dashboard end-to-end run, demo story and a declared-signals check all passing in the containers (`results/docker_rebuild_r3r4.json`) | **Engineering-validated** |
 | Does fusing signals beat "any detector fires"? | F1, D107 (pre-registered, simulator) | Yes, **in simulation only** |
 | Does the shipped network detector hold the false-alarm budget on real benign traffic? | R1: 31.6 per device-day (IoT-23); R5: 45.5 (UNSW 2016) | **No** |
 | Can a re-modelled or re-thresholded network detector meet the budget on real benign traffic? | R5, 159.6 held-out benign device-days, 2016 UNSW testbed: A 2.68 [2.00, 3.42], B 2.10 [1.33, 2.97], thresholds set on the same testbed | **Holds in that testbed.** Not shown to transfer to other devices, years or sites; all UNSW traffic is assumed benign |
