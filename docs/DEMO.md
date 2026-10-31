@@ -67,9 +67,10 @@ The feed records *signal restored: fully observed again* and the alert names its
 
 - *"Does it beat a good single detector?"* Not in general (+0.02, interval includes zero); it clearly beats "any detector fires" (+0.43), and it covers
   anomalies the single detector cannot see. See [RESEARCH.md](RESEARCH.md).
-- *"Is this real data?"* The fleet is simulated; two public datasets were used for partial real checks and they show the thresholds do not transfer.
+- *"Is this real data?"* The fleet is simulated. Public real traces were replayed through the unchanged system (network signal only): the states behave as designed but the shipped threshold raises far too many false alerts on real benign traffic (31.6 per device-day). Offline candidate detectors held the budget in one public testbed.
+- *"Does it detect real attacks?"* Not measured. Four attempts to build a fair evaluation stopped at pre-registered feasibility gates (no dated onsets with a clean, continuous baseline). That is a limit of the evidence, not a result in either direction.
 - *"What changed because of testing?"* Two real defects found on a validation seed before scoring: false alerts after outages and a GPS-loss clock bug.
-- *"What would you do next?"* A real fleet or replayed real traces; an alert budget low enough to run in production; handling for drift and cold start.
+- *"What would you do next?"* A dataset or fleet with dated attack onsets and verifiably continuous recordings, to measure detection; an alert budget low enough to run in production; handling for drift and cold start.
 
 ## If something looks wrong
 

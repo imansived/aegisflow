@@ -9,7 +9,7 @@ device health, proximity), and asks one question no single signal can answer: *a
 together on the same device?* When they are, it raises an alert and explains exactly which signals contributed and why.
 
 It runs on **simulated** devices. It is an early-warning system, not proof of an attack, and its scores are rankings,
-not probabilities.
+not probabilities. **Engineering and detection are validated differently:** the pipeline, availability states and alert wording are tested end to end; whether the detectors find real attacks has **not** been measured (see below).
 
 ## What was found
 
@@ -54,6 +54,13 @@ through the real pipeline, the shipped version loses 0.10 less recall than the o
 the availability and recovery states behave exactly as designed, but the network detector raises about **32 false alert onsets per device-day** on real
 benign traffic (the simulator: about 5), because real devices are silent on 90% of ticks and the detector expected always-chatty ones. The original
 benchmark (`research-v1`) is left untouched; fixes would be a new version with a new protocol. See docs/RESEARCH.md.
+
+**Later work (R2 to R7, each with a pre-registered protocol).** Two offline candidate network detectors (zero-inflated, windowed-rate) held the false-alarm budget on
+159.6 held-out benign device-days of a public IoT testbed (about 2.1 to 2.7 per device-day, interval upper bounds under 3.75), where the shipped detector raised 45 per
+device-day; they are not part of the shipped system. Devices can now declare which signals they support, so a network-only device is no longer Degraded for life, and
+alert text states which signals were not observed and that this neither confirms nor rules out an attack (R3/R4; scores and thresholds unchanged, and tested to be).
+**Detection of real attacks remains unmeasured:** four attempts to assemble an eligible evaluation (dated attack onsets, a clean verified-continuous baseline, enough
+independent sessions) stopped at pre-registered gates, the last one because the public daily recordings have real gaps. The status table and the closure record are in docs/RESEARCH.md.
 
 ## Run it (Docker)
 
@@ -134,6 +141,5 @@ The final test run (`python -m ml.final_eval`) refuses to run twice on the same 
 
 ## Limits
 
-Simulated data only; the scenarios and effect sizes are my own model. The real-data check the spec asked for was not
-done. No TLS, key rotation, per-user accounts or audit log. Single node. All verified on Windows with Docker Desktop.
+Simulated fleet; the scenarios and effect sizes are my own model. Real-data checks (R1 to R5) cover the network signal only, on benign traffic and public captures; location, device-health and proximity detection have no real-data validation, and detection of real attacks is unmeasured. No TLS, key rotation, per-user accounts or audit log. Single node. All verified on Windows with Docker Desktop.
 The full list is in docs/RESEARCH.md.

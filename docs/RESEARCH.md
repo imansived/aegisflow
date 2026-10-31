@@ -2,7 +2,7 @@
 
 **What was studied.** Whether fusing four per-signal anomaly detectors (location, network, device health, proximity) is more useful than
 the detectors on their own, and whether the system can keep working when a signal disappears. Everything is evidence about a **simulator I
-wrote**, except two public real-data checks that cover only part of the system. Nothing here says the method works on a real fleet.
+wrote**, except public real-data checks (R1 to R5) that cover only the network signal. Nothing here says the method works on a real fleet, and **whether it detects real attacks is unmeasured** (see "Status" below).
 
 **How to read the claims.** Each row names the experiment, the file with the raw numbers, and the commits. A row marked *pre-registered* had its
 protocol committed before its test seeds were generated or scored; *exploratory* means it was done after seeing results and decides nothing.
@@ -152,6 +152,31 @@ Frozen as `docs/research/r7stage2` (tag `stage2-r7`). All 38 day files inside th
 **Result: 10 eligible test episodes (30 required), 6 sessions (8 required): the gate fails, so the validation scoring and the test run were not performed, and no rule was changed.** Of the 63 stage-1 episodes, 15 survive (10 test, 5 validation); 48 were removed: 44 because the verified continuous stream ending at the onset was shorter than 24 h plus the 2 h burn-in, 12 because the device was silent for more than 2 h in the preceding 24 h (some for both), 2 because the onset lies in no verified chain.
 The reason is what the timestamps show, which the metadata could not: the daily files are **not** continuous. The recording has real gaps (for example the 2018-06-01 file begins 14 h after the 05-31 file ends; the 05-28 file alone breaks into three pieces; October files are cut at 13:00 UTC and several are partial), so the 38 files form 10 verified chains; only two (297 h and 271 h) are long, and most attack onsets fall in short ones. The stage-1 count of 47 was provisional on contiguity and that assumption was false.
 **Consequence: detection of attacks on real devices remains unmeasured, and this dataset cannot answer the question under the frozen rules.** The R7 protocol forbids further rule changes on it. The false-alarm side was not run either (it needs the same stream). Not shown by stage 2, as stated in advance: that benign periods are free of unlabelled attacks or that recording conditions are equivalent.
+
+## Status: what is established and what is not
+
+| Question | Evidence | Status |
+|---|---|---|
+| Does the pipeline behave as specified (streaming, idempotent writes, availability states, recovery, declared signals, alert wording)? | 221 backend tests (real Redis, none skipped), 62 frontend tests, a browser end-to-end run, Docker smoke checks (images built at `research-v1`, not rebuilt for R3/R4) | **Engineering-validated** |
+| Does fusing signals beat "any detector fires"? | F1, D107 (pre-registered, simulator) | Yes, **in simulation only** |
+| Does the shipped network detector hold the false-alarm budget on real benign traffic? | R1: 31.6 per device-day (IoT-23); R5: 45.5 (UNSW 2016) | **No** |
+| Can a re-modelled or re-thresholded network detector meet the budget on real benign traffic? | R5, 159.6 held-out benign device-days, 2016 UNSW testbed: A 2.68 [2.00, 3.42], B 2.10 [1.33, 2.97], thresholds set on the same testbed | **Holds in that testbed.** Not shown to transfer to other devices, years or sites; all UNSW traffic is assumed benign |
+| Is zero-inflated modelling better than recalibration? | R5: the recalibrated v1 detector's threshold saturates at 1.000 and it almost never alerts, so the comparison is vacuous | **Not established** |
+| **Does the system detect real attacks, and how fast?** | Four attempts to build an eligible evaluation (below) all stopped at a pre-registered gate | **Unmeasured** |
+| Are declared signal sets and alert wording useful to an operator? | R3/R4: implemented, with tests that wording agrees with the alert record | Consistent and tested; **not validated with users** |
+
+## Closing the detection line (R2, R5, R6, R7)
+
+| Protocol | Question | Gate and outcome | Frozen as |
+|---|---|---|---|
+| R2 | Candidate detectors vs recalibration | Detection claim INCONCLUSIVE: none of 9 unseen IoT-23 captures had a benign baseline before the attack; false-alarm claim inconclusive on 28 device-days | `sparse-r2` |
+| R5 | Detection delay and recall on dated attacks; false alarms on more exposure | Gate failed (15 of 30 eligible episodes); false-alarm part ran and held for A and B | `inventory-r5`, `fa-r5` |
+| R6 | Same, in one testbed, one stream per device | Optimistic gate failed (26 of 30 test episodes) | `audit-r6` |
+| R7 | R6 with a separately justified 60-minute gap (a revised, informed protocol) | Stage 1 passed (47 test episodes, provisional on contiguity); **stage 2 failed (10 of 30)**: the daily files have real recording gaps, which only the timestamps could show | `audit-r7`, `stage2-r7` |
+
+No detector score was ever computed on an attack under R5 to R7; the rules were not relaxed after any gate result, and R7 forbids further rule changes on the UNSW attack collection. The raw captures used by R7 stage 2 (63 GB) were deleted afterwards;
+their SHA-256 and sizes are in `results/r7_capture_hashes.json` and the per-file scan outputs and hashes are frozen in `research/r7stage2/manifest.json`, so the stage-2 result can be reproduced by re-downloading and comparing hashes.
+**Reopening detection** needs a dataset for which these can be established **before** the experiment is committed: trustworthy dated onset labels, a clean baseline of sufficient length, **verifiable recording continuity** (checked on candidates before download), and enough independent devices and sessions. More attack examples alone are not a reason.
 
 ## Failure cases (what it cannot do)
 
