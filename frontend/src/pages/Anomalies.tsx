@@ -51,7 +51,14 @@ export default function Anomalies({ alerts, onOpen }: { alerts: Alert[]; onOpen:
                 </li>
               ))}
             </ol>
-            {cur.explanation && cur.explanation !== 'x' && <p className="note">{cur.explanation}</p>}
+            {cur.observation && <p className="obs"><b>What this alert rests on.</b> {cur.observation}</p>}
+            {cur.explanation && cur.explanation !== 'x' && (
+              <details className="tech">
+                <summary>Full technical explanation</summary>
+                <pre className="tech-text">{cur.explanation}</pre>
+              </details>
+            )}
+            <p className="fine">Opened when the fused score reached the alert level (and the device had finished learning); it closes after 60 s below the clear level. Severity labels follow the score, so a device can read Normal again while its alert is still open.</p>
             <p className="fine">The fused score ranks how unusual this is across all signals. It is not a probability that an attack occurred.</p>
             <div className="btns" style={{ marginTop: 12 }}><button className="btn" onClick={() => onOpen(cur.device_id)}>Show {cur.device_id} on the map</button></div>
           </>

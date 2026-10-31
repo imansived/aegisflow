@@ -133,7 +133,7 @@ describe('correlation', () => {
     render(<CorrelationPanel snap={s} history={{}} alerts={[alert('a', 'D-003', 'high')]} status={STATUS} />)
     expect(screen.getByText('Why it was flagged')).toBeTruthy()
     expect(screen.getByText('entered a restricted zone')).toBeTruthy()
-    expect(screen.getByText(/not a probability/)).toBeTruthy()
+    expect(screen.getByText(/ranks how unusual this is across all signals\. It is not a probability/)).toBeTruthy()
   })
 
   it('tells the user what to do when nothing is running', () => {
@@ -385,5 +385,48 @@ describe('Evidence page', () => {
     expect(screen.getAllByText(/No difference shown/).length).toBeGreaterThan(0) // P2 and P4 cross zero
     expect(screen.getAllByText(/Worse/).length).toBeGreaterThan(0) // P3: the supervised joint model is better
     expect(screen.getByText(/says nothing about real fleets/)).toBeTruthy()
+  })
+})
+
+describe('reading the score (UX consistency)', () => {
+  const lowButNoSignal = () => snap('D-002', 'low', 0.75, { effective: { ...EFF, network: 0.2 } })
+
+  it('does not call a device normal while its fused risk is in a non-normal band', () => {
+    const s = correlationSentence(lowButNoSignal(), 0.98)
+    expect(s).toMatch(/No single signal is active \(0\.30\+\), yet together the fused risk is 0\.75: Low band, alert level 0\.98\./)
+    expect(s).not.toMatch(/within their normal range/)
+    expect(correlationSentence(snap('D-1', 'normal', 0.1))).toMatch(/within their normal range/) // a genuinely normal device is unchanged
+  })
+
+  it('the ring says what the label says: LOW, not NOMINAL', () => {
+    const { container } = render(<CorrelationPanel snap={lowButNoSignal()} history={{}} alerts={[]} status={STATUS} />)
+    expect(container.textContent).toContain('LOW · COMBINED')
+    expect(container.textContent).not.toContain('NOMINAL')
+    cleanup()
+    const n = render(<CorrelationPanel snap={snap('D-1', 'normal', 0.1)} history={{}} alerts={[]} status={STATUS} />)
+    expect(n.container.textContent).toContain('NOMINAL')
+  })
+
+  it('explains the score: bands from the alert thresholds, how an alert opens and closes', () => {
+    const { container } = render(<CorrelationPanel snap={lowButNoSignal()} history={{}} alerts={[]} status={STATUS} />)
+    const d = container.querySelector('details.score-guide') as HTMLDetailsElement
+    expect(d).toBeTruthy()
+    expect(d.open).toBe(false) // collapsed until asked for
+    const t = d.textContent ?? ''
+    expect(t).toMatch(/Low from 0\.45, Medium from 0\.90 \(the clear level\), High from 0\.98 \(the alert level\)/)
+    expect(t).toMatch(/not a probability/)
+    expect(t).toMatch(/stayed below the clear level for 60 seconds/)
+    expect(t).toMatch(/fall from High to Normal while the alert is still open/)
+  })
+
+  it('the alert detail leads with what the alert rests on and collapses the repeated technical text', () => {
+    const a = alert('a', 'D-001', 'high', { observation: 'The location signal stopped reporting. This alert is based on network, device-health and proximity telemetry only.', explanation: 'HIGH behavioural anomaly on D-001\n  1. spatial (contributes 0.90): entered a restricted zone' })
+    const { container } = render(<Anomalies alerts={[a]} onOpen={() => {}} />)
+    expect(container.querySelector('.obs')?.textContent).toMatch(/What this alert rests on\..*stopped reporting/)
+    const tech = container.querySelector('details.tech') as HTMLDetailsElement
+    expect(tech.open).toBe(false)
+    expect(tech.textContent).toMatch(/Full technical explanation/)
+    expect(tech.querySelector('pre')?.textContent).toMatch(/HIGH behavioural anomaly on D-001/)
+    expect(container.textContent).toMatch(/closes after 60 s below the clear level/)
   })
 })

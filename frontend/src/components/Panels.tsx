@@ -13,18 +13,42 @@ export function focusDevice(devices: Record<string, Snapshot>, selected: string 
 }
 
 /** Plain-language account of how the signals combine right now. Pure, so it can be tested. */
-export function correlationSentence(snap: Snapshot): string {
+/** How to read the score: what it is, what the labels mean, and when an alert opens and closes. Bands follow the alert thresholds (fully observed device). */
+export function ScoreGuide({ status }: { status?: Status | null }) {
+  const raise = status?.alert_thresholds.raise_at
+  const clear = status?.alert_thresholds.clear_at
+  return (
+    <details className="score-guide">
+      <summary>How to read this score</summary>
+      <ul>
+        <li><b>The score</b> is this device's fused risk right now, recomputed with every 5-second update. Each signal's own score is held and fades with a one-second half-life, so a brief spike is not missed. It is a ranking on a learned, saturating scale, not a probability: 0.75 is not "three quarters of the way" to an alert.</li>
+        {raise !== undefined && clear !== undefined && (
+          <li><b>Labels</b> follow the alert thresholds: Low from {(0.5 * clear).toFixed(2)}, Medium from {clear.toFixed(2)} (the clear level), High from {raise.toFixed(2)} (the alert level). They shift slightly when a device is partly observed.</li>
+        )}
+        <li><b>An alert opens</b> when the fused score reaches the alert level and the device has finished learning its normal. <b>It closes</b> only after the score has stayed below the clear level for 60 seconds, so a dip does not end it and a device can fall from High to Normal while the alert is still open.</li>
+        <li><b>Degraded</b> means some signals cannot be seen; a quiet score then says nothing about them.</li>
+      </ul>
+    </details>
+  )
+}
+
+export function correlationSentence(snap: Snapshot, alertLevel?: number): string {
   const lost = lostSignals(snap)
   const seen = MODALITIES.filter((m) => !lost.includes(m))
   const active = seen.filter((m) => snap.effective[m] >= ACTIVE_LEVEL).sort((a, b) => snap.effective[b] - snap.effective[a])
   const strongest = Math.max(0, ...seen.map((m) => snap.effective[m]))
+  // The fused score is learned and saturating: weak signals that are each below the active level can still add up to a non-normal band.
+  // Say so, instead of calling the device normal while its risk label is not.
+  const band = snap.severity !== 'normal'
+    ? `the fused risk is ${snap.score.toFixed(2)}: ${SEVERITY_LABEL[snap.severity]} band${alertLevel !== undefined ? `, alert level ${alertLevel.toFixed(2)}` : ''}.`
+    : ''
   // A missing signal is never reported as a normal one: say what cannot be seen.
   const blind = lost.length ? `Not fully observed: ${lostText(snap)} ${(snap.recovering ?? []).length === lost.length ? 'recovering (judgment withheld while its window refills)' : 'unavailable'}. ` : ''
   if (seen.length === 0) return 'No signal is available: this device cannot be judged.'
   if (active.length === 0) {
     return lost.length
-      ? `${blind}The ${seen.length} signal${seen.length === 1 ? '' : 's'} that can be seen look ordinary; that says nothing about the ones that cannot.`
-      : 'All four signals are within their normal range.'
+      ? `${blind}The ${seen.length} signal${seen.length === 1 ? '' : 's'} that can be seen look ordinary; that says nothing about the ones that cannot.${band ? ` Together ${band}` : ''}`
+      : band ? `No single signal is active (${ACTIVE_LEVEL.toFixed(2)}+), yet together ${band}` : 'All four signals are within their normal range.'
   }
   const list = active.map((m) => `${MODALITY_LABEL[m]} ${snap.effective[m].toFixed(2)}`).join(', ')
   if (active.length === 1) return `${blind}One signal is active: ${list}.`
@@ -167,7 +191,7 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
       <div className="corr-body">
         <div className="corr-ring">
           <SignalRing effective={snap.effective} score={snap.score} severity={snap.severity} size={132} lost={lostSignals(snap)} />
-          <p className="corr-note">{correlationSentence(snap)}</p>
+          <p className="corr-note">{correlationSentence(snap, status?.alert_thresholds.raise_at)}</p>
         </div>
         <div className="corr-main">
           <CorrelationLanes
@@ -178,6 +202,7 @@ export function CorrelationPanel({ snap, history, alerts, status }: {
         </div>
         <div className="corr-why" aria-label="Why it was flagged">
           <h3>{alert && alert.status !== 'closed' ? 'Why it was flagged' : n >= 2 ? 'Why the risk is rising' : 'Signal detail'}</h3>
+          <ScoreGuide status={status} />
           {alert ? (
             <ul>
               {alert.factors.map((f) => (

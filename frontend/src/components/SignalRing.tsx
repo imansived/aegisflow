@@ -55,7 +55,7 @@ export function SignalRing({ effective, score, severity, size = 220, lost = [] }
           )
         })}
         <text className="ring-score" x="100" y="104" textAnchor="middle">{score.toFixed(2)}</text>
-        <text className="ring-sub" x="100" y="122" textAnchor="middle">{locked ? `LOCK · ${n} SIGNALS` : lost.length ? (n ? `${n} SIGNAL${n > 1 ? 'S' : ''} · PARTLY SEEN` : 'PARTLY SEEN') : n ? `${n} SIGNAL${n > 1 ? 'S' : ''}` : 'NOMINAL'}</text>
+        <text className="ring-sub" x="100" y="122" textAnchor="middle">{locked ? `LOCK · ${n} SIGNALS` : lost.length ? (n ? `${n} SIGNAL${n > 1 ? 'S' : ''} · PARTLY SEEN` : 'PARTLY SEEN') : n ? `${n} SIGNAL${n > 1 ? 'S' : ''}` : severity === 'normal' ? 'NOMINAL' : `${SEVERITY_LABEL[severity].toUpperCase()} · COMBINED`}</text>
       </svg>
       <figcaption className="sr">{MODALITIES.map((m) => `${MODALITY_LABEL[m]} ${effective[m].toFixed(2)}`).join(', ')}</figcaption>
     </figure>

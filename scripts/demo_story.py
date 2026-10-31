@@ -65,6 +65,11 @@ with sync_playwright() as p:
     print("1. a normal device: everything it can sense is ordinary")
     select(page, NORMAL)
     time.sleep(2)
+    # The simulated fleet fluctuates: a device can sit in the Low band for a few seconds. Wait for it to be Normal rather than fail on that moment.
+    for _ in range(12):
+        if "Normal" in page.locator(".focus-chip").inner_text():
+            break
+        time.sleep(5)
     assert "Normal" in page.locator(".focus-chip").inner_text(), page.locator(".focus-chip").inner_text()
     shot(page, "01_normal", f"{NORMAL}: all four signals seen, score low. Normal is a statement about four signals, not a guess.")
 

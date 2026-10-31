@@ -174,5 +174,17 @@
   "command": "docker compose down; docker compose up -d (volumes kept)",
   "result": "all three containers healthy again; GET /devices still returns signals=[\"network\"] for the two declared test devices; the network-only device's alert (unsupported = device, proximity, spatial) is still in the store"
  },
- "supersedes": "the Docker limitation recorded in docs/results/r3r4_release.json (frozen, not edited)"
+ "supersedes": "the Docker limitation recorded in docs/results/r3r4_release.json (frozen, not edited)",
+ "ui_clarity_revision": {
+  "trigger": "review of the demo screenshots: a device at 0.89 labelled Low while the text said all four signals were normal; the same explanation shown twice on the alert detail; unclear what the score and the labels mean",
+  "verification_of_labels": "not a backend or mapping bug: the frozen bands (Low from 0.452, Medium from 0.903, High from 0.983) classify 0.89 as Low. The presentation was misleading: ring and sentence looked only at per-signal active levels (0.30), while the learned, saturating fusion can put weak signals into a non-normal band",
+  "changes": [
+   "ring and sentence now say \"LOW \u00b7 COMBINED\" / \"No single signal is active (0.30+), yet together the fused risk is X: Low band, alert level Y.\" instead of NOMINAL / \"all four signals are normal\" when the severity is not Normal",
+   "collapsible \"How to read this score\": instantaneous per-update score with a 1 s half-life hold, the band thresholds, a learned saturating scale and not a probability, alert opens at the alert level once the device has finished learning and closes after 60 s below the clear level (so a device can read Normal while its alert is open)",
+   "alert detail leads with \"What this alert rests on\" (the R4 observation sentence) and collapses the repeated technical explanation under \"Full technical explanation\""
+  ],
+  "no_change_to": "backend, detectors, models, thresholds, severity bands, research artifacts",
+  "tests": "frontend 66 passed (62 + 4 new), tsc clean; web image rebuilt; e2e_dashboard E2E OK; demo_story DEMO STORY OK",
+  "demo_story_flake": "one run failed at scene 1 because the live simulated fleet had D-005 in the Low band (0.49) for a few seconds when the script asserted Normal; not reproduced in 5 later runs; the script now waits up to a minute for Normal before asserting"
+ }
 }
