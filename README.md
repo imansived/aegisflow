@@ -62,6 +62,8 @@ alert text states which signals were not observed and that this neither confirms
 **Detection of real attacks remains unmeasured:** four attempts to assemble an eligible evaluation (dated attack onsets, a clean verified-continuous baseline, enough
 independent sessions) stopped at pre-registered gates, the last one because the public daily recordings have real gaps. The status table and the closure record are in docs/RESEARCH.md.
 
+**Reading the score.** The dashboard shows a severity band (Normal, Low, Medium, High) and an alert as two different things. The band follows the fused score; an alert opens at the alert level once a device has finished learning and closes only after 60 s below the clear level, so a device can read Normal while its alert is still open. The ring says `LOW · COMBINED` (not NOMINAL) when weak signals add up to a non-Normal band, and a collapsible "How to read this score" panel explains the rules.
+
 ## Run it (Docker)
 
 ```powershell
@@ -100,7 +102,7 @@ front before serving anyone else.
 | `docker/`, `docker-compose.yml` | Packaging |
 | `scripts/` | End-to-end browser check, stack smoke test, narrated demo |
 | `models/frozen_design.json` | The learned fusion and alert thresholds the server loads (fitted on validation seeds only) |
-| `tests/` | 170 Python tests (some need Redis) |
+| `tests/` | 233 Python tests (some need Redis) |
 
 ## Develop
 
@@ -118,7 +120,7 @@ $env:AEGIS_ADMIN_TOKEN  = "choose-a-long-admin-token"     # at least 16 characte
 $env:AEGIS_VIEWER_TOKEN = "choose-a-long-viewer-token"
 .\.venv\Scripts\python -m uvicorn --factory backend.api.app:create_app --port 8010
 cd frontend; npm install; npm run dev                     # http://localhost:5173, proxies /api to the API
-npm test                                                  # 47 unit and component tests
+npm test                                                  # 66 unit and component tests
 ```
 
 Checks that drive the real system (with the stack running; they need `pip install playwright`, which uses the installed Edge):
@@ -141,5 +143,5 @@ The final test run (`python -m ml.final_eval`) refuses to run twice on the same 
 
 ## Limits
 
-Simulated fleet; the scenarios and effect sizes are my own model. Real-data checks (R1 to R5) cover the network signal only, on benign traffic and public captures; location, device-health and proximity detection have no real-data validation, and detection of real attacks is unmeasured. No TLS, key rotation, per-user accounts or audit log. Single node. All verified on Windows with Docker Desktop.
+Simulated fleet; the scenarios and effect sizes are my own model. Real-data checks (R1 to R7) cover the network signal only, on benign traffic and public captures; location, device-health and proximity detection have no real-data validation, and detection of real attacks is unmeasured. No TLS, key rotation, per-user accounts or audit log. Single node. All verified on Windows with Docker Desktop.
 The full list is in docs/RESEARCH.md.
