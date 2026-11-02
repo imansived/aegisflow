@@ -3,6 +3,7 @@ import { Api, ApiError } from '../api'
 import { siteTime, formatUptime } from '../format'
 import { makeProjection } from '../geo'
 import { kpiSeries } from '../kpiSeries'
+import { fleetCounts } from '../components/Panels'
 import { MAX_FEED, MAX_POINTS, backoffDelay, initialState, parseMessage, reducer } from '../live'
 import type { Alert, HistoryPoint, Modality, Severity, Site, Snapshot } from '../types'
 
@@ -265,5 +266,17 @@ describe('kpi trend series', () => {
     const a = alert({ started: new Date(T0 + 10 * 60_000).toISOString(), ended: new Date(T0 + 25 * 60_000).toISOString() })
     const k = kpiSeries(live({ A: [pt(0, 0.1), pt(30, 0.1)] }, [a]), 4)
     expect(k.open).toEqual([0, 1, 1, 0])
+  })
+})
+
+describe('fleet ring counts', () => {
+  it('counts each device once: flagged first, then degraded, else normal', () => {
+    const devs = {
+      a: snap({ device_id: 'a' }),
+      b: snap({ device_id: 'b', severity: 'high', score: 1 }),
+      c: snap({ device_id: 'c', severity: 'normal', observability: 'degraded', unavailable: ['network'] } as Partial<Snapshot>),
+      d: snap({ device_id: 'd', severity: 'low', observability: 'degraded', unavailable: ['network'] } as Partial<Snapshot>),
+    }
+    expect(fleetCounts(devs)).toEqual({ normal: 1, degraded: 1, flagged: 2, total: 4 })
   })
 })

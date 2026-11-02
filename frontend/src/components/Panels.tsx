@@ -151,12 +151,51 @@ export function TrafficPanel({ snap, history }: { snap: Snapshot | null; history
   )
 }
 
-export function HealthPanel({ snap, history }: { snap: Snapshot | null; history: Record<string, Point[]> }) {
+/** Where the fleet stands: flagged (any non-normal risk band) first, then degraded (some signal cannot be seen), else normal. Each device counts once. */
+export function fleetCounts(devices: Record<string, Snapshot>): { normal: number; degraded: number; flagged: number; total: number } {
+  const all = Object.values(devices)
+  const flagged = all.filter((d) => d.severity !== 'normal').length
+  const degraded = all.filter((d) => d.severity === 'normal' && isDegraded(d)).length
+  return { normal: all.length - flagged - degraded, degraded, flagged, total: all.length }
+}
+
+function FleetRing({ devices }: { devices: Record<string, Snapshot> }) {
+  const c = fleetCounts(devices)
+  if (!c.total) return null
+  const R = 21
+  const L = 2 * Math.PI * R
+  const parts = [
+    { key: 'normal', label: 'Normal', n: c.normal, color: 'var(--good)' },
+    { key: 'degraded', label: 'Degraded', n: c.degraded, color: 'var(--degraded)' },
+    { key: 'flagged', label: 'Flagged', n: c.flagged, color: 'var(--sev-medium)' },
+  ]
+  let off = 0
+  return (
+    <div className="fleet" role="group" aria-label={`Fleet: ${c.normal} normal, ${c.degraded} degraded, ${c.flagged} flagged, of ${c.total} devices`}>
+      <svg viewBox="0 0 56 56" width="56" height="56" aria-hidden="true">
+        <circle cx="28" cy="28" r={R} className="fleet-track" />
+        {parts.filter((x) => x.n).map((x) => {
+          const len = (x.n / c.total) * L
+          const el = <circle key={x.key} cx="28" cy="28" r={R} fill="none" stroke={x.color} strokeWidth="5" strokeDasharray={`${Math.max(len - 1.5, 0.5)} ${L}`} strokeDashoffset={-off} transform="rotate(-90 28 28)" />
+          off += len
+          return el
+        })}
+        <text x="28" y="32" textAnchor="middle" className="fleet-n">{c.normal}/{c.total}</text>
+      </svg>
+      <ul>
+        {parts.map((x) => <li key={x.key}><i style={{ background: x.color }} />{x.label}<b>{x.n}</b></li>)}
+      </ul>
+    </div>
+  )
+}
+
+export function HealthPanel({ snap, history, devices = {} }: { snap: Snapshot | null; history: Record<string, Point[]>; devices?: Record<string, Snapshot> }) {
   const p = pts(history, snap?.device_id ?? null)
   return (
     <section className="panel" aria-label="Device health">
       <header className="panel-head"><h2>Device health</h2><span className="sub">{snap ? snap.device_id : 'no device'}</span></header>
-      <MultiLine times={p.map((q) => q.t)} ariaLabel={`Battery and CPU of ${snap?.device_id}`} unit="%" max={100} height={150}
+      <FleetRing devices={devices} />
+      <MultiLine times={p.map((q) => q.t)} ariaLabel={`Battery and CPU of ${snap?.device_id}`} unit="%" max={100} height={112}
         series={[
           { key: 'cpu', label: 'CPU', color: 'var(--sig-device)', values: p.map((q) => q.cpu) },
           { key: 'battery', label: 'Battery', color: 'var(--accent)', values: p.map((q) => q.battery) },

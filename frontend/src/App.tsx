@@ -105,7 +105,7 @@ export default function App() {
           <AnomalyFeed alerts={live.alerts} feed={live.feed} devices={live.devices} selected={selected} onSelect={setSelected} onOpenAll={() => setView('anomalies')} />
           <div className="bottom">
             <TrafficPanel snap={focus} history={live.history} />
-            <HealthPanel snap={focus} history={live.history} />
+            <HealthPanel snap={focus} history={live.history} devices={live.devices} />
             <CorrelationPanel snap={focus} history={live.history} alerts={live.alerts} status={status} />
           </div>
         </main>
