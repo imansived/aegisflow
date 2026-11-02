@@ -110,7 +110,7 @@ export function AnomalyFeed({ alerts, feed, selected, onSelect, onOpenAll, devic
               <li key={f.id}>
                 <button className={`sev-${f.severity}`} onClick={() => onSelect(f.device_id)} aria-pressed={selected === f.device_id}>
                   {f.kind === 'observability' ? <DegradedBadge label={false} /> : <SeverityBadge severity={f.severity} label={false} />}
-                  <span className="a-body"><b>{f.device_id}</b> {f.text}</span>
+                  <span className="a-body"><b>{f.device_id}</b> <span className="a-text">{f.text}</span></span>
                   <span className="meta">{siteTime(f.ts)}</span>
                 </button>
               </li>

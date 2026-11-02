@@ -414,3 +414,15 @@ table.data tr.sel td { background: var(--accent-soft); }
 .kpis dt { white-space: nowrap; font-size: 10px; }
 .kpis > div { padding: 5px 12px; }
 .kpis dd small { margin-left: 2px; }
+
+/* live anomalies: each item is a soft card with a severity rail, the device on top and what happened beneath */
+.activity { gap: 8px; }
+.activity li { list-style: none; }
+.activity button { position: relative; overflow: hidden; grid-template-columns: 16px 1fr auto; align-items: start; gap: 4px 10px; padding: 9px 12px 9px 15px; border: 1px solid var(--line); border-radius: 10px; background: rgba(18, 26, 45, 0.55); }
+.activity button::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--c, var(--sev-normal)); opacity: 0.9; }
+.activity button:hover, .activity button[aria-pressed='true'] { background: rgba(40, 60, 105, 0.45); border-color: var(--line-strong); }
+.activity .a-body { display: flex; flex-direction: column; min-width: 0; line-height: 1.35; }
+.activity .a-body b { font-size: 13px; }
+.activity .a-text { color: var(--ink2); font-size: 12px; }
+.activity .meta { font-size: 11.5px; padding-top: 1px; }
+.acard { border-radius: 10px; }
