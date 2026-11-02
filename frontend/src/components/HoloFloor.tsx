@@ -34,6 +34,7 @@ export function HoloFloor({ site, devices, selected, onSelect, trail }: {
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="0.9" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
         <filter id="glow-lg" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.4" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter>
         <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--line-strong)" stopOpacity="0.5" /><stop offset="1" stopColor="var(--line-strong)" stopOpacity="0.04" /></linearGradient>
+        <radialGradient id="hot-halo"><stop offset="0" stopColor="var(--sev-high)" stopOpacity="0.3" /><stop offset="0.6" stopColor="var(--sev-high)" stopOpacity="0.08" /><stop offset="1" stopColor="var(--sev-high)" stopOpacity="0" /></radialGradient>
         <linearGradient id="wall-hot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--sev-high)" stopOpacity="0.55" /><stop offset="1" stopColor="var(--sev-high)" stopOpacity="0.05" /></linearGradient>
         <pattern id="scan" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><line x1="0" y1="0" x2="0" y2="3" stroke="var(--sev-high)" strokeWidth="0.5" opacity="0.55" /></pattern>
       </defs>
@@ -44,6 +45,7 @@ export function HoloFloor({ site, devices, selected, onSelect, trail }: {
         const hot = z.kind === 'restricted'
         return (
           <g key={z.name} className={`vol ${hot ? 'hot' : ''}`}>
+            {hot && <ellipse className="hot-halo" cx={s.center.x} cy={s.floor.reduce((m, q) => m + q.y, 0) / s.floor.length} rx={Math.max(...s.floor.map((q) => q.x)) - Math.min(...s.floor.map((q) => q.x))} ry={(Math.max(...s.floor.map((q) => q.y)) - Math.min(...s.floor.map((q) => q.y))) * 1.3} fill="url(#hot-halo)" />}
             <path className="vol-floor" d={path(s.floor)} />
             {s.sides.map((q, i) => <path key={i} className="vol-side" d={path(q)} fill={hot ? 'url(#wall-hot)' : 'url(#wall)'} />)}
             <path className="vol-top" d={path(s.top)} />

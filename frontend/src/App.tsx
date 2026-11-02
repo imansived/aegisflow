@@ -87,7 +87,7 @@ export default function App() {
 
       {view === 'overview' && (
         <main className="overview">
-          <section className="stage" aria-label="Facility map">
+          <section className={`stage${openCount > 0 ? ' alerting' : ''}`} aria-label="Facility map">
             <HoloFloor site={site} devices={live.devices} selected={selected} onSelect={setSelected} trail={selected ? live.history[selected] ?? [] : []} />
             {focus && (
               <div className="focus-chip" aria-live="polite">
