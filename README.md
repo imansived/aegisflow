@@ -122,7 +122,7 @@ $env:AEGIS_ADMIN_TOKEN  = "choose-a-long-admin-token"     # at least 16 characte
 $env:AEGIS_VIEWER_TOKEN = "choose-a-long-viewer-token"
 .\.venv\Scripts\python -m uvicorn --factory backend.api.app:create_app --port 8010
 cd frontend; npm install; npm run dev                     # http://localhost:5173, proxies /api to the API
-npm test                                                  # 70 unit and component tests
+npm test                                                  # 71 unit and component tests
 ```
 
 Checks that drive the real system (with the stack running; they need `pip install playwright`, which uses the installed Edge):
