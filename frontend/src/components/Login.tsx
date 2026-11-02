@@ -19,16 +19,26 @@ export function Login({ onLogin }: { onLogin: (token: string, role: 'admin' | 'v
 
   return (
     <main className="login">
-      <div className="login-orbits" aria-hidden="true"><i /><i /><i /></div>
-      <form className="login-card" onSubmit={submit}>
-        <h1>AEGISFLOW <span>OBSERVATORY</span></h1>
-        <p className="sub">Behavioural anomaly detection for connected devices. It watches location, network, device health and proximity, and speaks up when several of them change together. Enter your access token to board: the viewer token to watch, the admin token to also run the simulation.</p>
-        <label className="field">Access token
-          <input type="password" autoComplete="off" autoFocus value={token} onChange={(e) => setToken(e.target.value)} aria-invalid={!!error} />
-        </label>
-        {error && <p className="error" role="alert">{error}</p>}
-        <button className="btn primary" disabled={busy || token.trim().length < 8} type="submit">{busy ? 'Checking…' : 'Sign in'}</button>
-      </form>
+      <div className="login-shell">
+        <form className="login-card" onSubmit={submit}>
+          <span className="eyebrow">AEGISFLOW</span>
+          <h1>Sign in</h1>
+          <p className="sub">Behavioural anomaly detection for connected devices. It watches location, network, device health and proximity, and speaks up when several of them change together. Enter your access token: the viewer token to watch, the admin token to also run the simulation.</p>
+          <label className="field">Access token
+            <input type="password" autoComplete="off" autoFocus value={token} onChange={(e) => setToken(e.target.value)} aria-invalid={!!error} />
+          </label>
+          {error && <p className="error" role="alert">{error}</p>}
+          <button className="btn primary" disabled={busy || token.trim().length < 8} type="submit">{busy ? 'Checking…' : 'Sign in'}</button>
+        </form>
+        <div className="login-art" aria-hidden="true">
+          <div className="dots" />
+          <i className="streak a" />
+          <i className="streak b" />
+          <i className="orb small" />
+          <i className="orb" />
+          <div className="wordmark">AEGISFLOW</div>
+        </div>
+      </div>
     </main>
   )
 }
