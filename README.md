@@ -64,6 +64,8 @@ independent sessions) stopped at pre-registered gates, the last one because the 
 
 **Reading the score.** The dashboard shows a severity band (Normal, Low, Medium, High) and an alert as two different things. The band follows the fused score; an alert opens at the alert level once a device has finished learning and closes only after 60 s below the clear level, so a device can read Normal while its alert is still open. The ring says `LOW · COMBINED` (not NOMINAL) when weak signals add up to a non-Normal band, and a collapsible "How to read this score" panel explains the rules.
 
+**Reading the top bar and panels.** The four cards in the top bar (connected devices, open alerts, peak risk, and the clock) show the number now and, for the first three, a small trend over the last 30 simulated minutes, drawn only from data the dashboard already holds. The clock is labelled **Simulated time** with its speed (for example x20) because the demo fleet runs faster than real time. The ring in Device health counts each device once as **Normal, Degraded or Flagged**; it never says "healthy", because a quiet score on a device with missing signals says nothing about the signals it cannot see.
+
 ## Run it (Docker)
 
 ```powershell
@@ -120,7 +122,7 @@ $env:AEGIS_ADMIN_TOKEN  = "choose-a-long-admin-token"     # at least 16 characte
 $env:AEGIS_VIEWER_TOKEN = "choose-a-long-viewer-token"
 .\.venv\Scripts\python -m uvicorn --factory backend.api.app:create_app --port 8010
 cd frontend; npm install; npm run dev                     # http://localhost:5173, proxies /api to the API
-npm test                                                  # 66 unit and component tests
+npm test                                                  # 70 unit and component tests
 ```
 
 Checks that drive the real system (with the stack running; they need `pip install playwright`, which uses the installed Edge):
