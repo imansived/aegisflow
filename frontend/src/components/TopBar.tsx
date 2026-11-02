@@ -12,7 +12,11 @@ export function TopBar({ live, status, role, onLogout, onPalette }: {
   const degraded = devices.filter((d) => d.observability && d.observability !== 'full').length
   const conn = live.connection
   const demo = status?.demo.state
-  const fleet = demo === 'live' ? ['ok', 'Fleet live'] : demo === 'registering' || demo === 'warming' ? ['warn', 'Calibrating'] : demo === 'error' ? ['bad', 'Fleet error'] : ['idle', 'Fleet offline']
+  // A live fleet is the normal case and idle is just "no demo": the pill only appears when the fleet needs attention.
+  const fleet = demo === 'registering' || demo === 'warming' ? ['warn', 'Calibrating'] : demo === 'error' ? ['bad', 'Fleet error'] : demo === 'stopping' ? ['warn', 'Stopping'] : null
+  // The simulated fleet runs on its own clock, faster than real time; say so instead of calling it the site's time.
+  const simulated = demo === 'live' || demo === 'warming' || demo === 'stopping'
+  const speed = status?.demo.speed
 
   return (
     <header className="top">
@@ -24,9 +28,11 @@ export function TopBar({ live, status, role, onLogout, onPalette }: {
         <div className={open ? 'alert' : ''}><dt>Open alerts</dt><dd>{open}</dd></div>
         {degraded > 0 && <div className="degraded"><dt>Degraded</dt><dd>{degraded}</dd></div>}
         <div><dt>Peak risk</dt><dd>{devices.length ? top.toFixed(2) : '—'}</dd></div>
-        <div><dt>Site time</dt><dd>{latest ? siteDayTime(latest) : '—'}</dd></div>
+        <div title={simulated ? `Simulated clock, running ${speed ?? ''}× real time. Telemetry timestamps, not your computer's clock.` : 'Time of the latest telemetry'}>
+          <dt>{simulated ? 'Simulated time' : 'Site time'}</dt><dd>{latest ? siteDayTime(latest) : '—'}{simulated && speed ? <small> ×{speed}</small> : null}</dd>
+        </div>
       </dl>
-      <span className={`pill ${fleet[0]}`}><i />{fleet[1]}</span>
+      {fleet && <span className={`pill ${fleet[0]}`}><i />{fleet[1]}</span>}
       <span className={`pill ${conn === 'open' ? 'ok' : conn === 'connecting' ? 'warn' : 'bad'}`} role="status"><i />{conn === 'open' ? 'LINK' : conn === 'connecting' ? 'CONNECTING' : 'RECONNECTING'}</span>
       <span className="chip role">{role}</span>
       <button className="ghost" onClick={onLogout}>Sign out</button>
