@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { siteDayTime } from '../format'
 import { kpiSeries } from '../kpiSeries'
+import { Logo } from './Logo'
 import { Spark } from './Spark'
 import type { LiveState } from '../live'
 import type { DemoStatus, Status } from '../types'
@@ -24,8 +25,8 @@ export function TopBar({ live, status, role, onLogout, onPalette }: {
 
   return (
     <header className="top">
-      <div className="brand"><strong>AEGISFLOW</strong><span>Cross-modal anomaly detection</span></div>
-      <button className="palette-btn" onClick={onPalette} aria-label="Open command palette"><span>Search devices, jump anywhere</span><kbd>/</kbd></button>
+      <div className="brand"><Logo size={30} /><div className="brand-text"><strong>AEGISFLOW</strong><span>Cross-modal anomaly detection</span></div></div>
+      <button className="palette-btn" onClick={onPalette} aria-label="Open command palette"><span>Search or jump to…</span><kbd>/</kbd></button>
       <div className="spacer" />
       <dl className="kpis" aria-label="Summary">
         <div title="Last 30 simulated minutes"><dt>Connected devices</dt><dd>{devices.length}</dd><Spark values={trend.devices} /></div>

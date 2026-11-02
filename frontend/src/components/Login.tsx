@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Api, ApiError } from '../api'
+import { Logo } from './Logo'
 
 export function Login({ onLogin }: { onLogin: (token: string, role: 'admin' | 'viewer') => void }) {
   const [token, setToken] = useState('')
@@ -34,8 +35,7 @@ export function Login({ onLogin }: { onLogin: (token: string, role: 'admin' | 'v
           <div className="dots" />
           <i className="streak a" />
           <i className="streak b" />
-          <i className="orb small" />
-          <i className="orb" />
+          <Logo className="art-logo" size={132} />
           <div className="wordmark">AEGISFLOW</div>
         </div>
       </div>

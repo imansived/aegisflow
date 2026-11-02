@@ -435,3 +435,12 @@ table.data tr.sel td { background: var(--accent-soft); }
 .fleet li { display: flex; align-items: center; gap: 7px; }
 .fleet li i { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .fleet li b { margin-left: auto; color: var(--ink); font-weight: 650; }
+
+/* brand mark */
+.brand { flex-direction: row; align-items: center; gap: 11px; }
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+.brand > svg { flex: none; color: var(--ink); filter: drop-shadow(0 0 8px rgba(120, 160, 255, 0.35)); }
+.login-art .art-logo { position: absolute; left: 50%; top: 46%; margin: -66px 0 0 -66px; color: var(--ink); filter: drop-shadow(0 0 26px rgba(120, 160, 255, 0.38)); }
+@media (prefers-reduced-motion: no-preference) { .login-art .art-logo { animation: float 7s ease-in-out infinite; } }
+.brand { min-width: 0; flex: none; }
+.brand-text span { white-space: nowrap; }
