@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Api, ApiError } from '../api'
 import { siteTime, formatUptime } from '../format'
 import { makeProjection } from '../geo'
+import { kpiSeries } from '../kpiSeries'
 import { MAX_FEED, MAX_POINTS, backoffDelay, initialState, parseMessage, reducer } from '../live'
 import type { Alert, HistoryPoint, Modality, Severity, Site, Snapshot } from '../types'
 
@@ -242,5 +243,27 @@ describe('api client', () => {
     expect(init.method).toBe('POST')
     expect(JSON.parse(init.body)).toEqual({ device_id: 'D-003' })
     expect(init.headers['Content-Type']).toBe('application/json')
+  })
+})
+
+describe('kpi trend series', () => {
+  const T0 = Date.parse('2026-10-06T04:00:00+00:00')
+  const pt = (min: number, score: number) => ({ t: T0 + min * 60_000, score, severity: 'normal' as Severity })
+  const live = (history: Record<string, ReturnType<typeof pt>[]>, alerts: Alert[] = []) =>
+    ({ ...initialState, history, alerts } as unknown as Parameters<typeof kpiSeries>[0])
+
+  it('is empty without history', () => {
+    expect(kpiSeries(initialState)).toEqual({ devices: [], open: [], peak: [] })
+  })
+  it('counts devices as they report and tracks the highest latest score', () => {
+    const k = kpiSeries(live({ A: [pt(0, 0.2), pt(30, 0.6)], B: [pt(20, 0.9)] }), 4)
+    expect(k.devices).toEqual([1, 1, 2, 2])
+    expect(k.peak[0]).toBeCloseTo(0.2)
+    expect(k.peak[3]).toBeCloseTo(0.9)
+  })
+  it('counts an alert only between its start and end', () => {
+    const a = alert({ started: new Date(T0 + 10 * 60_000).toISOString(), ended: new Date(T0 + 25 * 60_000).toISOString() })
+    const k = kpiSeries(live({ A: [pt(0, 0.1), pt(30, 0.1)] }, [a]), 4)
+    expect(k.open).toEqual([0, 1, 1, 0])
   })
 })
