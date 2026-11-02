@@ -5,7 +5,7 @@ import { HBars, IntervalPlot, LineChart } from '../components/Charts'
 import { CommandPalette, buildItems, filterItems } from '../components/CommandPalette'
 import { HoloFloor } from '../components/HoloFloor'
 import { CorrelationPanel, AnomalyFeed, correlationSentence, focusDevice } from '../components/Panels'
-import { linePath, spans } from '../components/MiniCharts'
+import { MultiLine, linePath, spans } from '../components/MiniCharts'
 import { StateBadge } from '../components/Glyph'
 import { lostSignals, lostText } from '../format'
 import { SideNav } from '../components/SideNav'
@@ -428,5 +428,16 @@ describe('reading the score (UX consistency)', () => {
     expect(tech.textContent).toMatch(/Full technical explanation/)
     expect(tech.querySelector('pre')?.textContent).toMatch(/HIGH behavioural anomaly on D-001/)
     expect(container.textContent).toMatch(/closes after 60 s below the clear level/)
+  })
+})
+
+describe('MultiLine time axis', () => {
+  afterEach(cleanup)
+  it('starts at the first point that has data, so a series known only recently fills the plot', () => {
+    const T = Date.parse('2026-10-06T04:00:00+00:00')
+    const times = [0, 1, 2, 3, 4].map((m) => T + m * 60_000)
+    const { container } = render(<MultiLine times={times} ariaLabel="x" series={[{ key: 'a', label: 'A', color: 'red', values: [NaN, NaN, 10, 20, 30] }]} />)
+    const d = container.querySelector('path')!.getAttribute('d')!
+    expect(d.startsWith('M6.0 ')).toBe(true)
   })
 })

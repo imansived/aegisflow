@@ -35,9 +35,14 @@ export function spans(flags?: boolean[]): [number, number][] {
 export interface Series { key: string; label: string; color: string; values: number[] }
 
 /** Several series on ONE shared axis (never dual-axis). Legend above, values at the line ends, crosshair tooltip. */
-export function MultiLine({ times, series, height = 120, ariaLabel, unit = '', min = 0, max }: {
+export function MultiLine({ times: allTimes, series: allSeries, height = 120, ariaLabel, unit = '', min = 0, max }: {
   times: number[]; series: Series[]; height?: number; ariaLabel: string; unit?: string; min?: number; max?: number
 }) {
+  // Stored history carries scores but not raw telemetry, so a telemetry series only has points since the page opened.
+  // Start the time axis where the data starts; otherwise the line is squeezed against the right edge of a 30-minute axis.
+  const from = Math.max(0, allTimes.findIndex((_, i) => allSeries.some((s) => Number.isFinite(s.values[i]))))
+  const times = from > 0 ? allTimes.slice(from) : allTimes
+  const series = from > 0 ? allSeries.map((s) => ({ ...s, values: s.values.slice(from) })) : allSeries
   const ref = useRef<HTMLDivElement>(null)
   const W = useWidth(ref, 360, 200, 900)
   const [hover, setHover] = useState<number | null>(null)

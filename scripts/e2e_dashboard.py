@@ -35,9 +35,13 @@ with sync_playwright() as p:
     expect(page.get_by_role("alert")).to_contain_text("not accepted"); shot(page, "02_login_error")
 
     print("2. admin login; make sure no fleet is left over from an earlier session")
-    page.get_by_label("Access token").fill(ADMIN); page.get_by_role("button", name="Sign in").click()
+    page.get_by_label("Access token").fill(ADMIN)
+    # The first status response tells us whether a fleet is still running; wait for it rather than for a fixed time
+    # (a busy API with a live fleet can take several seconds, and guessing wrong starts a fleet that is already running).
+    with page.expect_response(lambda r: r.url.endswith("/api/system/status"), timeout=30000):
+        page.get_by_role("button", name="Sign in").click()
     expect(page.locator(".pill").last).to_contain_text("LINK", timeout=15000)   # WebSocket connected
-    time.sleep(4)   # the first status poll tells us whether a fleet is still running
+    time.sleep(1)
     nav(page, "Scenarios")
     stop = page.get_by_role("button", name="Stop", exact=True)
     if stop.count():
