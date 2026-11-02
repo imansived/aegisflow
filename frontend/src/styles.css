@@ -444,3 +444,13 @@ table.data tr.sel td { background: var(--accent-soft); }
 @media (prefers-reduced-motion: no-preference) { .login-art .art-logo { animation: float 7s ease-in-out infinite; } }
 .brand { min-width: 0; flex: none; }
 .brand-text span { white-space: nowrap; }
+
+/* map glow: rooms are drawn in cool light; the restricted room glows red. Chrome only: the data colours are untouched. */
+.floor-grid line { stroke: rgba(120, 160, 255, 0.09); }
+.vol-floor { fill: rgba(110, 150, 255, 0.045); stroke: rgba(130, 170, 255, 0.22); }
+.vol-side { stroke: rgba(140, 180, 255, 0.34); }
+.vol-top { fill: rgba(110, 150, 255, 0.09); stroke: rgba(150, 190, 255, 0.7); stroke-width: 0.34; }
+.vol:not(.hot) { filter: drop-shadow(0 0 1.6px rgba(110, 160, 255, 0.55)); }
+.vol-label { fill: #bcd0f5; }
+.vol.hot { filter: drop-shadow(0 0 2.6px rgba(229, 72, 77, 0.7)); }
+.vol.hot .vol-top { stroke-width: 0.42; }
